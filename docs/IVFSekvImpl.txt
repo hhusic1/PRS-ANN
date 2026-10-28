@@ -1,0 +1,5 @@
+https://skyzh.github.io/vector-db-from-scratch/cpp-05-ivfflat
+
+https://oneuptime.com/blog/post/2026-01-30-ivf-index/view
+
+https://github.com/facebookresearch/faiss

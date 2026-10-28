@@ -1,127 +1,82 @@
-# Paralelni ANN indeks zasnovan na invertovanim listama (IVF)
+# Paralelni ANN indeks (IVF)
 
-Projekat iz predmeta **Paralelni računarski sistemi**.
+Projekat iz predmeta **Paralelni računarski sistemi**: ANN indeks zasnovan na invertovanim listama (IVF-Flat), implementiran sekvencijalno, a zatim paralelizovan na CPU-u pomoću OpenMP-a i SIMD-a (AVX2).
 
-Implementiramo ANN (Approximate Nearest Neighbor) indeks zasnovan na invertovanim listama (IVF-Flat), prvo sekvencijalno, a zatim paralelno na CPU-u (OpenMP i SIMD/AVX2) i GPU-u (CUDA). Mjerimo ubrzanje svake verzije uz očuvanje tačnosti (recall).
+## Dokumentacija
 
-LINK ZA GOOGLE DRIVE SA RADOVIMA: https://drive.google.com/drive/folders/1vpXYMi4WDbXk22DF6Yw7slJuBoYYY_VG?usp=drive_link
+U folderu `docs/` nalaze se folderi sa naučno-istraživačkim radovima, linkovima i ostalim dokumentima projekta. Organizacija prati zajednički folder na Google Driveu:
 
-## Tim
+- **`razliciti-pristupi-ann/`**: radovi o drugim porodicama ANN metoda, koji služe za pregled oblasti i obrazloženje zašto ih nismo izabrali: LSH (hashiranje), FLANN (stabla), HNSW (grafovi) i eksperimentalno poređenje ANN metoda (Li et al.).
+- **`zasto-ivf/`**: radovi koji opisuju IVF i podupiru njegov izbor: Video Google (porijeklo ideje), Product Quantization for Nearest Neighbor Search (osnova algoritma), The Inverted Multi-Index i Revisiting the Inverted Indices.
+- **`paralelizacije/`**: radovi o paralelnoj implementaciji ANN pretrage: The Faiss Library, Quicker ADC (SIMD), te Billion-Scale Similarity Search with GPUs i Efficient Large-scale ANN Search on the GPU kao šira referenca.
+- **`linkovi-sekvencijalne-implementacije.md`**: linkovi korisni za razumijevanje sekvencijalne implementacije (pseudokod i objašnjenje IVFFlat indeksa, Python tutorijal, FAISS repozitorij).
 
-| Član | Indeks |
+## Inicijalni plan implementacije
+
+Implementacija je u **C++20** sa **CMake**-om. Mjerni okvir, poravnata memorija i obrazac SIMD verzija preuzimaju se iz laboratorijske vježbe 1. Podaci su skupovi SIFT10K (razvoj) i SIFT1M (konačna mjerenja) sa [corpus-texmex.irisa.fr](http://corpus-texmex.irisa.fr/).
+
+### 1. Sekvencijalna verzija
+- Učitavanje vektora iz `.fvecs` / `.ivecs` fajlova
+- Brute-force kNN kao referenca za tačnost
+- K-means trening grubog kvantizatora (`nlist` centroida, fiksan seed)
+- Invertovane liste u CSR rasporedu: vektori sortirani po listama, njihovi ID-evi i niz offseta
+- Pretraga: `nprobe` najbližih centroida, skeniranje njihovih listi, top-k pomoću heapa
+- Mjerenje: recall@10, vrijeme izgradnje, broj upita u sekundi (QPS)
+
+### 2. SIMD
+- L2 udaljenost u četiri verzije: skalarna, auto-vektorizovana, `omp simd` i AVX2 + FMA
+- Više akumulatora u AVX2 verziji radi boljeg iskorištenja procesora
+- Ista IVF pretraga pokrenuta sa svakom verzijom udaljenosti
+
+### 3. OpenMP
+- K-means: paralelna dodjela tačaka centroidima, ažuriranje centroida preko lokalnih suma po niti
+- Izgradnja listi: paralelno brojanje i punjenje
+- Pretraga: paralelno po upitima, poređenje statičkog i dinamičkog raspoređivanja
+- Kombinacija OpenMP + AVX2
+
+### 4. Mjerenja
+- `nprobe` ∈ {1, 8, 32, 128}
+- Broj niti ∈ {1, 2, 4, 8}
+- Poređenje svih verzija sa sekvencijalnom i sa FAISS `IndexIVFFlat` (CPU)
+
+## Tok implementacije
+
+1. **Podaci i referenca.** Prvo se pišu čitač `.fvecs` fajlova i brute-force pretraga. Brute-force rezultat mora se poklopiti sa priloženim tačnim odgovorima (`groundtruth.ivecs`). Time su potvrđeni i podaci i računanje recalla prije nego što indeks postoji.
+2. **K-means.** Trenira se na `learn` skupu. Provjera: ukupna udaljenost tačaka do centroida opada iz iteracije u iteraciju, a nijedan klaster ne ostaje prazan.
+3. **Invertovane liste.** Svaki bazni vektor dodjeljuje se najbližem centroidu, broje se vektori po listi, prefix sum daje offsete, a vektori se kopiraju u jedan ravan niz. Provjera: zbir dužina listi jednak je broju vektora.
+4. **Pretraga.** Za upit se nađe `nprobe` najbližih centroida, skeniraju se njihove liste i čuva top-k. Provjera: kad je `nprobe = nlist`, recall mora biti jednak brute-forceu (1,0).
+5. **Zaključavanje sekvencijalne verzije.** Kad su sve provjere prošle, sekvencijalna verzija se označava tagom u Gitu i postaje referenca za sve paralelne verzije.
+6. **SIMD.** Mijenja se samo funkcija udaljenosti. Provjera: rezultati iste pretrage moraju dati isti recall kao skalarna verzija.
+7. **OpenMP.** Paralelizuju se k-means, izgradnja listi i pretraga. Provjera: uz iste početne centroide, recall mora biti isti kao u sekvencijalnoj verziji.
+8. **Mjerenja i poređenje.** Sve verzije se mjere istim okvirom (zagrijavanje, više ponavljanja, medijan), a rezultati se porede sa FAISS-om.
+
+Svaki korak se razvija na SIFT10K, a kad radi ispravno, provjerava se i na SIFT1M.
+
+## Pojmovi i skraćenice
+
+| Pojam | Značenje |
 | --- | --- |
-| Haris Husić | 2524/19662 |
-| Kerim Hajdar | 2505/19556 |
-| Haris Macić | 2511/19555 |
-
-## O projektu
-
-ANN pretraga traži k vektora najbližih upitu, ali odustaje od garancije savršene tačnosti u zamjenu za veliko ubrzanje. IVF indeks radi u dva koraka:
-
-1. **Izgradnja:** k-means dijeli prostor na `nlist` ćelija, a svaki vektor se smješta u invertovanu listu svog najbližeg centroida.
-2. **Pretraga:** za upit se pronađe `nprobe` najbližih centroida i pretraže se samo vektori u njihovim listama.
-
-Parametar `nprobe` određuje kompromis između brzine i tačnosti. Paralelizujemo i izgradnju indeksa i pretragu.
-
-## Verzije
-
-| Verzija | Tehnologija |
-| --- | --- | --- |
-| Brute-force kNN | C++ (referenca za recall) |
-| Sekvencijalni IVF-Flat | C++ | 
-| SIMD | Auto-vektorizacija, `omp simd`, AVX2 + FMA |
-| OpenMP | `parallel for`, redukcije, dinamičko raspoređivanje |
-| OpenMP + SIMD | Kombinacija |
-| CUDA | Kerneli za k-means, scan, pretragu, top-k (Thrust) |
-
-## Struktura repozitorija
-
-```
-.
-├── CMakeLists.txt
-├── include/            # zaglavlja (interfejs indeksa, udaljenosti, mjerenje)
-├── src/
-│   ├── common/         # učitavanje podataka, recall, mjerni okvir
-│   ├── distance/       # l2_scalar, l2_auto, l2_omp, l2_avx2
-│   ├── seq/            # sekvencijalni k-means i IVF
-│   ├── omp/            # OpenMP verzija
-│   └── main.cpp
-├── cuda/               # CUDA verzija (.cu fajlovi)
-├── notebooks/          # Google Colab notebook za CUDA
-├── scripts/            # preuzimanje podataka, FAISS referenca, grafici
-├── results/            # izmjereni rezultati (CSV) i grafici
-├── docs/               # plan, literatura, izvještaj, prezentacija
-└── data/               # skupovi podataka (nisu u repozitoriju)
-```
-
-## Zahtjevi
-
-- C++ kompajler sa podrškom za C++20 ili noviji (g++ 11+ ili clang 14+)
-- CMake 3.16+
-- OpenMP
-- Procesor sa AVX2 i FMA podrškom (za SIMD verziju)
-- NVIDIA GPU i CUDA Toolkit 12+ (za CUDA verziju), ili Google Colab
-- Python 3 sa `numpy`, `matplotlib` i `faiss-cpu` (za grafike i referentna mjerenja)
-
-## Podaci
-
-Koristimo skupove SIFT10K (razvoj) i SIFT1M (konačna mjerenja) sa stranice [corpus-texmex.irisa.fr](http://corpus-texmex.irisa.fr/). Fajlovi su u formatu `.fvecs` / `.ivecs` i sadrže bazne vektore, upite i tačne odgovore.
-
-```bash
-./scripts/download_sift.sh      # preuzima i raspakuje podatke u data/
-```
-
-Podaci se ne čuvaju u repozitoriju zbog veličine.
-
-## Build i pokretanje
-
-```bash
-cmake -S . -B build -DCMAKE_BUILD_TYPE=Release
-cmake --build build -j
-
-./build/ann_ivf --data data/siftsmall --nlist 100 --nprobe 8 --k 10 --threads 4
-```
-
-CMake opcije:
-
-| Opcija | Podrazumijevano | Opis |
-| --- | --- | --- |
-| `ANN_ENABLE_OPENMP` | `ON` | OpenMP niti i `omp simd` |
-| `ANN_ENABLE_AVX2` | `ON` | AVX2 + FMA verzija funkcije udaljenosti |
-| `ANN_VECTORIZATION_REPORTS` | `OFF` | Izvještaji kompajlera o vektorizaciji |
-
-CUDA verzija se pokreće kroz `notebooks/colab_cuda.ipynb` na Google Colabu.
-
-## Evaluacija
-
-Sve verzije se mjere na istom skupu podataka, istim parametrima i istim mjernim okvirom (zagrijavanje, više ponavljanja, medijan).
-
-| Metrika | Opis |
-| --- | --- |
-| Recall@10 | Udio pravih 10 najbližih susjeda koji su pronađeni |
-| QPS | Broj upita u sekundi |
-| Vrijeme izgradnje | K-means i punjenje invertovanih listi |
-| Ubrzanje i efikasnost | U odnosu na sekvencijalnu verziju, za 1, 2, 4 i 8 niti |
-
-Eksperimenti: `nprobe` ∈ {1, 8, 32, 128}, niti ∈ {1, 2, 4, 8}, poređenje sa FAISS `IndexIVFFlat` na CPU-u.
-
-## Rezultati
-
-_Biće dodani nakon mjerenja._ Sirovi rezultati su u `results/`, a grafici u `results/figures/`.
-
-## Literatura
-
-- H. Jégou, M. Douze, C. Schmid, [Product Quantization for Nearest Neighbor Search](https://inria.hal.science/inria-00514462v2), IEEE TPAMI, 2011.
-- J. Sivic, A. Zisserman, [Video Google: A Text Retrieval Approach to Object Matching in Videos](https://www.robots.ox.ac.uk/~vgg/publications/2003/Sivic03/sivic03.pdf), ICCV, 2003.
-- A. Babenko, V. Lempitsky, [The Inverted Multi-Index](http://sites.skoltech.ru/app/data/uploads/sites/25/2014/12/TPAMI14.pdf), IEEE TPAMI, 2015.
-- D. Baranchuk, A. Babenko, Y. Malkov, [Revisiting the Inverted Indices for Billion-Scale Approximate Nearest Neighbors](https://arxiv.org/abs/1802.02422), ECCV, 2018.
-- J. Johnson, M. Douze, H. Jégou, [Billion-Scale Similarity Search with GPUs](https://arxiv.org/abs/1702.08734), IEEE Transactions on Big Data, 2019.
-- M. Douze et al., [The Faiss Library](https://arxiv.org/abs/2401.08281), 2024.
-
-Potpuna lista literature je u `docs/literatura.md`.
-
-## Izvori koda
-
-- Sekvencijalna IVF implementacija je zasnovana na [vector-db-from-scratch](https://github.com/skyzh/vector-db-from-scratch) (Alex Chi Z, licenca CC BY-NC-SA 4.0) i prilagođena za ovaj projekat.
-- Mjerni okvir i SIMD obrazac su preuzeti iz laboratorijske vježbe 1 (Uvod i vektorizacija) predmeta Paralelni računarski sistemi.
-- Referentna mjerenja koriste biblioteku [FAISS](https://github.com/facebookresearch/faiss).
+| **IVF** | Inverted File Index, indeks sa invertovanim listama: prostor se k-meansom dijeli na ćelije, a svaki vektor se smješta u listu svoje ćelije |
+| **IVF-Flat** | IVF koji u listama čuva originalne (nekomprimovane) vektore; verzija koju implementiramo |
+| **IVFADC / PQ** | IVF sa Product Quantization kompresijom vektora (rad Jégou et al.); nije dio naše implementacije |
+| **LSH, FLANN, HNSW** | Druge porodice ANN metoda: hashiranje, stabla i grafovi; opisane u literaturi |
+| **SIFT10K / SIFT1M** | Standardni skupovi od 10.000 odnosno 1.000.000 vektora dimenzije 128 |
+| **`.fvecs` / `.ivecs`** | Binarni formati: za svaki vektor dimenzija (4 bajta), pa vrijednosti kao float (`.fvecs`) ili int (`.ivecs`) |
+| **k-means** | Algoritam klasterovanja koji naizmjenično dodjeljuje tačke najbližem centroidu i pomjera centroide na prosjek dodijeljenih tačaka |
+| **Centroid** | Središte jedne ćelije (klastera) |
+| **Grubi kvantizator** | Skup centroida koji određuje u koju listu ide svaki vektor |
+| **`nlist`** | Broj centroida, odnosno broj invertovanih listi |
+| **`nprobe`** | Broj najbližih listi koje se pretražuju za jedan upit; veći `nprobe` daje veći recall, ali sporiju pretragu |
+| **`k` / top-k** | Broj traženih najbližih susjeda i postupak čuvanja k najboljih kandidata |
+| **Heap** | Struktura podataka (prioritetni red) koja efikasno čuva k najboljih kandidata tokom pretrage |
+| **Invertovana lista** | Spisak vektora koji pripadaju jednom centroidu |
+| **CSR raspored** | Compressed Sparse Row: sve liste u jednom ravnom nizu, uz niz offseta koji kaže gdje svaka lista počinje |
+| **Offset** | Pozicija početka liste u ravnom nizu |
+| **Prefix sum (scan)** | Niz kumulativnih zbirova; iz broja vektora po listama daje offsete |
+| **Recall@10** | Udio pravih 10 najbližih susjeda koje je pretraga pronašla (od 0 do 1) |
+| **QPS** | Queries Per Second, broj upita obrađenih u sekundi |
+| **OpenMP** | Standard za paralelizaciju u C/C++ pomoću direktiva `#pragma omp` |
+| **SIMD** | Single Instruction, Multiple Data: jedna instrukcija obrađuje više brojeva odjednom |
+| **FMA** | Fused Multiply-Add: množenje i sabiranje u jednoj instrukciji |
+| **FAISS** | Biblioteka za vektorsku pretragu (Meta); koristi se kao spoljna referenca |
+| **`IndexIVFFlat`** | FAISS implementacija IVF-Flat indeksa |
