@@ -1,0 +1,11 @@
+# Build izlaz (CMake + Ninja, CLion)
+build/
+cmake-build-*/
+
+# Podaci (SIFT10K, SIFT1M) – preuzimaju se skriptom
+data/
+
+# Python okruženje
+.venv/
+__pycache__/
+*.pyc

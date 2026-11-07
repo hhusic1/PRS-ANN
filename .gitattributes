@@ -1,0 +1,14 @@
+# Isti krajevi redova na Windowsu i macOS-u (git čuva LF, checkout prema sistemu)
+* text=auto
+
+# Skripte moraju imati LF i na Windowsu, inače bash javlja greške
+*.sh text eol=lf
+
+# Binarni podaci
+*.fvecs binary
+*.ivecs binary
+*.bvecs binary
+*.png binary
+*.pdf binary
+*.7z binary
+*.gz binary
