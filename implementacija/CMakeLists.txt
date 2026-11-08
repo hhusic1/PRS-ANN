@@ -36,6 +36,15 @@ else()
   set(ANN_NATIVE_FLAG "")
 endif()
 
+# MinGW (MSYS2) na Windowsu: statičko linkovanje runtime biblioteka
+# (libstdc++, libgcc, winpthread, kasnije libgomp). Inače program pri
+# pokretanju traži libstdc++-6.dll po PATH-u i može učitati tuđu, stariju
+# verziju (npr. iz QEMU-a ili Git-a) -> pada bez ispisa sa 0xC0000139
+# ("entry point not found"). Statički .exe radi nezavisno od PATH-a.
+if(MINGW)
+  add_link_options(-static)
+endif()
+
 # ---------------------------------------------------------------------------
 # Biblioteka sa svim verzijama (dijele je program i kasnije testovi/mjerenja)
 # ---------------------------------------------------------------------------
