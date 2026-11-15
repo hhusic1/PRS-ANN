@@ -1,6 +1,6 @@
 # Nalaz 1: početno stanje (skalarna udaljenost)
 
-Mjerenje: `ivf-bench data/sift 256 32 1000`, SIFT1M, `nlist` 256, `nprobe` 32 (13,08 % baze po upitu), indeks sačuvan i isti za sva mjerenja, proces vezan za P-jezgro (logičko jezgro 2), Intel Core i5-12500H. Sirovi CSV-ovi: `rezultati/scalar/`.
+Mjerenje: `ivf-bench data/sift 256 32 1000`, SIFT1M, `nlist` 256, `nprobe` 32 (13,08 % baze po upitu), indeks sačuvan i isti za sva mjerenja, proces vezan za P-jezgro (logičko jezgro 2), Intel Core i5-12500H. Sirovi CSV-ovi ovog (prvog) snimanja: `rezultati/scalar-pocetno/`; folder `rezultati/scalar/` sadrži skalarnu varijantu iz finalnog snimanja.
 
 ## Vrijeme (bez VTune-a, 5 ponavljanja, medijan)
 

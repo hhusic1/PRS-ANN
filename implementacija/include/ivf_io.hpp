@@ -34,4 +34,10 @@ namespace ann
     // Da li indeks odgovara traženom nlist i bazi (d, n). Štiti od mjerenja
     // na indeksu napravljenom za drugi nlist ili drugi skup podataka.
     bool ivf_lists_match(const IvfLists& lists, std::size_t nlist, std::size_t d, std::size_t n);
+
+    // Da li su liste napravljene baš od ove baze: svaki ID je u opsegu, a svaki
+    // vektor u listama identičan je vektoru baze sa tim ID-em. Pretraga čita
+    // kopije vektora iz listi, pa bi indeks za drugi skup istih dimenzija
+    // inače prošao neprimijećeno (SIFT1M: ~0,1 s).
+    bool ivf_lists_match_base(const IvfLists& lists, const FloatMatrix& base);
 }

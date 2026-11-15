@@ -351,7 +351,7 @@ namespace
         auto load_index = [&](ann::DistFn dist)
         {
             ann::IvfLists lists = ann::load_ivf_lists(index_path);
-            if (!ann::ivf_lists_match(lists, nlist, base.d, base.n))
+            if (!ann::ivf_lists_match(lists, nlist, base.d, base.n) || !ann::ivf_lists_match_base(lists, base))
                 throw std::runtime_error("indeks " + index_path.string() +
                                          " ne odgovara nlist-u ili bazi; obrisati ga da se napravi ponovo");
             ann::IvfFlatSeq index(dist);

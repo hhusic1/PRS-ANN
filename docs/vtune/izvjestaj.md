@@ -4,11 +4,11 @@ Projekat PRS-ANN, 15. 11. 2026. Mjereno Intel VTune Profilerom 2026.6 na Intel C
 
 ## Sažetak
 
-- **Gdje je vrijeme:** 84 % CPU vremena pretrage troši jedna funkcija, kvadrat L2 udaljenosti (`l2_scalar`).
+- **Gdje je vrijeme:** 77–84 % CPU vremena pretrage (u dva snimanja) troši jedna funkcija, kvadrat L2 udaljenosti (`l2_scalar`).
 - **Čekamo li na keš i memoriju? Ne.** U početnoj verziji Memory Bound je samo ~5 %, a program čita 5,7 GB/s od ~45 GB/s koliko platforma može.
 - **Šta je usko grlo:** zavisnost podataka i skalarni kod. Petlja traje tačno 2 takta po elementu, koliko jedno FP sabiranje koje čeka prethodno, a sva FP aritmetika je skalarna (FP Vector 0 %, 7 instrukcija po elementu).
 - **Optimizacija:** udaljenost sa AVX2 + FMA i 4 nezavisna akumulatora. Pretraga na SIFT1M je **2,39× brža**, a kad su podaci u kešu **6,06× brža**. Rezultati su identični skalarnoj verziji (1000/1000 upita).
-- **Novo usko grlo je memorija:** nakon optimizacije Memory Bound raste sa 5,5 % na 41 % (DRAM Bound 46 %). Jedno jezgro dobija ~13,6 GB/s iz RAM-a, a ista funkcija iz keša čita 35 GB/s. Sljedeći korak je više jezgara (OpenMP), jer donose više istovremenih zahtjeva prema memoriji.
+- **Novo usko grlo je memorija.** Na SIFT1M obje AVX2 varijante zapnu na ~13,6 GB/s, a ista funkcija iz keša čita 35 GB/s i ubrzava 6×. Četiri akumulatora iz RAM-a donose 4 %, a iz keša 19 %. VTune to potvrđuje smjerom (Memory Bound 5,5 % → 41 %), ali je finalno snimanje rađeno dok su drugi programi opterećivali memoriju, pa su ti procenti vjerovatno precijenjeni (sekcija 8). Sljedeći korak je više jezgara (OpenMP), jer donose više istovremenih zahtjeva prema memoriji.
 
 ## 1. Postavka
 
@@ -46,7 +46,7 @@ Top-down metoda dijeli svako mjesto u cjevovodu procesora (4–6 po taktu) u jed
 
 ## 3. Početno stanje: šta je VTune pokazao
 
-Funkcija `l2_scalar` (84 % CPU vremena), prvo snimanje:
+Funkcija `l2_scalar` (77 % CPU vremena), prvo snimanje (`rezultati/scalar-pocetno/`):
 
 | Metrika | Vrijednost | Tumačenje |
 |---|---|---|
@@ -126,7 +126,7 @@ Recall@10 je u svim varijantama isti: 0,9975 na SIFT1M, 1,0 na SIFT10K.
 
 ## 6. Rezultati: VTune poslije optimizacije
 
-Finalno snimanje, sve četiri varijante (funkcija udaljenosti, P-jezgro; tabele generiše `tabela.py`, sve u [`rezultati/tabele.md`](rezultati/tabele.md)):
+Finalno snimanje, sve četiri varijante (funkcija udaljenosti, P-jezgro; tabele generiše `tabela.py`, sve u [`rezultati/tabele.md`](rezultati/tabele.md)). Snimljeno je dok je računar bio opterećen i drugim programima (sekcija 8): smjer promjena je pouzdan, a apsolutne vrijednosti, posebno Memory i DRAM Bound, treba čitati sa rezervom.
 
 | Metrika | `scalar` | `scalar4` | `avx2` | `avx2x4` |
 |---|---|---|---|---|
@@ -145,7 +145,7 @@ Finalno snimanje, sve četiri varijante (funkcija udaljenosti, P-jezgro; tabele 
 Šta se vidi:
 1. **SIMD radi.** FP Vector raste sa 0 na 35 %, iskorištenost vektorskih jedinica sa 6 na 48 %, a broj instrukcija po elementu pada 8× (7,12 → 0,88).
 2. **Zavisnost postaje vidljiva kod `avx2`.** Sa jednim vektorskim akumulatorom svaki FMA čeka prethodni, i to se sada vidi kao Core Bound 29 %. Sa četiri akumulatora Core Bound pada na 25,6 %.
-3. **Usko grlo se pomjerilo na memoriju.** Memory Bound raste sa 5,5 % na 41 %, a DRAM Bound na 46 %. Procesor sada većinu vremena čeka da podaci stignu iz RAM-a.
+3. **Usko grlo se pomjerilo na memoriju.** Memory Bound raste sa 5,5 % na 41 %, a DRAM Bound na 46 %: procesor sada veliki dio vremena čeka da podaci stignu iz RAM-a. Tuđi saobraćaj prema memoriji tokom snimanja vjerovatno je povećao ove procente, ali isti zaključak samostalno daju vremena iz sekcije 5 (iz RAM-a 2,4×, iz keša 6×).
 4. **`scalar4` potvrđuje zavisnost** kao uzrok iz početnog stanja: samo četiri akumulatora, bez SIMD-a, smanjuju takte po elementu sa 2,49 na 1,73 (1,4×).
 
 ## 7. Novo usko grlo: propusnost memorije jednog jezgra
@@ -159,7 +159,7 @@ Platforma ima ~45 GB/s, ali jedno jezgro može imati samo ograničen broj istovr
 
 ## 8. Ograničenja mjerenja
 
-- **Uslovi tokom finalnog VTune snimanja:** računar je bio opterećen i drugim poslom. Program je tokom snimanja prijavio skalarnu pretragu od 15,6 do 36,3 s, a samostalno 11,7 s; napajanje je provjereno (punjač). Zato skalarna verzija u finalnom snimanju ima 2,49 takta po elementu, a u prvom 2,01, uz isti broj instrukcija (7,12). Ubrzanja se zato navode iz samostalnih mjerenja, a VTune služi za dijagnozu: promjene metrika između varijanti (npr. FP Vector 0 → 35 %, Memory Bound 5 → 41 %) mnogo su veće od tog šuma.
+- **Uslovi tokom finalnog VTune snimanja:** računar je bio jako opterećen drugim programima. Program je tokom snimanja prijavio skalarnu pretragu od 15,6 do 36,3 s, a samostalno 11,7 s; napajanje je provjereno (punjač). U memory-access snimanju skalarna verzija je sama čitala 2,0 GB/s, a cijeli sistem u prosjeku 20,9 GB/s, dakle ~19 GB/s je dolazilo od drugih programa; kod `avx2x4` 11,7 naspram 21,1 GB/s. Posljedice: skalarna verzija u finalnom snimanju ima 2,49 takta po elementu, a u prvom 2,01, uz isti broj instrukcija (7,12); Memory i DRAM Bound su vjerovatno precijenjeni. Zato se ubrzanja i zaključak o memoriji zasnivaju na samostalnim mjerenjima (sekcija 5), a VTune služi za dijagnozu smjera (FP Vector 0 → 35 %, Core Bound kod `avx2`, rast Memory Bound). Za čiste apsolutne brojke snimanje treba ponoviti na neopterećenom računaru: `collect.ps1 -Distances scalar,avx2x4`.
 - **Sistemska propusnost DRAM-a** u Memory Access analizi mjeri cijeli računar, ne samo naš program. Zato se koriste metrike po funkciji i propusnost koju program sam izračuna (GB/s skeniranih vektora).
 - **Inline funkcije:** sa `-g` VTune prikazuje AVX2 intrinzike (`_mm256_fmadd_ps`...) kao zasebne funkcije. Izvještaji po funkcijama zato se prave sa `-inline-mode off`, da se vrijeme pripiše funkciji udaljenosti.
 - **Prvo Memory Access snimanje** je stalo na VTune-ovoj granici od 1000 MB. Za finalno snimanje granica je isključena (`-data-limit 0`).
@@ -167,7 +167,7 @@ Platforma ima ~45 GB/s, ali jedno jezgro može imati samo ograničen broj istovr
 
 ## 9. Zaključak
 
-Početna verzija ne čeka na memoriju: ograničava je lanac zavisnih sabiranja (2 takta po elementu) i to što je sav posao skalaran. Udaljenost sa AVX2 + FMA i četiri akumulatora uklanja oba uzroka: 8× manje instrukcija po elementu, 2,4× brža pretraga na SIFT1M, 6× kad su podaci u kešu, uz identične rezultate. Nakon toga VTune pokazuje da je usko grlo memorija (DRAM Bound 46 %): jedno jezgro ne može povući više od ~13,6 GB/s. Dalje ubrzanje zato ne dolazi od bržeg računanja, nego od manje bajtova po upitu ili od više jezgara.
+Početna verzija ne čeka na memoriju: ograničava je lanac zavisnih sabiranja (2 takta po elementu) i to što je sav posao skalaran. Udaljenost sa AVX2 + FMA i četiri akumulatora uklanja oba uzroka: 8× manje instrukcija po elementu, 2,4× brža pretraga na SIFT1M, 6× kad su podaci u kešu, uz identične rezultate. Nakon toga je usko grlo memorija: jedno jezgro ne može povući više od ~13,6 GB/s, dok ista funkcija iz keša čita 35 GB/s, a VTune pokazuje rast Memory Bound sa 5,5 % na 41 %. Dalje ubrzanje zato ne dolazi od bržeg računanja, nego od manje bajtova po upitu ili od više jezgara.
 
 **Mogući sljedeći koraci:**
 - **OpenMP:** više jezgara, više istovremenih zahtjeva prema memoriji.
@@ -203,4 +203,4 @@ powershell -ExecutionPolicy Bypass -File scripts/vtune/collect.ps1 -Distances sc
 python scripts/vtune/tabela.py                                        # tabele iz CSV-ova
 ```
 
-Detaljno uputstvo: `implementacija/README.md`, sekcija 12. Sirovi CSV izvještaji: `rezultati/<varijanta>/`; vremena: `rezultati/vremena-sift1m.txt`, `rezultati/vremena-sift10k-u-kesu.txt`; asembler optimizovanih funkcija: `rezultati/asembler-optimizovane.txt`.
+Detaljno uputstvo: `implementacija/README.md`, sekcija 12. Sirovi CSV izvještaji: `rezultati/<varijanta>/` (finalno snimanje) i `rezultati/scalar-pocetno/` (prvo snimanje); vremena: `rezultati/vremena-sift1m.txt`, `rezultati/vremena-sift10k-u-kesu.txt`; asembler optimizovanih funkcija: `rezultati/asembler-optimizovane.txt`.

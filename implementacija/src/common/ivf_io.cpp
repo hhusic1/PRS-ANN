@@ -111,4 +111,20 @@ namespace ann
     {
         return lists.nlist() == nlist && lists.d() == d && lists.n == n;
     }
+
+    bool ivf_lists_match_base(const IvfLists& lists, const FloatMatrix& base)
+    {
+        if (lists.d() != base.d || lists.n != base.n || lists.list_ids.size() != lists.n)
+            return false;
+        const std::size_t d = base.d;
+        for (std::size_t p = 0; p < lists.n; ++p)
+        {
+            const std::int32_t id = lists.list_ids[p];
+            if (id < 0 || static_cast<std::size_t>(id) >= base.n ||
+                std::memcmp(lists.list_data.data() + p * d, base.row(static_cast<std::size_t>(id)),
+                            d * sizeof(float)) != 0)
+                return false;
+        }
+        return true;
+    }
 }

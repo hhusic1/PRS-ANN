@@ -250,6 +250,9 @@ namespace
         expect(!ann::ivf_lists_match(b, 11, 4, 600) && !ann::ivf_lists_match(b, 10, 8, 600) &&
                    !ann::ivf_lists_match(b, 10, 4, 601),
                "indeks za drugi nlist, d ili n se prepoznaje");
+        const ann::FloatMatrix other = random_matrix(600, 4, 99); // isti n i d, drugi vektori
+        expect(ann::ivf_lists_match_base(b, base), "indeks odgovara svojoj bazi (ID-evi i vektori)");
+        expect(!ann::ivf_lists_match_base(b, other), "indeks za drugi skup istih dimenzija se prepoznaje");
 
         auto load_throws = [&]()
         {
@@ -315,7 +318,13 @@ namespace
         const bool avx = ann::cpu_has_avx2_fma();
         if (!avx)
             std::puts("  (procesor nema AVX2/FMA: AVX2 varijante se preskacu)");
-        for (const char* name : { "scalar4", "avx2", "avx2x4" })
+        // AVX2 varijante postoje samo na x86 (na Apple M / ARM nisu u registru).
+        std::vector<const char*> names = { "scalar4" };
+#if defined(__x86_64__) || defined(__i386__)
+        names.push_back("avx2");
+        names.push_back("avx2x4");
+#endif
+        for (const char* name : names)
         {
             const ann::DistanceVariant* v = ann::find_distance(name);
             expect(v != nullptr, (std::string(name) + " postoji u registru").c_str());
