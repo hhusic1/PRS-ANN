@@ -81,7 +81,9 @@ foreach ($dist in $Distances) {
         # Izvjestaji se prvo pisu pored rezultata (kratka putanja), pa kopiraju u docs.
         $summary = @("-report", "summary", "-result-dir", $result, "-format", "csv", "-csv-delimiter", "comma",
                      "-report-output", (Join-Path $ResultRoot "$dist-$analysis-summary.csv"))
-        $functions = @("-report", "hotspots", "-result-dir", $result, "-group-by", "function", "-format", "csv",
+        # -inline-mode off: kod ubacenih (inline) funkcija, npr. _mm256_fmadd_ps, pripisuje se
+        # funkciji u koju je ubacen; inace bi l2_avx2_* nosio samo dio svog vremena.
+        $functions = @("-report", "hotspots", "-result-dir", $result, "-group-by", "function", "-inline-mode", "off", "-format", "csv",
                        "-csv-delimiter", "comma", "-report-output", (Join-Path $ResultRoot "$dist-$analysis-functions.csv"))
 
         Write-Host "=== $dist / $analysis (logicko jezgro $Cpu, maska 0x$mask) ==="

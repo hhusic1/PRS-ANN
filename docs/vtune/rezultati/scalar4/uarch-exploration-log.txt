@@ -1,0 +1,636 @@
+﻿vtune: Collection started. To stop the collection, either press CTRL-C or enter from another console window: vtune -r C:\Users\User\AppData\Local\prs-vtune\scalar4-uarch-exploration -command stop.
+Skup:      sift, base = 1000000, upita = 1000, d = 128 (Release)
+Indeks:    ucitan iz data/sift\sift_ivf_nlist256_seed20261107.bin
+Pretraga:  nlist = 256, nprobe = 32, k = 10, udaljenost = scalar4, 3 ponavljanja
+
+  medijan / minimum:        20.7291 s / 13.1891 s
+  QPS:                      48.2
+  skenirano po upitu:       130769 vektora (13.08 % baze)
+  ns po udaljenosti:        158.21 (ukljucujuci udaljenosti do centroida)
+  propusnost skeniranja:    3.23 GB/s
+  Recall@10:                0.9975
+  identicno skalarnoj:      nije provjereno (provjera = 0)
+
+CSV: scalar4,sift,256,32,1000,3,20.729099,13.189139,48.2,130769,158.208,3.230,0.9975,1000
+vtune: Collection stopped.
+vtune: Using result path `C:\Users\User\AppData\Local\prs-vtune\scalar4-uarch-exploration'
+System.Management.Automation.RemoteException
+vtune: Executing actions  0 %                                                  
+vtune: Warning: The result contains a lot of raw data. Finalization may take a long time to complete.
+System.Management.Automation.RemoteException
+vtune: Executing actions  0 % Finalizing results                               
+vtune: Executing actions  0 % Finalizing the result                            
+vtune: Executing actions  0 % Clearing the database                            
+vtune: Executing actions  7 % Clearing the database                            
+vtune: Executing actions  7 % Loading raw data to the database                 
+vtune: Executing actions  7 % Loading 'systemcollector-46536-DESKTOP-3C81MFD.sc
+vtune: Executing actions 12 % Loading 'systemcollector-46536-DESKTOP-3C81MFD.sc
+vtune: Executing actions 12 % Loading 'sep5384.20261115T194222.540137.tb7' file
+vtune: Executing actions 12 % Loading 'sep5384.20261115T194222.540137.tb7' file
+vtune: Executing actions 12 % Loading 'sep5384.20261115T194222.540137.tb7' file
+vtune: Executing actions 12 % Loading 'sep5384.20261115T194222.540137.tb7' file
+vtune: Executing actions 12 % Loading 'sep5384.20261115T194222.540137.tb7' file
+vtune: Executing actions 12 % Loading 'sep5384.20261115T194222.540137.tb7' file
+vtune: Executing actions 12 % Loading 'sep5384.20261115T194222.540137.tb7' file
+vtune: Executing actions 12 % Loading 'sep5384.20261115T194222.540137.tb7' file
+vtune: Executing actions 12 % Loading 'sep5384.20261115T194222.540137.tb7' file
+vtune: Executing actions 12 % Loading 'sep5384.20261115T194222.540137.tb7' file
+vtune: Executing actions 12 % Loading 'sep5384.20261115T194222.540137.tb7' file
+vtune: Executing actions 12 % Loading 'sep5384.20261115T194222.540137.tb7' file
+vtune: Executing actions 12 % Loading 'sep5384.20261115T194222.540137.tb7' file
+vtune: Executing actions 12 % Loading 'sep5384.20261115T194222.540137.tb7' file
+vtune: Executing actions 12 % Loading 'sep5384.20261115T194222.540137.tb7' file
+vtune: Executing actions 12 % Loading 'sep5384.20261115T194222.540137.tb7' file
+vtune: Executing actions 12 % Loading 'sep5384.20261115T194222.540137.tb7' file
+vtune: Executing actions 12 % Loading 'sep5384.20261115T194222.540137.tb7' file
+vtune: Executing actions 12 % Loading 'sep5384.20261115T194222.540137.tb7' file
+vtune: Executing actions 12 % Loading 'sep5384.20261115T194222.540137.tb7' file
+vtune: Executing actions 12 % Loading 'sep5384.20261115T194222.540137.tb7' file
+vtune: Executing actions 12 % Loading 'sep5384.20261115T194222.540137.tb7' file
+vtune: Executing actions 12 % Loading 'sep5384.20261115T194222.540137.tb7' file
+vtune: Executing actions 12 % Loading 'sep5384.20261115T194222.540137.tb7' file
+vtune: Executing actions 12 % Loading 'sep5384.20261115T194222.540137.tb7' file
+vtune: Executing actions 12 % Loading 'sep5384.20261115T194222.540137.tb7' file
+vtune: Executing actions 12 % Loading 'sep5384.20261115T194222.540137.tb7' file
+vtune: Executing actions 12 % Loading 'sep5384.20261115T194222.540137.tb7' file
+vtune: Executing actions 12 % Loading 'sep5384.20261115T194222.540137.tb7' file
+vtune: Executing actions 12 % Loading 'sep5384.20261115T194222.540137.tb7' file
+vtune: Executing actions 12 % Loading 'sep5384.20261115T194222.540137.tb7' file
+vtune: Executing actions 12 % Loading 'sep5384.20261115T194222.540137.tb7' file
+vtune: Executing actions 12 % Loading 'sep5384.20261115T194222.540137.tb7' file
+vtune: Executing actions 12 % Loading 'sep5384.20261115T194222.540137.tb7' file
+vtune: Executing actions 12 % Loading 'sep5384.20261115T194222.540137.tb7' file
+vtune: Executing actions 12 % Loading 'sep5384.20261115T194222.540137.tb7' file
+vtune: Executing actions 12 % Loading 'sep5384.20261115T194222.540137.tb7' file
+vtune: Executing actions 12 % Loading 'sep5384.20261115T194222.540137.tb7' file
+vtune: Executing actions 12 % Loading 'sep5384.20261115T194222.540137.tb7' file
+vtune: Executing actions 12 % Loading 'sep5384.20261115T194222.540137.tb7' file
+vtune: Executing actions 12 % Loading 'sep5384.20261115T194222.540137.tb7' file
+vtune: Executing actions 12 % Loading 'sep5384.20261115T194222.540137.tb7' file
+vtune: Executing actions 12 % Loading 'sep5384.20261115T194222.540137.tb7' file
+vtune: Executing actions 12 % Loading 'sep5384.20261115T194222.540137.tb7' file
+vtune: Executing actions 12 % Loading 'sep5384.20261115T194222.540137.tb7' file
+vtune: Executing actions 12 % Loading 'sep5384.20261115T194222.540137.tb7' file
+vtune: Executing actions 12 % Loading 'sep5384.20261115T194222.540137.tb7' file
+vtune: Executing actions 12 % Loading 'sep5384.20261115T194222.540137.tb7' file
+vtune: Executing actions 12 % Loading 'sep5384.20261115T194222.540137.tb7' file
+vtune: Executing actions 12 % Loading 'sep5384.20261115T194222.540137.tb7' file
+vtune: Executing actions 12 % Loading 'sep5384.20261115T194222.540137.tb7' file
+vtune: Executing actions 12 % Loading 'sep5384.20261115T194222.540137.tb7' file
+vtune: Executing actions 12 % Loading 'sep5384.20261115T194222.540137.tb7' file
+vtune: Executing actions 12 % Loading 'sep5384.20261115T194222.540137.tb7' file
+vtune: Executing actions 12 % Loading 'sep5384.20261115T194222.540137.tb7' file
+vtune: Executing actions 12 % Loading 'sep5384.20261115T194222.540137.tb7' file
+vtune: Executing actions 12 % Loading 'sep5384.20261115T194222.540137.tb7' file
+vtune: Executing actions 12 % Loading 'sep5384.20261115T194222.540137.tb7' file
+vtune: Executing actions 12 % Loading 'sep5384.20261115T194222.540137.tb7' file
+vtune: Executing actions 12 % Loading 'sep5384.20261115T194222.540137.tb7' file
+vtune: Executing actions 12 % Loading 'sep5384.20261115T194222.540137.tb7' file
+vtune: Executing actions 12 % Loading 'sep5384.20261115T194222.540137.tb7' file
+vtune: Executing actions 12 % Loading 'sep5384.20261115T194222.540137.tb7' file
+vtune: Executing actions 12 % Loading 'sep5384.20261115T194222.540137.tb7' file
+vtune: Executing actions 12 % Loading 'sep5384.20261115T194222.540137.tb7' file
+vtune: Executing actions 12 % Loading 'sep5384.20261115T194222.540137.tb7' file
+vtune: Executing actions 12 % Loading 'sep5384.20261115T194222.540137.tb7' file
+vtune: Executing actions 12 % Loading 'sep5384.20261115T194222.540137.tb7' file
+vtune: Executing actions 12 % Loading 'sep5384.20261115T194222.540137.tb7' file
+vtune: Executing actions 12 % Loading 'sep5384.20261115T194222.540137.tb7' file
+vtune: Executing actions 12 % Loading 'sep5384.20261115T194222.540137.tb7' file
+vtune: Executing actions 12 % Loading 'sep5384.20261115T194222.540137.tb7' file
+vtune: Executing actions 12 % Loading 'sep5384.20261115T194222.540137.tb7' file
+vtune: Executing actions 12 % Loading 'sep5384.20261115T194222.540137.tb7' file
+vtune: Executing actions 12 % Loading 'sep5384.20261115T194222.540137.tb7' file
+vtune: Executing actions 12 % Loading 'sep5384.20261115T194222.540137.tb7' file
+vtune: Executing actions 12 % Loading 'sep5384.20261115T194222.540137.tb7' file
+vtune: Executing actions 12 % Loading 'sep5384.20261115T194222.540137.tb7' file
+vtune: Executing actions 12 % Loading 'sep5384.20261115T194222.540137.tb7' file
+vtune: Executing actions 12 % Loading 'sep5384.20261115T194222.540137.tb7' file
+vtune: Executing actions 12 % Loading 'sep5384.20261115T194222.540137.tb7' file
+vtune: Executing actions 12 % Loading 'sep5384.20261115T194222.540137.tb7' file
+vtune: Executing actions 12 % Loading 'sep5384.20261115T194222.540137.tb7' file
+vtune: Executing actions 12 % Loading 'sep5384.20261115T194222.540137.tb7' file
+vtune: Executing actions 12 % Loading 'sep5384.20261115T194222.540137.tb7' file
+vtune: Executing actions 12 % Loading 'sep5384.20261115T194222.540137.tb7' file
+vtune: Executing actions 12 % Loading 'sep5384.20261115T194222.540137.tb7' file
+vtune: Executing actions 12 % Loading 'sep5384.20261115T194222.540137.tb7' file
+vtune: Executing actions 12 % Loading 'sep5384.20261115T194222.540137.tb7' file
+vtune: Executing actions 12 % Loading 'sep5384.20261115T194222.540137.tb7' file
+vtune: Executing actions 12 % Loading 'sep5384.20261115T194222.540137.tb7' file
+vtune: Executing actions 12 % Loading 'sep5384.20261115T194222.540137.tb7' file
+vtune: Executing actions 12 % Loading 'sep5384.20261115T194222.540137.tb7' file
+vtune: Executing actions 12 % Loading 'sep5384.20261115T194222.540137.tb7' file
+vtune: Executing actions 12 % Loading 'sep5384.20261115T194222.540137.tb7' file
+vtune: Executing actions 12 % Loading 'sep5384.20261115T194222.540137.tb7' file
+vtune: Executing actions 12 % Loading 'sep5384.20261115T194222.540137.tb7' file
+vtune: Executing actions 12 % Loading 'sep5384.20261115T194222.540137.tb7' file
+vtune: Executing actions 12 % Loading 'sep5384.20261115T194222.540137.tb7' file
+vtune: Executing actions 12 % Updating precomputed scalar metrics              
+vtune: Executing actions 14 % Updating precomputed scalar metrics              
+vtune: Executing actions 14 % Processing profile metrics and debug information 
+vtune: Executing actions 19 % Processing profile metrics and debug information 
+vtune: Executing actions 19 % Setting data model parameters                    
+vtune: Executing actions 19 % Resolving module symbols                         
+vtune: Executing actions 19 % Resolving information for `stornvme.sys'         
+vtune: Executing actions 19 % Resolving information for `ehstorclass.sys'      
+vtune: Executing actions 19 % Resolving information for `nvpcf.sys'            
+vtune: Executing actions 19 % Resolving information for `cldflt.sys'           
+vtune: Executing actions 19 % Resolving information for `gameflt.sys'          
+vtune: Executing actions 19 % Resolving information for `fvevol.sys'           
+vtune: Executing actions 19 % Resolving information for `wdf01000.sys'         
+vtune: Executing actions 19 % Resolving information for `cng.sys'              
+vtune: Warning: Cannot locate debugging information for file `c:\windows\system32\drivers\stornvme.sys'.
+vtune: Warning: Cannot locate debugging information for file `c:\windows\system32\drivers\nvpcf.sys'.
+vtune: Warning: Cannot locate debugging information for file `c:\windows\system32\driverstore\filerepository\gameflt.inf_amd64_c03f7ce96acee3d6\gameflt.sys'.
+System.Management.Automation.RemoteException
+vtune: Executing actions 19 % Resolving information for `hidusb.sys'           
+vtune: Executing actions 19 % Resolving information for `wdfilter.sys'         
+vtune: Executing actions 19 % Resolving information for `prs_ann.exe'          
+vtune: Warning: Cannot locate debugging information for file `c:\windows\system32\drivers\fvevol.sys'.
+vtune: Warning: Cannot locate debugging information for file `c:\windows\system32\drivers\wdf01000.sys'.
+System.Management.Automation.RemoteException
+vtune: Executing actions 19 % Resolving information for `hidclass.sys'         
+vtune: Warning: Cannot locate debugging information for file `c:\windows\system32\drivers\ehstorclass.sys'.
+System.Management.Automation.RemoteException
+vtune: Executing actions 19 % Resolving information for `bindflt.sys'          
+vtune: Executing actions 19 % Resolving information for `wldp.dll'             
+vtune: Warning: Cannot locate debugging information for file `c:\windows\system32\drivers\cldflt.sys'.
+vtune: Warning: Cannot locate debugging information for file `c:\windows\system32\drivers\cng.sys'.
+System.Management.Automation.RemoteException
+vtune: Executing actions 20 % Resolving information for `wldp.dll'             
+vtune: Executing actions 20 % Resolving information for `usbhub3.sys'          
+vtune: Executing actions 20 % Resolving information for `rt68cx21x64.sys'      
+vtune: Warning: Cannot locate debugging information for file `c:\windows\system32\drivers\hidusb.sys'.
+System.Management.Automation.RemoteException
+vtune: Executing actions 20 % Resolving information for `usbxhci.sys'          
+vtune: Executing actions 20 % Resolving information for `faceit_ac.sys'        
+vtune: Warning: Cannot locate debugging information for file `c:\windows\system32\drivers\wd\wdfilter.sys'.
+vtune: Warning: Cannot locate debugging information for file `c:\windows\system32\drivers\hidclass.sys'.
+System.Management.Automation.RemoteException
+vtune: Executing actions 20 % Resolving information for `fltmgr.sys'           
+vtune: Warning: Cannot locate debugging information for file `c:\windows\system32\drivers\bindflt.sys'.
+System.Management.Automation.RemoteException
+vtune: Executing actions 20 % Resolving information for `ntdll.dll'            
+vtune: Executing actions 20 % Resolving information for `volmgr.sys'           
+vtune: Warning: Cannot locate debugging information for file `c:\windows\system32\wldp.dll'.
+System.Management.Automation.RemoteException
+vtune: Executing actions 20 % Resolving information for `usbccgp.sys'          
+vtune: Warning: Cannot locate debugging information for file `c:\windows\system32\drivers\usbhub3.sys'.
+System.Management.Automation.RemoteException
+vtune: Executing actions 20 % Resolving information for `iorate.sys'           
+vtune: Warning: Cannot locate debugging information for file `c:\windows\system32\driverstore\filerepository\rt68cx21x64.inf_amd64_d337a2c0d97264a1\rt68cx21x64.sys'.
+System.Management.Automation.RemoteException
+vtune: Executing actions 20 % Resolving information for `intcaudiobus.sys'     
+vtune: Warning: Cannot locate debugging information for file `c:\windows\system32\drivers\usbxhci.sys'.
+System.Management.Automation.RemoteException
+vtune: Executing actions 20 % Resolving information for `ntfs.sys'             
+vtune: Warning: Cannot locate debugging information for file `c:\windows\system32\drivers\fltmgr.sys'.
+vtune: Warning: Cannot locate debugging information for file `c:\windows\system32\drivers\volmgr.sys'.
+System.Management.Automation.RemoteException
+vtune: Executing actions 20 % Resolving information for `ucrtbase.dll'         
+vtune: Warning: Cannot locate debugging information for file `c:\windows\system32\ntdll.dll'.
+vtune: Warning: Cannot locate debugging information for file `c:\windows\system32\drivers\usbccgp.sys'.
+System.Management.Automation.RemoteException
+vtune: Executing actions 20 % Resolving information for `win32kfull.sys'       
+vtune: Warning: Cannot locate debugging information for file `c:\windows\system32\drivers\iorate.sys'.
+System.Management.Automation.RemoteException
+vtune: Executing actions 20 % Resolving information for `mouclass.sys'         
+vtune: Executing actions 21 % Resolving information for `mouclass.sys'         
+vtune: Executing actions 21 % Resolving information for `intelppm.sys'         
+vtune: Warning: Cannot locate debugging information for file `c:\program files\faceit ac\faceit_ac.sys'.
+vtune: Warning: Cannot locate debugging information for file `c:\windows\system32\driverstore\filerepository\intcaudiobus.inf_amd64_510e92f7ef2b660a\intcaudiobus.sys'.
+System.Management.Automation.RemoteException
+vtune: Executing actions 21 % Resolving information for `intcoed.sys'          
+vtune: Warning: Cannot locate debugging information for file `c:\windows\system32\drivers\ntfs.sys'.
+System.Management.Automation.RemoteException
+vtune: Executing actions 21 % Resolving information for `vgk.sys'              
+vtune: Warning: Cannot locate debugging information for file `c:\windows\system32\ucrtbase.dll'.
+System.Management.Automation.RemoteException
+vtune: Executing actions 21 % Resolving information for `executioncontext.sys' 
+vtune: Warning: Cannot locate debugging information for file `c:\windows\system32\win32kfull.sys'.
+vtune: Warning: Cannot locate debugging information for file `c:\windows\system32\drivers\mouclass.sys'.
+System.Management.Automation.RemoteException
+vtune: Executing actions 21 % Resolving information for `fileinfo.sys'         
+vtune: Warning: Cannot locate debugging information for file `c:\windows\system32\drivers\intelppm.sys'.
+System.Management.Automation.RemoteException
+vtune: Executing actions 21 % Resolving information for `acpi.sys'             
+vtune: Warning: Cannot locate debugging information for file `c:\windows\system32\driverstore\filerepository\intcoed.inf_amd64_f1ee27a36959d31b\intcoed.sys'.
+System.Management.Automation.RemoteException
+vtune: Executing actions 21 % Resolving information for `wesp.sys'             
+vtune: Executing actions 21 % Resolving information for `hidparse.sys'         
+vtune: Warning: Cannot locate debugging information for file `c:\windows\system32\drivers\executioncontext.sys'.
+System.Management.Automation.RemoteException
+vtune: Executing actions 21 % Resolving information for `wof.sys'              
+vtune: Warning: Cannot locate debugging information for file `c:\windows\system32\drivers\fileinfo.sys'.
+System.Management.Automation.RemoteException
+vtune: Executing actions 21 % Resolving information for `classpnp.sys'         
+vtune: Warning: Cannot locate debugging information for file `c:\windows\system32\drivers\acpi.sys'.
+System.Management.Automation.RemoteException
+vtune: Executing actions 21 % Resolving information for `ci.dll'               
+vtune: Executing actions 21 % Resolving information for `igdkmdn64.sys'        
+vtune: Warning: Cannot locate debugging information for file `c:\windows\system32\drivers\hidparse.sys'.
+System.Management.Automation.RemoteException
+vtune: Executing actions 21 % Resolving information for `rtkvhd64.sys'         
+vtune: Warning: Cannot locate debugging information for file `c:\windows\system32\drivers\wesp.sys'.
+vtune: Warning: Cannot locate debugging information for file `c:\windows\system32\drivers\wof.sys'.
+vtune: Warning: Cannot locate debugging information for file `c:\windows\system32\drivers\classpnp.sys'.
+System.Management.Automation.RemoteException
+vtune: Executing actions 21 % Resolving information for dangling locations     
+vtune: Warning: Cannot locate debugging information for file `c:\windows\system32\ci.dll'.
+vtune: Warning: Cannot locate debugging information for file `c:\program files\riot vanguard\vgk.sys'.
+System.Management.Automation.RemoteException
+vtune: Executing actions 22 % Resolving information for dangling locations     
+vtune: Executing actions 22 % Resolving information for `mouhid.sys'           
+vtune: Executing actions 22 % Resolving information for `ntoskrnl.exe'         
+vtune: Executing actions 22 % Resolving information for `partmgr.sys'          
+vtune: Warning: Cannot locate debugging information for file `c:\windows\system32\drivers\rtkvhd64.sys'.
+System.Management.Automation.RemoteException
+vtune: Executing actions 22 % Resolving information for `wpprecorder.sys'      
+vtune: Executing actions 22 % Resolving information for `ucx01000.sys'         
+vtune: Warning: Cannot locate debugging information for file `c:\windows\system32\driverstore\filerepository\41_hp_adl-p_iigd_dch.inf_amd64_ac129e059a032af3\igdkmdn64.sys'.
+vtune: Warning: Cannot locate debugging information for file `c:\windows\system32\drivers\mouhid.sys'.
+System.Management.Automation.RemoteException
+vtune: Executing actions 22 % Resolving information for `luafv.sys'            
+vtune: Warning: Cannot locate debugging information for file `c:\windows\system32\drivers\partmgr.sys'.
+System.Management.Automation.RemoteException
+vtune: Executing actions 22 % Resolving information for `storport.sys'         
+vtune: Executing actions 22 % Resolving information for `kernelbase.dll'       
+vtune: Warning: Cannot locate debugging information for file `c:\windows\system32\ntoskrnl.exe'.
+vtune: Warning: Cannot locate debugging information for file `c:\windows\system32\drivers\wpprecorder.sys'.
+vtune: Warning: Cannot locate debugging information for file `c:\windows\system32\drivers\ucx01000.sys'.
+vtune: Warning: Cannot locate debugging information for file `c:\windows\system32\drivers\luafv.sys'.
+vtune: Warning: Cannot locate debugging information for file `c:\windows\system32\drivers\storport.sys'.
+vtune: Warning: Cannot locate debugging information for file `c:\windows\system32\kernelbase.dll'.
+System.Management.Automation.RemoteException
+vtune: Executing actions 23 % Resolving information for `kernelbase.dll'       
+vtune: Executing actions 23 % Resolving bottom user stack information          
+vtune: Executing actions 23 % Resolving thread name information                
+vtune: Executing actions 24 % Resolving thread name information                
+vtune: Executing actions 24 % Resolving call target names for dynamic code     
+vtune: Executing actions 25 % Resolving call target names for dynamic code     
+vtune: Executing actions 25 % Resolving interrupt name information             
+vtune: Executing actions 26 % Resolving interrupt name information             
+vtune: Executing actions 26 % Processing profile metrics and debug information 
+vtune: Executing actions 27 % Processing profile metrics and debug information 
+vtune: Executing actions 28 % Processing profile metrics and debug information 
+vtune: Executing actions 29 % Processing profile metrics and debug information 
+vtune: Executing actions 30 % Processing profile metrics and debug information 
+vtune: Executing actions 30 % Setting data model parameters                    
+vtune: Executing actions 30 % Precomputing frequently used data                
+vtune: Executing actions 30 % Precomputing frequently used data                
+vtune: Executing actions 31 % Precomputing frequently used data                
+vtune: Executing actions 32 % Precomputing frequently used data                
+vtune: Executing actions 33 % Precomputing frequently used data                
+vtune: Executing actions 34 % Precomputing frequently used data                
+vtune: Executing actions 35 % Precomputing frequently used data                
+vtune: Executing actions 36 % Precomputing frequently used data                
+vtune: Executing actions 36 % Updating precomputed scalar metrics              
+vtune: Executing actions 37 % Updating precomputed scalar metrics              
+vtune: Executing actions 37 % Discarding redundant overtime data               
+vtune: Executing actions 39 % Discarding redundant overtime data               
+vtune: Executing actions 39 % Saving the result                                
+vtune: Executing actions 41 % Saving the result                                
+vtune: Executing actions 42 % Saving the result                                
+vtune: Executing actions 49 % Saving the result                                
+vtune: Executing actions 50 % Saving the result                                
+vtune: Executing actions 50 % Generating a report                              
+vtune: Executing actions 50 % Setting data model parameters                    
+vtune: Executing actions 75 % Setting data model parameters                    
+Elapsed Time: 80.691s
+    Clockticks: 128,135,110,000
+        Performance-core (P-core): 128,060,470,000
+        Efficient-core (E-core): 74,640,000
+    Instructions Retired: 372,823,690,000
+        Performance-core (P-core): 372,798,810,000
+        Efficient-core (E-core): 24,880,000
+    CPI Rate: 0.344
+        Performance-core (P-core): 0.344
+        Efficient-core (E-core): 3.000
+    MUX Reliability: 0.997
+    Performance-core (P-core)
+        Retiring: 63.2% of Pipeline Slots
+            Light Operations: 62.6% of Pipeline Slots
+                FP Arithmetic: 55.2% of uOps
+                    FP x87: 0.0% of uOps
+                    FP Scalar: 55.2% of uOps
+                    FP Vector: 0.0% of uOps
+                        128-bit FP Vector: 0.0% of uOps
+                        256-bit FP Vector: 0.0% of uOps
+                Integer Operations: 0.0% of uOps
+                    128-bit Integer Vector Operations: 0.0% of uOps
+                    256-bit Vector Operations: 0.0% of uOps
+                Memory Operations: 24.2% of Pipeline Slots
+                Fused Instructions: 0.4% of Pipeline Slots
+                Non Fused Branches: 3.4% of Pipeline Slots
+                Other: 0.0% of Pipeline Slots
+                    Nop Instructions: 0.1% of Pipeline Slots
+                    Shuffles_256b: 0.0% of Pipeline Slots
+            Heavy Operations: 0.5% of Pipeline Slots
+                Few Uops Instructions: 0.5% of Pipeline Slots
+                Microcode Sequencer: 0.0% of Pipeline Slots
+                    Assists: 0.0% of Pipeline Slots
+                        Page Faults: 0.0% of Pipeline Slots
+                        FP Assists: 0.0% of Pipeline Slots
+                        AVX Assists: 0.0% of Pipeline Slots
+                    CISC: 0.0% of Pipeline Slots
+        Front-End Bound: 7.5% of Pipeline Slots
+            Front-End Latency: 4.9% of Pipeline Slots
+                ICache Misses: 0.6% of Clockticks
+                    Code L2 Hit: 0.0% of Clockticks
+                    Code L2 Miss: 0.8% of Clockticks
+                ITLB Misses: 0.9% of Clockticks
+                    Code STLB Hit: 0.6% of Clockticks
+                    Code STLB Miss: 0.3% of Clockticks
+                        Code STLB Miss 4K: 0.3% of Clockticks
+                        Code STLB Miss 2M: 0.0% of Clockticks
+                Branch Resteers: 0.5% of Clockticks
+                    Mispredicts Resteers: 0.3% of Clockticks
+                    Clears Resteers: 0.2% of Clockticks
+                    Unknown Branches: 0.0% of Clockticks
+                MS Switches: 0.0% of Clockticks
+                Length Changing Prefixes: 0.0% of Clockticks
+                DSB Switches: 0.9% of Clockticks
+            Front-End Bandwidth: 2.6% of Pipeline Slots
+                Front-End Bandwidth MITE: 1.1% of Pipeline Slots
+                    Decoder-0 Alone: 0.1% of Pipeline Slots
+                Front-End Bandwidth DSB: 4.4% of Pipeline Slots
+                Front-End Bandwidth LSD: 0.1% of Pipeline Slots
+                MS: 0.3% of Pipeline Slots
+                (Info) DSB Coverage: 95.5%
+                (Info) LSD Coverage: 1.6%
+                (Info) DSB Misses: 2.0% of Pipeline Slots
+        Bad Speculation: 0.8% of Pipeline Slots
+            Branch Mispredict: 0.5% of Pipeline Slots
+                Other Mispredicts: 0.1% of Pipeline Slots
+            Machine Clears: 0.3% of Pipeline Slots
+                Other Nukes: 0.3% of Pipeline Slots
+        Back-End Bound: 28.6% of Pipeline Slots
+         | A significant portion of pipeline slots are remaining empty. When
+         | operations take too long in the back-end, they introduce bubbles in
+         | the pipeline that ultimately cause fewer pipeline slots containing
+         | useful work to be retired per cycle than the machine is capable to
+         | support. This opportunity cost results in slower execution. Long-
+         | latency operations like divides and memory operations can cause this,
+         | as can too many operations being directed to a single execution port
+         | (for example, more multiply operations arriving in the back-end per
+         | cycle than the execution unit can support).
+         |
+            Memory Bound: 16.9% of Pipeline Slots
+                L1 Bound: 6.5% of Clockticks
+                    DTLB Overhead: 1.2% of Clockticks
+                        Load STLB Hit: 0.5% of Clockticks
+                        Load STLB Miss: 0.7% of Clockticks
+                            Load STLB Miss 4K: 0.7% of Clockticks
+                            Load STLB Miss 2M: 0.0% of Clockticks
+                            Load STLB Miss 1G: 0.0% of Clockticks
+                    Loads Blocked by Store Forwarding: 0.1% of Clockticks
+                    L1 Latency Dependency: 43.1% of Clockticks
+                    Lock Latency: 0.3% of Clockticks
+                    Split Loads: 0.0% of Clockticks
+                    FB Full: 0.4% of Clockticks
+                L2 Bound: 0.0% of Clockticks
+                    L2 Hit Latency: 17.3% of Clockticks
+                L3 Bound: 7.5% of Clockticks
+                    L3 Latency: 0.0% of Clockticks
+                    SQ Full: 3.0% of Clockticks
+                DRAM Bound: 10.1% of Clockticks
+                    Memory Bandwidth: 62.3% of Clockticks
+                    Memory Latency: 18.6% of Clockticks
+                Store Bound: 0.2% of Clockticks
+                    Store Latency: 1.2% of Clockticks
+                    Split Stores: 0.0%
+                    DTLB Store Overhead: 0.5% of Clockticks
+                        Store STLB Hit: 0.3% of Clockticks
+                        Store STLB Miss: 0.2% of Clockticks
+                            Store STLB Miss 4K: 0.0% of Clockticks
+                            Store STLB Miss 2M: 0.0% of Clockticks
+                            Store STLB Miss 1G: 0.0% of Clockticks
+            Core Bound: 11.7% of Pipeline Slots
+             | This metric represents how much Core non-memory issues were of a
+             | bottleneck. Shortage in hardware compute resources, or
+             | dependencies software's instructions are both categorized under
+             | Core Bound. Hence it may indicate the machine ran out of an OOO
+             | resources, certain execution units are overloaded or dependencies
+             | in program's data- or instruction- flow are limiting the
+             | performance (e.g. FP-chained long-latency arithmetic operations).
+             |
+                Divider: 0.0% of Clockticks
+                    FP Divider: 0.0% of Clockticks
+                    INT Divider: 0.0% of Clockticks
+                Serializing Operations: 1.7% of Clockticks
+                    Slow Pause: 0.0% of Clockticks
+                    C01 Wait: 0.0% of Clockticks
+                    C02 Wait: 0.0% of Clockticks
+                    Memory Fence: 0.0% of Clockticks
+                Port Utilization: 17.7% of Clockticks
+                 | Issue: A significant fraction of cycles was stalled due to
+                 | Core non-divider-related issues.
+                 | 
+                 | Tips: Use vectorization to reduce pressure on the execution
+                 | ports as multiple elements are calculated with same uOp.
+                 |
+                    Cycles of 0 Ports Utilized: 0.0% of Clockticks
+                        Mixing Vectors: 0.0% of Clockticks
+                    Cycles of 1 Port Utilized: 4.7% of Clockticks
+                    Cycles of 2 Ports Utilized: 8.2% of Clockticks
+                     | This metric represents cycles fraction CPU executed total
+                     | of 2 uops per cycle on all execution ports (Logical
+                     | Processor cycles since ICL, Physical Core cycles
+                     | otherwise). Tip: Loop Vectorization - most compilers
+                     | feature auto-Vectorization options today- reduces
+                     | pressure on the execution ports as multiple elements are
+                     | calculated with same uop.
+                     |
+                    Cycles of 3+ Ports Utilized: 56.9% of Clockticks
+                     | This metric represents Core cycles fraction CPU executed
+                     | total of 3 or more uops per cycle on all execution ports
+                     | (Logical Processor cycles since ICL, Physical Core cycles
+                     | otherwise).
+                     |
+                        ALU Operation Utilization: 60.4% of Clockticks
+                         | CPU dispatched uops on execution ports for ALU
+                         | operations during significant fraction of Core
+                         | cycles.
+                         |
+                            Port 0: 66.8% of Clockticks
+                             | This metric represents Core cycles fraction CPU
+                             | dispatched uops on execution port 0 (SNB+: ALU;
+                             | HSW+:ALU and 2nd branch)
+                             |
+                            Port 1: 84.7% of Clockticks
+                             | This metric represents Core cycles fraction CPU
+                             | dispatched uops on execution port 1 (ALU)
+                             |
+                            Port 6: 38.5% of Clockticks
+                             | This metric represents Core cycles fraction CPU
+                             | dispatched uops on execution port 6 (Branches and
+                             | simple ALU)
+                             |
+                        Load Operation Utilization: 52.0% of Clockticks
+                        Store Operation Utilization: 1.4% of Clockticks
+                    Vector Capacity Usage (FPU): 6.2%
+    Efficient-core (E-core)
+        Retiring: 21.4% of Pipeline Slots
+            Arith Ops: 16.3% of Pipeline Slots
+                Non Divider: 16.3% of Pipeline Slots
+                FP Divide: 0.0% of Pipeline Slots
+                Int Divider: 0.0% of Pipeline Slots
+            Mem Ops: 5.1% of Pipeline Slots
+                Loads: 4.3% of Pipeline Slots
+                Stores: 1.7% of Pipeline Slots
+        Front-End Bound: 34.3% of Pipeline Slots
+         | Issue: A significant portion of Pipeline Slots is remaining empty due
+         | to issues in the Front-End.
+         | 
+         | Tips:  Make sure the code working size is not too large, the code
+         | layout does not require too many memory accesses per cycle to get
+         | enough instructions for filling four pipeline slots, or check for
+         | microcode assists.
+         |
+            IFetch Latency: 30.0% of Pipeline Slots
+             | This metric represents a fraction of slots that were not
+             | delivered by the frontend due to frontend latency restrictions
+             | due to instruction cache misses, ITLB misses, branch detection,
+             | and resteer limitations.
+             |
+                ICache Misses: 25.7% of Pipeline Slots
+                 | Issue: A significant portion of instruction fetches is
+                 | missing in the instruction cache.
+                 | 
+                 | Tips:
+                 | 
+                 | 1. Use Profile-Guided Optimization (PGO) to reduce the size
+                 | of hot code regions.
+                 | 
+                 | 2. Consider compiler options to reorder functions so that hot
+                 | functions are located together.
+                 | 
+                 | 3. If your application makes significant use of macros, try
+                 | to reduce this by either converting the relevant macros to
+                 | functions or using linker options to eliminate repeated code.
+                 | 
+                 | 4. Consider the Os/O1 optimization level or the following
+                 | subset of optimizations to decrease your code footprint:
+                 |     - use inlining only when it decreases the footprint
+                 |     - disable loop unrolling
+                 |     - disable intrinsic inlining
+                 | 
+                 | Optimization examples:
+                 | Instruction Cache Misses recipe from Intel VTune Profiler
+                 | Performance Analysis Cookbook
+                 |
+                ITLB Misses: 4.3% of Pipeline Slots
+                BACLEARS: 12.9% of Pipeline Slots
+                 | A significant number of CPU cycles lost due to the Branch
+                 | Target Buffer (BTB) prediction corrected by a later branch
+                 | predictor. Consider reducing the amount of taken branches.
+                 |
+                Branch Resteers: 0.0% of Pipeline Slots
+            IFetch Bandwidth: 4.3% of Pipeline Slots
+                Cisc: 2.1% of Pipeline Slots
+                Decode: 8.6% of Pipeline Slots
+                Pre-Decode Wrong: 2.1% of Pipeline Slots
+                Front-End Other: 2.1% of Pipeline Slots
+        Bad Speculation: 22.8% of Pipeline Slots
+         | A significant proportion of pipeline slots containing useful work are
+         | being cancelled. This can be caused by mispredicting branches or by
+         | machine clears. Note that this metric value may be highlighted due to
+         | Branch Resteers issue.
+         |
+            Branch Mispredict: 30.0% of Pipeline Slots
+             | Issue:: A significant proportion of branches are mispredicted,
+             | leading to excessive wasted work or Backend stalls due to the
+             | machine need to recover its state from a speculative path.
+             | 
+             | Tips:
+             | 
+             | 1. Identify heavily mispredicted branches and consider making
+             | your algorithm more predictable or reducing the number of
+             | branches. You can add more work to 'if' statements and move them
+             | higher in the code flow for earlier execution. If using 'switch'
+             | or 'case' statements, put the most commonly executed cases first.
+             | Avoid using virtual function pointers for heavily executed calls.
+             | 
+             | 2. Use Profile-Guided Optimization (PGO) in the compiler.
+             | 
+             | See the Intel 64 and IA-32 Architectures Optimization Reference
+             | Manual for general strategies to address branch misprediction
+             | issues.
+             |
+            Machine Clears: 0.0% of Pipeline Slots
+                Ucode_Assist: 0.0% of Pipeline Slots
+                Machine_Restart: 0.0% of Pipeline Slots
+        Back-End Bound: 21.4% of Pipeline Slots
+         | A significant portion of pipeline slots are remaining empty. When
+         | operations take too long in the back-end, they introduce bubbles in
+         | the pipeline that ultimately cause fewer pipeline slots containing
+         | useful work to be retired per cycle than the machine is capable to
+         | support. This opportunity cost results in slower execution. Long-
+         | latency operations like divides and memory operations can cause this,
+         | as can too many operations being directed to a single execution port
+         | (for example, more multiply operations arriving in the back-end per
+         | cycle than the execution unit can support).
+         |
+            Memory Subsystem Bound: 17.1% of Clockticks
+                L2 Bound: 4.3% of Clockticks
+                L2 Miss: 6.4% of Clockticks
+                    L3 Bound: 2.1% of Clockticks
+                    Memory Bound: 4.3% of Clockticks
+            Core Bound: 4.3% of Pipeline Slots
+                Serializing Operations: 4.3% of Pipeline Slots
+                    Pause: 0.1% of Pipeline Slots
+                    TPause: 0.0% of Pipeline Slots
+                L1 Bound: 0.0% of Clockticks
+                RB Bound: 0.0% of Pipeline Slots
+                Store Bound: 0.0% of Pipeline Slots
+                Execution Bound: 0.0% of Pipeline Slots
+                Allocation Bound: 0.0% of Pipeline Slots
+                    Allocation Restriction: 0.0% of Pipeline Slots
+        Info Metrics
+            Stores Bound: 0.000
+            Load Bound: 0.279
+    Average CPU Frequency: 2.873 GHz
+    Total Thread Count: 6
+    Paused Time: 0s
+Effective Physical Core Utilization: 3.2% (0.388 out of 12)
+ | The metric value is low, which may signal a poor physical CPU cores
+ | utilization caused by:
+ |     - load imbalance
+ |     - threading runtime overhead
+ |     - contended synchronization
+ |     - thread/process underutilization
+ |     - incorrect affinity that utilizes logical cores instead of physical
+ |       cores
+ | Explore sub-metrics to estimate the efficiency of MPI and OpenMP parallelism
+ | or run the Locks and Waits analysis to identify parallel bottlenecks for
+ | other parallel runtimes.
+ |
+    Effective Logical Core Utilization: 3.5% (0.553 out of 16)
+     | The metric value is low, which may signal a poor logical CPU cores
+     | utilization. Consider improving physical core utilization as the first
+     | step and then look at opportunities to utilize logical cores, which in
+     | some cases can improve processor throughput and overall performance of
+     | multi-threaded applications.
+vtune: Executing actions 75 % Generating a report                              
+vtune: Executing actions 100 % Generating a report                             
+vtune: Executing actions 100 % done                                            
+     |
+Collection and Platform Info
+    Application Command Line: cmd.exe "/c" "start" "/b" "/wait" "/affinity" "4" "<repo>\implementacija\build\vtune\prs_ann.exe" "ivf-bench" "data/sift" "256" "32" "1000" "3" "scalar4" "0" 
+    Operating System: Microsoft Windows 11
+    Computer Name: DESKTOP-3C81MFD
+    Result Size: 457.5 MB 
+    Collection start time: 18:42:24 15/11/2026 UTC
+    Collection stop time: 18:43:44 15/11/2026 UTC
+    Collector Type: Event-based sampling driver
+    CPU
+        Name: Intel(R) microarchitecture code named Alderlake-P
+        Frequency: 3.110 GHz
+        Logical CPU Count: 16
+        Cache Allocation Technology
+            Level 2 capability: not detected
+            Level 3 capability: not detected
+
+If you want to skip descriptions of detected performance issues in the report,
+enter: vtune -report summary -report-knob show-issues=false -r <my_result_dir>.
+Alternatively, you may view the report in the csv format: vtune -report
+<report_name> -format=csv.

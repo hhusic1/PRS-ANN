@@ -1,0 +1,343 @@
+0000000000000000 <ann::l2_scalar4(float const*, float const*, unsigned long long)>:
+   0:	sub    rsp,0x28
+   4:	vmovups XMMWORD PTR [rsp],xmm6
+   9:	vmovups XMMWORD PTR [rsp+0x10],xmm7
+   f:	cmp    r8,0x3
+  13:	jbe    f0 <ann::l2_scalar4(float const*, float const*, unsigned long long)+0xf0>
+  19:	lea    r10,[r8-0x4]
+  1d:	vxorps xmm6,xmm6,xmm6
+  21:	mov    rax,rcx
+  24:	mov    r9,rdx
+  27:	vmovaps xmm5,xmm6
+  2b:	vmovaps xmm7,xmm6
+  2f:	vmovaps xmm0,xmm6
+  33:	mov    r11,r10
+  36:	shr    r11,0x2
+  3a:	shl    r11,0x4
+  3e:	lea    r11,[rcx+r11*1+0x10]
+  43:	nop    DWORD PTR [rax+rax*1+0x0]
+  48:	vmovss xmm4,DWORD PTR [rax]
+  4c:	vmovss xmm3,DWORD PTR [rax+0x4]
+  51:	add    rax,0x10
+  55:	add    r9,0x10
+  59:	vsubss xmm4,xmm4,DWORD PTR [r9-0x10]
+  5f:	vsubss xmm3,xmm3,DWORD PTR [r9-0xc]
+  65:	vmovss xmm2,DWORD PTR [rax-0x8]
+  6a:	vmovss xmm1,DWORD PTR [rax-0x4]
+  6f:	vsubss xmm2,xmm2,DWORD PTR [r9-0x8]
+  75:	vsubss xmm1,xmm1,DWORD PTR [r9-0x4]
+  7b:	cmp    r11,rax
+  7e:	vmulss xmm4,xmm4,xmm4
+  82:	vmulss xmm3,xmm3,xmm3
+  86:	vmulss xmm2,xmm2,xmm2
+  8a:	vmulss xmm1,xmm1,xmm1
+  8e:	vaddss xmm0,xmm0,xmm4
+  92:	vaddss xmm7,xmm7,xmm3
+  96:	vaddss xmm5,xmm5,xmm2
+  9a:	vaddss xmm6,xmm6,xmm1
+  9e:	jne    48 <ann::l2_scalar4(float const*, float const*, unsigned long long)+0x48>
+  a0:	vaddss xmm0,xmm0,xmm7
+  a4:	vaddss xmm5,xmm5,xmm6
+  a8:	and    r10,0xfffffffffffffffc
+  ac:	lea    rax,[r10+0x4]
+  b0:	vaddss xmm5,xmm0,xmm5
+  b4:	cmp    rax,r8
+  b7:	jae    db <ann::l2_scalar4(float const*, float const*, unsigned long long)+0xdb>
+  b9:	nop    DWORD PTR [rax+0x0]
+  c0:	vmovss xmm0,DWORD PTR [rcx+rax*4]
+  c5:	vsubss xmm0,xmm0,DWORD PTR [rdx+rax*4]
+  ca:	add    rax,0x1
+  ce:	cmp    r8,rax
+  d1:	vmulss xmm0,xmm0,xmm0
+  d5:	vaddss xmm5,xmm5,xmm0
+  d9:	jne    c0 <ann::l2_scalar4(float const*, float const*, unsigned long long)+0xc0>
+  db:	vmovups xmm6,XMMWORD PTR [rsp]
+  e0:	vmovups xmm7,XMMWORD PTR [rsp+0x10]
+  e6:	vmovaps xmm0,xmm5
+  ea:	add    rsp,0x28
+  ee:	ret
+  ef:	nop
+  f0:	vxorps xmm5,xmm5,xmm5
+  f4:	xor    eax,eax
+  f6:	jmp    b4 <ann::l2_scalar4(float const*, float const*, unsigned long long)+0xb4>
+  f8:	nop
+  f9:	nop
+  fa:	nop
+  fb:	nop
+  fc:	nop
+  fd:	nop
+  fe:	nop
+  ff:	nop
+0000000000000000 <ann::l2_avx2_fma1(float const*, float const*, unsigned long long)>:
+   0:	push   rsi
+   1:	push   rbx
+   2:	cmp    r8,0x7
+   6:	mov    r9,rdx
+   9:	jbe    1d0 <ann::l2_avx2_fma1(float const*, float const*, unsigned long long)+0x1d0>
+   f:	mov    eax,0x8
+  14:	vxorps xmm1,xmm1,xmm1
+  18:	nop    DWORD PTR [rax+rax*1+0x0]
+  20:	vmovups ymm4,YMMWORD PTR [rcx+rax*4-0x20]
+  26:	vsubps ymm0,ymm4,YMMWORD PTR [r9+rax*4-0x20]
+  2d:	mov    rdx,rax
+  30:	lea    rax,[rax+0x8]
+  34:	cmp    r8,rax
+  37:	vfmadd231ps ymm1,ymm0,ymm0
+  3c:	jae    20 <ann::l2_avx2_fma1(float const*, float const*, unsigned long long)+0x20>
+  3e:	vextractf128 xmm3,ymm1,0x1
+  44:	cmp    rdx,r8
+  47:	vaddps xmm3,xmm3,xmm1
+  4b:	vmovhlps xmm0,xmm3,xmm3
+  4f:	vaddps xmm3,xmm3,xmm0
+  53:	vmovshdup xmm0,xmm3
+  57:	vaddss xmm3,xmm3,xmm0
+  5b:	jae    1c0 <ann::l2_avx2_fma1(float const*, float const*, unsigned long long)+0x1c0>
+  61:	mov    r10,r8
+  64:	sub    r10,rdx
+  67:	lea    rax,[r10-0x1]
+  6b:	cmp    rax,0x6
+  6f:	jbe    1e8 <ann::l2_avx2_fma1(float const*, float const*, unsigned long long)+0x1e8>
+  75:	mov    rbx,r10
+  78:	lea    r11,[rdx*4+0x0]
+  80:	xor    eax,eax
+  82:	shr    rbx,0x3
+  86:	lea    rsi,[rcx+r11*1]
+  8a:	add    r11,r9
+  8d:	shl    rbx,0x5
+  91:	nop    DWORD PTR [rax+0x0]
+  98:	vmovups ymm5,YMMWORD PTR [rsi+rax*1]
+  9d:	vsubps ymm1,ymm5,YMMWORD PTR [r11+rax*1]
+  a3:	add    rax,0x20
+  a7:	cmp    rbx,rax
+  aa:	vmulps ymm1,ymm1,ymm1
+  ae:	vaddss xmm0,xmm3,xmm1
+  b2:	vshufps xmm3,xmm1,xmm1,0x55
+  b7:	vshufps xmm2,xmm1,xmm1,0xff
+  bc:	vaddss xmm0,xmm0,xmm3
+  c0:	vunpckhps xmm3,xmm1,xmm1
+  c4:	vextractf128 xmm1,ymm1,0x1
+  ca:	vaddss xmm0,xmm0,xmm3
+  ce:	vaddss xmm0,xmm0,xmm2
+  d2:	vshufps xmm2,xmm1,xmm1,0x55
+  d7:	vaddss xmm0,xmm0,xmm1
+  db:	vaddss xmm0,xmm0,xmm2
+  df:	vunpckhps xmm2,xmm1,xmm1
+  e3:	vshufps xmm1,xmm1,xmm1,0xff
+  e8:	vaddss xmm0,xmm0,xmm2
+  ec:	vaddss xmm3,xmm0,xmm1
+  f0:	jne    98 <ann::l2_avx2_fma1(float const*, float const*, unsigned long long)+0x98>
+  f2:	mov    rax,r10
+  f5:	and    rax,0xfffffffffffffff8
+  f9:	test   r10b,0x7
+  fd:	lea    r11,[rax+rdx*1]
+ 101:	je     1c0 <ann::l2_avx2_fma1(float const*, float const*, unsigned long long)+0x1c0>
+ 107:	vzeroupper
+ 10a:	sub    r10,rax
+ 10d:	lea    rbx,[r10-0x1]
+ 111:	cmp    rbx,0x2
+ 115:	jbe    157 <ann::l2_avx2_fma1(float const*, float const*, unsigned long long)+0x157>
+ 117:	add    rax,rdx
+ 11a:	vmovups xmm5,XMMWORD PTR [rcx+rax*4]
+ 11f:	vsubps xmm0,xmm5,XMMWORD PTR [r9+rax*4]
+ 125:	mov    rax,r10
+ 128:	and    rax,0xfffffffffffffffc
+ 12c:	add    r11,rax
+ 12f:	and    r10d,0x3
+ 133:	vmulps xmm0,xmm0,xmm0
+ 137:	vaddss xmm1,xmm3,xmm0
+ 13b:	vshufps xmm2,xmm0,xmm0,0x55
+ 140:	vaddss xmm1,xmm1,xmm2
+ 144:	vunpckhps xmm2,xmm0,xmm0
+ 148:	vshufps xmm0,xmm0,xmm0,0xff
+ 14d:	vaddss xmm1,xmm1,xmm2
+ 151:	vaddss xmm3,xmm1,xmm0
+ 155:	je     1af <ann::l2_avx2_fma1(float const*, float const*, unsigned long long)+0x1af>
+ 157:	vmovss xmm0,DWORD PTR [rcx+r11*4]
+ 15d:	vsubss xmm0,xmm0,DWORD PTR [r9+r11*4]
+ 163:	lea    rdx,[r11+0x1]
+ 167:	cmp    rdx,r8
+ 16a:	lea    rax,[r11*4+0x0]
+ 172:	vmulss xmm0,xmm0,xmm0
+ 176:	vaddss xmm3,xmm3,xmm0
+ 17a:	jae    1af <ann::l2_avx2_fma1(float const*, float const*, unsigned long long)+0x1af>
+ 17c:	vmovss xmm0,DWORD PTR [rcx+rax*1+0x4]
+ 182:	vsubss xmm0,xmm0,DWORD PTR [r9+rax*1+0x4]
+ 189:	add    r11,0x2
+ 18d:	cmp    r11,r8
+ 190:	vmulss xmm0,xmm0,xmm0
+ 194:	vaddss xmm3,xmm3,xmm0
+ 198:	jae    1af <ann::l2_avx2_fma1(float const*, float const*, unsigned long long)+0x1af>
+ 19a:	vmovss xmm0,DWORD PTR [rcx+rax*1+0x8]
+ 1a0:	vsubss xmm0,xmm0,DWORD PTR [r9+rax*1+0x8]
+ 1a7:	vmulss xmm0,xmm0,xmm0
+ 1ab:	vaddss xmm3,xmm3,xmm0
+ 1af:	vmovaps xmm0,xmm3
+ 1b3:	pop    rbx
+ 1b4:	pop    rsi
+ 1b5:	ret
+ 1b6:	cs nop WORD PTR [rax+rax*1+0x0]
+ 1c0:	vzeroupper
+ 1c3:	vmovaps xmm0,xmm3
+ 1c7:	pop    rbx
+ 1c8:	pop    rsi
+ 1c9:	ret
+ 1ca:	nop    WORD PTR [rax+rax*1+0x0]
+ 1d0:	test   r8,r8
+ 1d3:	vxorps xmm3,xmm3,xmm3
+ 1d7:	je     1af <ann::l2_avx2_fma1(float const*, float const*, unsigned long long)+0x1af>
+ 1d9:	mov    r10,r8
+ 1dc:	xor    edx,edx
+ 1de:	xor    eax,eax
+ 1e0:	xor    r11d,r11d
+ 1e3:	jmp    10a <ann::l2_avx2_fma1(float const*, float const*, unsigned long long)+0x10a>
+ 1e8:	xor    eax,eax
+ 1ea:	mov    r11,rdx
+ 1ed:	vzeroupper
+ 1f0:	jmp    10a <ann::l2_avx2_fma1(float const*, float const*, unsigned long long)+0x10a>
+ 1f5:	data16 cs nop WORD PTR [rax+rax*1+0x0]
+0000000000000200 <ann::l2_avx2_fma4(float const*, float const*, unsigned long long)>:
+ 200:	push   rsi
+ 201:	push   rbx
+ 202:	cmp    r8,0x1f
+ 206:	mov    r9,rcx
+ 209:	mov    rcx,rdx
+ 20c:	jbe    430 <ann::l2_avx2_fma4(float const*, float const*, unsigned long long)+0x230>
+ 212:	vxorps xmm3,xmm3,xmm3
+ 216:	mov    eax,0x20
+ 21b:	vmovaps ymm2,ymm3
+ 21f:	vmovaps ymm0,ymm3
+ 223:	vmovaps ymm4,ymm3
+ 227:	nop    WORD PTR [rax+rax*1+0x0]
+ 230:	vmovups ymm5,YMMWORD PTR [r9+rax*4-0x80]
+ 237:	vsubps ymm1,ymm5,YMMWORD PTR [rcx+rax*4-0x80]
+ 23d:	mov    rdx,rax
+ 240:	vmovups ymm5,YMMWORD PTR [r9+rax*4-0x60]
+ 247:	vfmadd231ps ymm4,ymm1,ymm1
+ 24c:	vsubps ymm1,ymm5,YMMWORD PTR [rcx+rax*4-0x60]
+ 252:	vmovups ymm5,YMMWORD PTR [r9+rax*4-0x40]
+ 259:	vfmadd231ps ymm0,ymm1,ymm1
+ 25e:	vsubps ymm1,ymm5,YMMWORD PTR [rcx+rax*4-0x40]
+ 264:	vmovups ymm5,YMMWORD PTR [r9+rax*4-0x20]
+ 26b:	vfmadd231ps ymm2,ymm1,ymm1
+ 270:	vsubps ymm1,ymm5,YMMWORD PTR [rcx+rax*4-0x20]
+ 276:	lea    rax,[rax+0x20]
+ 27a:	cmp    r8,rax
+ 27d:	vfmadd231ps ymm3,ymm1,ymm1
+ 282:	jae    230 <ann::l2_avx2_fma4(float const*, float const*, unsigned long long)+0x30>
+ 284:	vaddps ymm0,ymm0,ymm4
+ 288:	vaddps ymm2,ymm2,ymm3
+ 28c:	lea    rax,[rdx+0x8]
+ 290:	vaddps ymm0,ymm0,ymm2
+ 294:	jmp    2b7 <ann::l2_avx2_fma4(float const*, float const*, unsigned long long)+0xb7>
+ 296:	cs nop WORD PTR [rax+rax*1+0x0]
+ 2a0:	vmovups ymm4,YMMWORD PTR [r9+rdx*4]
+ 2a6:	vsubps ymm1,ymm4,YMMWORD PTR [rcx+rdx*4]
+ 2ab:	mov    rdx,rax
+ 2ae:	add    rax,0x8
+ 2b2:	vfmadd231ps ymm0,ymm1,ymm1
+ 2b7:	cmp    r8,rax
+ 2ba:	jae    2a0 <ann::l2_avx2_fma4(float const*, float const*, unsigned long long)+0xa0>
+ 2bc:	vextractf128 xmm1,ymm0,0x1
+ 2c2:	cmp    rdx,r8
+ 2c5:	vaddps xmm1,xmm1,xmm0
+ 2c9:	vmovhlps xmm0,xmm1,xmm1
+ 2cd:	vaddps xmm1,xmm1,xmm0
+ 2d1:	vmovshdup xmm0,xmm1
+ 2d5:	vaddss xmm1,xmm1,xmm0
+ 2d9:	jae    423 <ann::l2_avx2_fma4(float const*, float const*, unsigned long long)+0x223>
+ 2df:	mov    r10,r8
+ 2e2:	sub    r10,rdx
+ 2e5:	lea    rax,[r10-0x1]
+ 2e9:	cmp    rax,0x6
+ 2ed:	jbe    440 <ann::l2_avx2_fma4(float const*, float const*, unsigned long long)+0x240>
+ 2f3:	mov    rbx,r10
+ 2f6:	lea    r11,[rdx*4+0x0]
+ 2fe:	xor    eax,eax
+ 300:	shr    rbx,0x3
+ 304:	lea    rsi,[r9+r11*1]
+ 308:	add    r11,rcx
+ 30b:	shl    rbx,0x5
+ 30f:	nop
+ 310:	vmovups ymm4,YMMWORD PTR [rsi+rax*1]
+ 315:	vsubps ymm0,ymm4,YMMWORD PTR [r11+rax*1]
+ 31b:	add    rax,0x20
+ 31f:	cmp    rbx,rax
+ 322:	vmulps ymm0,ymm0,ymm0
+ 326:	vaddss xmm1,xmm0,xmm1
+ 32a:	vshufps xmm3,xmm0,xmm0,0x55
+ 32f:	vshufps xmm2,xmm0,xmm0,0xff
+ 334:	vaddss xmm3,xmm3,xmm1
+ 338:	vunpckhps xmm1,xmm0,xmm0
+ 33c:	vextractf128 xmm0,ymm0,0x1
+ 342:	vaddss xmm1,xmm1,xmm3
+ 346:	vaddss xmm2,xmm2,xmm1
+ 34a:	vaddss xmm1,xmm0,xmm2
+ 34e:	vshufps xmm2,xmm0,xmm0,0x55
+ 353:	vaddss xmm2,xmm2,xmm1
+ 357:	vunpckhps xmm1,xmm0,xmm0
+ 35b:	vshufps xmm0,xmm0,xmm0,0xff
+ 360:	vaddss xmm1,xmm1,xmm2
+ 364:	vaddss xmm1,xmm1,xmm0
+ 368:	jne    310 <ann::l2_avx2_fma4(float const*, float const*, unsigned long long)+0x110>
+ 36a:	mov    r11,r10
+ 36d:	and    r11,0xfffffffffffffff8
+ 371:	test   r10b,0x7
+ 375:	lea    rax,[rdx+r11*1]
+ 379:	je     423 <ann::l2_avx2_fma4(float const*, float const*, unsigned long long)+0x223>
+ 37f:	sub    r10,r11
+ 382:	lea    rbx,[r10-0x1]
+ 386:	cmp    rbx,0x2
+ 38a:	jbe    3cc <ann::l2_avx2_fma4(float const*, float const*, unsigned long long)+0x1cc>
+ 38c:	add    rdx,r11
+ 38f:	vmovups xmm4,XMMWORD PTR [r9+rdx*4]
+ 395:	vsubps xmm0,xmm4,XMMWORD PTR [rcx+rdx*4]
+ 39a:	mov    rdx,r10
+ 39d:	and    rdx,0xfffffffffffffffc
+ 3a1:	add    rax,rdx
+ 3a4:	and    r10d,0x3
+ 3a8:	vmulps xmm0,xmm0,xmm0
+ 3ac:	vaddss xmm2,xmm1,xmm0
+ 3b0:	vshufps xmm1,xmm0,xmm0,0x55
+ 3b5:	vaddss xmm2,xmm2,xmm1
+ 3b9:	vunpckhps xmm1,xmm0,xmm0
+ 3bd:	vshufps xmm0,xmm0,xmm0,0xff
+ 3c2:	vaddss xmm2,xmm2,xmm1
+ 3c6:	vaddss xmm1,xmm2,xmm0
+ 3ca:	je     423 <ann::l2_avx2_fma4(float const*, float const*, unsigned long long)+0x223>
+ 3cc:	vmovss xmm0,DWORD PTR [r9+rax*4]
+ 3d2:	vsubss xmm0,xmm0,DWORD PTR [rcx+rax*4]
+ 3d7:	lea    r10,[rax+0x1]
+ 3db:	cmp    r10,r8
+ 3de:	lea    rdx,[rax*4+0x0]
+ 3e6:	vmulss xmm0,xmm0,xmm0
+ 3ea:	vaddss xmm1,xmm1,xmm0
+ 3ee:	jae    423 <ann::l2_avx2_fma4(float const*, float const*, unsigned long long)+0x223>
+ 3f0:	vmovss xmm0,DWORD PTR [r9+rdx*1+0x4]
+ 3f7:	vsubss xmm0,xmm0,DWORD PTR [rcx+rdx*1+0x4]
+ 3fd:	add    rax,0x2
+ 401:	cmp    rax,r8
+ 404:	vmulss xmm0,xmm0,xmm0
+ 408:	vaddss xmm1,xmm1,xmm0
+ 40c:	jae    423 <ann::l2_avx2_fma4(float const*, float const*, unsigned long long)+0x223>
+ 40e:	vmovss xmm0,DWORD PTR [r9+rdx*1+0x8]
+ 415:	vsubss xmm0,xmm0,DWORD PTR [rcx+rdx*1+0x8]
+ 41b:	vmulss xmm0,xmm0,xmm0
+ 41f:	vaddss xmm1,xmm1,xmm0
+ 423:	vmovaps xmm0,xmm1
+ 427:	vzeroupper
+ 42a:	pop    rbx
+ 42b:	pop    rsi
+ 42c:	ret
+ 42d:	nop    DWORD PTR [rax]
+ 430:	vxorps xmm0,xmm0,xmm0
+ 434:	mov    eax,0x8
+ 439:	xor    edx,edx
+ 43b:	jmp    2b7 <ann::l2_avx2_fma4(float const*, float const*, unsigned long long)+0xb7>
+ 440:	mov    rax,rdx
+ 443:	xor    r11d,r11d
+ 446:	jmp    37f <ann::l2_avx2_fma4(float const*, float const*, unsigned long long)+0x17f>
+ 44b:	nop
+ 44c:	nop
+ 44d:	nop
+ 44e:	nop
+ 44f:	nop
