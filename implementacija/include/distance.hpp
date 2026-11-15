@@ -18,7 +18,13 @@ namespace ann
     // Referentna verzija: obična petlja, kompajlira se sa -fno-tree-vectorize.
     float l2_scalar(const float* a, const float* b, std::size_t d);
 
-    // SIMD faza: l2_auto, l2_omp, l2_avx2 (dodati ovdje).
+    // Optimizacije iz VTune analize (docs/vtune/). Razlikuju se samo po onome
+    // što se mjeri: broj akumulatora (zavisnost podataka) i širina (SIMD).
+    float l2_scalar4(const float* a, const float* b, std::size_t d);   // skalarna, 4 akumulatora
+    float l2_avx2_fma1(const float* a, const float* b, std::size_t d); // AVX2 + FMA, 1 akumulator (samo x86)
+    float l2_avx2_fma4(const float* a, const float* b, std::size_t d); // AVX2 + FMA, 4 akumulatora (samo x86)
+
+    // SIMD faza: l2_auto, l2_omp (dodati ovdje).
 
     // Varijanta udaljenosti sa imenom, za izbor iz komandne linije (ivf-bench).
     struct DistanceVariant

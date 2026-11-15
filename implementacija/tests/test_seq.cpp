@@ -303,6 +303,45 @@ namespace
                "spisak varijanti pocinje skalarnom referencom");
     }
 
+    // Optimizovane udaljenosti (docs/vtune/) moraju dati isti rezultat kao
+    // skalarna referenca. Za cijele brojeve 0..255 (kao SIFT) su sve međusume
+    // tačne u floatu (zbir < 2^24), pa rezultat mora biti BIT-IDENTIČAN bez
+    // obzira na redoslijed sabiranja i FMA. Za necijele vrijednosti dozvoljena
+    // je relativna greška zaokruživanja. Dimenzije koje nisu višekratnik 8 ili
+    // 32 provjeravaju ostatak petlje.
+    void test_distance_variants()
+    {
+        std::puts("udaljenosti: optimizovane varijante == skalarna referenca");
+        const bool avx = ann::cpu_has_avx2_fma();
+        if (!avx)
+            std::puts("  (procesor nema AVX2/FMA: AVX2 varijante se preskacu)");
+        for (const char* name : { "scalar4", "avx2", "avx2x4" })
+        {
+            const ann::DistanceVariant* v = ann::find_distance(name);
+            expect(v != nullptr, (std::string(name) + " postoji u registru").c_str());
+            if (v == nullptr || (v->needs_avx2_fma && !avx))
+                continue;
+            bool exact = true, close = true;
+            for (const std::size_t d : { 1, 7, 8, 31, 32, 33, 128, 130 })
+            {
+                const ann::FloatMatrix ints = random_matrix(2, d, 100 + d);
+                exact = exact && v->fn(ints.row(0), ints.row(1), d) == ann::l2_scalar(ints.row(0), ints.row(1), d);
+
+                std::vector<float> a(d), b(d);
+                for (std::size_t j = 0; j < d; ++j)
+                {
+                    a[j] = ints.row(0)[j] / 7.0f + 0.1f;
+                    b[j] = ints.row(1)[j] / 7.0f;
+                }
+                const float ref = ann::l2_scalar(a.data(), b.data(), d);
+                const float got = v->fn(a.data(), b.data(), d);
+                close = close && std::fabs(got - ref) <= 1e-5f * std::max(1.0f, std::fabs(ref));
+            }
+            expect(exact, (std::string(name) + ": cijeli brojevi identicno skalarnoj (d = 1..130)").c_str());
+            expect(close, (std::string(name) + ": necijeli brojevi, relativna greska < 1e-5").c_str());
+        }
+    }
+
     void test_topk_ties()
     {
         std::puts("top-k: jednake udaljenosti i manje od k kandidata");
@@ -334,6 +373,7 @@ int main()
     test_ivf_search();
     test_ivf_io();
     test_distance_registry();
+    test_distance_variants();
     std::printf("\n%s (%d gresaka)\n", failures == 0 ? "SVI TESTOVI PROSLI" : "NEKI TESTOVI NISU PROSLI", failures);
     return failures == 0 ? 0 : 1;
 }

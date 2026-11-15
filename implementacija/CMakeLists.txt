@@ -57,6 +57,8 @@ add_library(ann_core STATIC
   src/common/eval.cpp
   src/common/ivf_io.cpp
   src/distance/l2_scalar.cpp
+  src/distance/l2_unrolled.cpp
+  src/distance/l2_avx2.cpp
   src/distance/registry.cpp
   src/seq/bruteforce_seq.cpp
   src/seq/kmeans_seq.cpp
@@ -75,12 +77,19 @@ target_compile_options(ann_core PUBLIC
 )
 
 # Skalarna referenca mora ostati skalarna, i u Release buildu (kao u Lab 1).
+# Isto i skalarna verzija sa 4 akumulatora (VTune eksperiment, docs/vtune/).
 if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
-  set_source_files_properties(src/distance/l2_scalar.cpp
+  set_source_files_properties(src/distance/l2_scalar.cpp src/distance/l2_unrolled.cpp
     PROPERTIES COMPILE_OPTIONS "-fno-tree-vectorize")
 elseif(CMAKE_CXX_COMPILER_ID MATCHES "Clang")
-  set_source_files_properties(src/distance/l2_scalar.cpp
+  set_source_files_properties(src/distance/l2_scalar.cpp src/distance/l2_unrolled.cpp
     PROPERTIES COMPILE_OPTIONS "-fno-vectorize;-fno-slp-vectorize")
+endif()
+
+# AVX2 + FMA intrinsici samo na x86 (na ARM-u je sadržaj fajla isključen #if-om).
+if(ANN_IS_X86)
+  set_source_files_properties(src/distance/l2_avx2.cpp
+    PROPERTIES COMPILE_OPTIONS "-mavx2;-mfma")
 endif()
 
 # ---------------------------------------------------------------------------
