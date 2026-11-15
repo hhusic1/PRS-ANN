@@ -41,6 +41,9 @@ param(
 # Ne "Stop": VTune pise napredak na stderr, a PowerShell 5.1 bi to pretvorio u gresku.
 # Uspjeh svake komande se provjerava preko $LASTEXITCODE.
 $ErrorActionPreference = "Continue"
+# Sa "powershell -File" lista "a,b,c" stize kao jedan string, pa se razdvaja ovdje.
+$Distances = @($Distances | ForEach-Object { $_ -split "," } | Where-Object { $_ })
+$Analyses = @($Analyses | ForEach-Object { $_ -split "," } | Where-Object { $_ })
 $impl = (Resolve-Path (Join-Path $PSScriptRoot "..\..")).Path
 $repo = (Resolve-Path (Join-Path $impl "..")).Path
 Set-Location $impl
