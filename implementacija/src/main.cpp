@@ -6,7 +6,7 @@
 //   prs_ann kmeans-check <folder_skupa> <nlist> [iteracije] [seed]   korak 2
 //   prs_ann ivf-check <folder_skupa> <nlist> [iteracije] [seed]      korak 3
 //   prs_ann ivf-search <folder_skupa> <nlist> [broj_upita] [k]       korak 4
-//   prs_ann ivf-bench <folder_skupa> <nlist> <nprobe> [broj_upita] [ponavljanja] [udaljenost]
+//   prs_ann ivf-bench <folder_skupa> <nlist> <nprobe> [broj_upita] [ponavljanja] [udaljenost] [provjera]
 //                                                     mjerenje pretrage (docs/vtune/)
 //
 // Primjer (pokrenuti iz foldera implementacija/):
@@ -50,8 +50,9 @@ namespace
                   "  prs_ann kmeans-check <folder_skupa> <nlist> [iteracije] [seed]\n"
                   "  prs_ann ivf-check <folder_skupa> <nlist> [iteracije] [seed]\n"
                   "  prs_ann ivf-search <folder_skupa> <nlist> [broj_upita] [k]   (k podrazumijevano 10)\n"
-                  "  prs_ann ivf-bench <folder_skupa> <nlist> <nprobe> [broj_upita] [ponavljanja] [udaljenost]\n"
-                  "                (podrazumijevano 1000 upita, 5 ponavljanja, udaljenost scalar)\n"
+                  "  prs_ann ivf-bench <folder_skupa> <nlist> <nprobe> [broj_upita] [ponavljanja] [udaljenost] [provjera]\n"
+                  "                (podrazumijevano 1000 upita, 5 ponavljanja, udaljenost scalar, provjera 1;\n"
+                  "                 provjera 0 preskace poredjenje sa skalarnom referencom, za VTune)\n"
                   "\n"
                   "  folder_skupa  npr. data/siftsmall ili data/sift\n"
                   "  broj_upita    koliko prvih upita provjeriti (0 = svi; podrazumijevano 0)\n"
@@ -298,8 +299,10 @@ namespace
     // udaljenost bi pri izgradnji dala centroide različite u zadnjim bitima).
     // Mjeri se samo pretraga, kroz perf::measure (zagrijavanje, ponavljanja,
     // medijan). Izlazni kod 1 ako se rezultat razlikuje od skalarne reference.
+    // check = false preskače skalarnu referencu: pod VTune-om bi njeno
+    // računanje ušlo u profil optimizovane varijante.
     int run_ivf_bench(const fs::path& dir, std::size_t nlist, std::size_t nprobe, std::size_t max_queries,
-                      int repeats, const std::string& dist_name)
+                      int repeats, const std::string& dist_name, bool check)
     {
         const ann::DistanceVariant* variant = ann::find_distance(dist_name);
         if (variant == nullptr)
@@ -360,7 +363,8 @@ namespace
         // indeks oslobodi prije mjerenja.
         ann::SearchResult reference;
         const bool is_reference = variant->fn == ann::l2_scalar;
-        if (!is_reference)
+        const bool compare = check && !is_reference;
+        if (compare)
             reference = load_index(ann::l2_scalar).search(queries, k, nprobe);
 
         const ann::IvfFlatSeq index = load_index(variant->fn);
@@ -374,7 +378,7 @@ namespace
             [&] { return perf::checksum(result.distances.data(), result.distances.size()); });
 
         std::size_t identical = queries.n;
-        if (!is_reference)
+        if (compare)
         {
             identical = 0;
             for (std::size_t q = 0; q < queries.n; ++q)
@@ -410,6 +414,8 @@ namespace
         std::printf("  Recall@10:                %.4f\n", recall);
         if (is_reference)
             std::printf("  identicno skalarnoj:      (ovo je skalarna referenca)\n");
+        else if (!compare)
+            std::printf("  identicno skalarnoj:      nije provjereno (provjera = 0)\n");
         else
             std::printf("  identicno skalarnoj:      %zu / %zu upita\n", identical, queries.n);
         std::printf("\nCSV: %s,%s,%zu,%zu,%zu,%d,%.6f,%.6f,%.1f,%.0f,%.3f,%.3f,%.4f,%zu\n", variant->name, name.c_str(),
@@ -521,7 +527,8 @@ int main(int argc, char** argv)
             const std::size_t max_queries = argc >= 6 ? parse_size(argv[5], "broj_upita") : 1000;
             const int repeats = argc >= 7 ? static_cast<int>(parse_size(argv[6], "ponavljanja")) : 5;
             const std::string dist = argc >= 8 ? argv[7] : "scalar";
-            return run_ivf_bench(argv[2], nlist, nprobe, max_queries, repeats, dist);
+            const bool check = argc >= 9 ? parse_size(argv[8], "provjera") != 0 : true;
+            return run_ivf_bench(argv[2], nlist, nprobe, max_queries, repeats, dist, check);
         }
         print_usage();
         return 2;
