@@ -54,6 +54,7 @@ add_library(ann_core STATIC
   src/common/eval.cpp
   src/common/ivf_io.cpp
   src/distance/l2_scalar.cpp
+  src/distance/registry.cpp
   src/seq/bruteforce_seq.cpp
   src/seq/kmeans_seq.cpp
   src/seq/ivf_seq.cpp

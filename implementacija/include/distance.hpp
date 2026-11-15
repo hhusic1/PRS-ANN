@@ -8,6 +8,8 @@
 // isti kod radi sa skalarnom, auto, omp i AVX2 verzijom.
 
 #include <cstddef>
+#include <string_view>
+#include <vector>
 
 namespace ann
 {
@@ -17,4 +19,23 @@ namespace ann
     float l2_scalar(const float* a, const float* b, std::size_t d);
 
     // SIMD faza: l2_auto, l2_omp, l2_avx2 (dodati ovdje).
+
+    // Varijanta udaljenosti sa imenom, za izbor iz komandne linije (ivf-bench).
+    struct DistanceVariant
+    {
+        const char* name;
+        DistFn fn;
+        bool needs_avx2_fma; // traži procesor sa AVX2 i FMA (provjera: cpu_has_avx2_fma)
+    };
+
+    // Sve varijante; prva je skalarna referenca.
+    const std::vector<DistanceVariant>& distance_variants();
+
+    // Varijanta po imenu, ili nullptr ako ne postoji.
+    const DistanceVariant* find_distance(std::string_view name);
+
+    // Da li procesor na kome program radi podržava AVX2 i FMA. Provjera je u
+    // vrijeme izvršavanja, da AVX2 varijanta na starijem procesoru da jasnu
+    // grešku umjesto pada na nepodržanoj instrukciji.
+    bool cpu_has_avx2_fma();
 }

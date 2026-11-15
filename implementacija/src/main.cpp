@@ -6,6 +6,8 @@
 //   prs_ann kmeans-check <folder_skupa> <nlist> [iteracije] [seed]   korak 2
 //   prs_ann ivf-check <folder_skupa> <nlist> [iteracije] [seed]      korak 3
 //   prs_ann ivf-search <folder_skupa> <nlist> [broj_upita] [k]       korak 4
+//   prs_ann ivf-bench <folder_skupa> <nlist> <nprobe> [broj_upita] [ponavljanja] [udaljenost]
+//                                                     mjerenje pretrage (docs/vtune/)
 //
 // Primjer (pokrenuti iz foldera implementacija/):
 //   build/Release/prs_ann gt-check data/siftsmall
@@ -16,11 +18,13 @@
 // siftsmall_query.fvecs, siftsmall_groundtruth.ivecs. Putanja je argument, a
 // ne konstanta u kodu, da isti program radi na Windowsu i na macOS-u.
 
+#include "bench.hpp"
 #include "bruteforce.hpp"
 #include "dataset.hpp"
 #include "distance.hpp"
 #include "eval.hpp"
 #include "ivf_index.hpp"
+#include "ivf_io.hpp"
 #include "kmeans.hpp"
 
 #include <algorithm>
@@ -46,6 +50,8 @@ namespace
                   "  prs_ann kmeans-check <folder_skupa> <nlist> [iteracije] [seed]\n"
                   "  prs_ann ivf-check <folder_skupa> <nlist> [iteracije] [seed]\n"
                   "  prs_ann ivf-search <folder_skupa> <nlist> [broj_upita] [k]   (k podrazumijevano 10)\n"
+                  "  prs_ann ivf-bench <folder_skupa> <nlist> <nprobe> [broj_upita] [ponavljanja] [udaljenost]\n"
+                  "                (podrazumijevano 1000 upita, 5 ponavljanja, udaljenost scalar)\n"
                   "\n"
                   "  folder_skupa  npr. data/siftsmall ili data/sift\n"
                   "  broj_upita    koliko prvih upita provjeriti (0 = svi; podrazumijevano 0)\n"
@@ -286,6 +292,132 @@ namespace
         return ok ? 0 : 1;
     }
 
+    // Mjerenje pretrage za VTune analizu (docs/vtune/). Indeks se jednom
+    // napravi SKALARNOM verzijom i sačuva u folder skupa, pa sve varijante
+    // udaljenosti i sva ponovljena mjerenja rade na identičnom indeksu (brža
+    // udaljenost bi pri izgradnji dala centroide različite u zadnjim bitima).
+    // Mjeri se samo pretraga, kroz perf::measure (zagrijavanje, ponavljanja,
+    // medijan). Izlazni kod 1 ako se rezultat razlikuje od skalarne reference.
+    int run_ivf_bench(const fs::path& dir, std::size_t nlist, std::size_t nprobe, std::size_t max_queries,
+                      int repeats, const std::string& dist_name)
+    {
+        const ann::DistanceVariant* variant = ann::find_distance(dist_name);
+        if (variant == nullptr)
+        {
+            std::fprintf(stderr, "Nepoznata udaljenost '%s'. Moguce:", dist_name.c_str());
+            for (const ann::DistanceVariant& v : ann::distance_variants())
+                std::fprintf(stderr, " %s", v.name);
+            std::fputc('\n', stderr);
+            return 2;
+        }
+        if (variant->needs_avx2_fma && !ann::cpu_has_avx2_fma())
+        {
+            std::fprintf(stderr, "Udaljenost '%s' trazi procesor sa AVX2 i FMA, a ovaj ih nema.\n", variant->name);
+            return 2;
+        }
+        if (repeats < 1)
+            throw std::invalid_argument("ponavljanja mora biti >= 1");
+
+        const std::string name = fs::path(dir).filename().string();
+        const ann::FloatMatrix base = ann::read_fvecs(dir / (name + "_base.fvecs"));
+        const ann::FloatMatrix queries = ann::read_fvecs(dir / (name + "_query.fvecs"), max_queries);
+        const ann::IntMatrix gt = ann::read_ivecs(dir / (name + "_groundtruth.ivecs"), max_queries);
+        constexpr std::uint64_t seed = 20261107;
+        constexpr std::size_t k = 10;
+        const fs::path index_path =
+            dir / (name + "_ivf_nlist" + std::to_string(nlist) + "_seed" + std::to_string(seed) + ".bin");
+
+        std::printf("Skup:      %s, base = %zu, upita = %zu, d = %zu (%s)\n", name.c_str(), base.n, queries.n, base.d,
+                    build_name());
+        if (fs::exists(index_path))
+            std::printf("Indeks:    ucitan iz %s\n", index_path.string().c_str());
+        else
+        {
+            const ann::FloatMatrix learn = ann::read_fvecs(dir / (name + "_learn.fvecs"));
+            ann::KMeansParams km;
+            km.seed = seed;
+            ann::IvfFlatSeq builder(ann::l2_scalar, km);
+            const auto t0 = std::chrono::steady_clock::now();
+            builder.train(learn, nlist);
+            builder.add(base);
+            ann::save_ivf_lists(builder.lists(), index_path);
+            std::printf("Indeks:    napravljen skalarnom verzijom za %.1f s i sacuvan u %s\n", seconds_since(t0),
+                        index_path.string().c_str());
+        }
+
+        auto load_index = [&](ann::DistFn dist)
+        {
+            ann::IvfLists lists = ann::load_ivf_lists(index_path);
+            if (!ann::ivf_lists_match(lists, nlist, base.d, base.n))
+                throw std::runtime_error("indeks " + index_path.string() +
+                                         " ne odgovara nlist-u ili bazi; obrisati ga da se napravi ponovo");
+            ann::IvfFlatSeq index(dist);
+            index.set_lists(std::move(lists));
+            return index;
+        };
+
+        // Skalarna referenca (za ostale varijante), u svom bloku da se njen
+        // indeks oslobodi prije mjerenja.
+        ann::SearchResult reference;
+        const bool is_reference = variant->fn == ann::l2_scalar;
+        if (!is_reference)
+            reference = load_index(ann::l2_scalar).search(queries, k, nprobe);
+
+        const ann::IvfFlatSeq index = load_index(variant->fn);
+        ann::SearchResult result;
+        std::size_t scanned = 0;
+        perf::Config config;
+        config.warmups = 1;
+        config.repeats = repeats;
+        const perf::Sample sample = perf::measure(
+            config, [&] { result = index.search(queries, k, nprobe, &scanned); },
+            [&] { return perf::checksum(result.distances.data(), result.distances.size()); });
+
+        std::size_t identical = queries.n;
+        if (!is_reference)
+        {
+            identical = 0;
+            for (std::size_t q = 0; q < queries.n; ++q)
+            {
+                const auto from = static_cast<std::ptrdiff_t>(q * k);
+                const auto to = from + static_cast<std::ptrdiff_t>(k);
+                identical += std::equal(result.ids.begin() + from, result.ids.begin() + to, reference.ids.begin() + from) &&
+                                     std::equal(result.distances.begin() + from, result.distances.begin() + to,
+                                                reference.distances.begin() + from)
+                                 ? 1
+                                 : 0;
+            }
+        }
+
+        const double nq = static_cast<double>(queries.n);
+        const double median = sample.median_s;
+        const double per_query = static_cast<double>(scanned) / nq;
+        // Udaljenosti po upitu: do svih centroida (izbor listi) + skenirani vektori.
+        const double distances = static_cast<double>(scanned) + nq * static_cast<double>(index.lists().nlist());
+        const double ns_per_dist = median * 1e9 / distances;
+        // Propusnost skeniranja: samo vektori iz listi (centroidi su mali i ostaju u kešu).
+        const double gbps = static_cast<double>(scanned) * static_cast<double>(base.d) * sizeof(float) / median / 1e9;
+        const double recall = ann::recall_at_k(result, gt, k);
+
+        std::printf("Pretraga:  nlist = %zu, nprobe = %zu, k = %zu, udaljenost = %s, %d ponavljanja\n\n", nlist,
+                    nprobe, k, variant->name, repeats);
+        std::printf("  medijan / minimum:        %.4f s / %.4f s\n", median, sample.min_s);
+        std::printf("  QPS:                      %.1f\n", nq / median);
+        std::printf("  skenirano po upitu:       %.0f vektora (%.2f %% baze)\n", per_query,
+                    100.0 * per_query / static_cast<double>(base.n));
+        std::printf("  ns po udaljenosti:        %.2f (ukljucujuci udaljenosti do centroida)\n", ns_per_dist);
+        std::printf("  propusnost skeniranja:    %.2f GB/s\n", gbps);
+        std::printf("  Recall@10:                %.4f\n", recall);
+        if (is_reference)
+            std::printf("  identicno skalarnoj:      (ovo je skalarna referenca)\n");
+        else
+            std::printf("  identicno skalarnoj:      %zu / %zu upita\n", identical, queries.n);
+        std::printf("\nCSV: %s,%s,%zu,%zu,%zu,%d,%.6f,%.6f,%.1f,%.0f,%.3f,%.3f,%.4f,%zu\n", variant->name, name.c_str(),
+                    nlist, nprobe, queries.n, repeats, median, sample.min_s, nq / median, per_query, ns_per_dist, gbps,
+                    recall, identical);
+        return identical == queries.n ? 0 : 1;
+    }
+
     std::size_t parse_size(const char* text, const char* name)
     {
         char* end = nullptr;
@@ -381,6 +513,15 @@ int main(int argc, char** argv)
             const std::size_t max_queries = argc >= 5 ? parse_size(argv[4], "broj_upita") : 0;
             const std::size_t k = argc >= 6 ? parse_size(argv[5], "k") : 10;
             return run_ivf_search(argv[2], nlist, max_queries, k);
+        }
+        if (argc >= 5 && std::string(argv[1]) == "ivf-bench")
+        {
+            const std::size_t nlist = parse_size(argv[3], "nlist");
+            const std::size_t nprobe = parse_size(argv[4], "nprobe");
+            const std::size_t max_queries = argc >= 6 ? parse_size(argv[5], "broj_upita") : 1000;
+            const int repeats = argc >= 7 ? static_cast<int>(parse_size(argv[6], "ponavljanja")) : 5;
+            const std::string dist = argc >= 8 ? argv[7] : "scalar";
+            return run_ivf_bench(argv[2], nlist, nprobe, max_queries, repeats, dist);
         }
         print_usage();
         return 2;

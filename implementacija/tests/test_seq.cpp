@@ -17,6 +17,7 @@
 #include <filesystem>
 #include <fstream>
 #include <stdexcept>
+#include <string>
 
 namespace
 {
@@ -289,6 +290,19 @@ namespace
         expect(rejected, "set_lists odbija nekonzistentne liste");
     }
 
+    // Registar udaljenosti: ivf-bench bira funkciju po imenu, pa poznato ime
+    // mora dati pravu funkciju, a nepoznato nullptr (ne neku podrazumijevanu).
+    void test_distance_registry()
+    {
+        std::puts("udaljenosti: registar po imenu");
+        const ann::DistanceVariant* scalar = ann::find_distance("scalar");
+        expect(scalar != nullptr && scalar->fn == ann::l2_scalar && !scalar->needs_avx2_fma,
+               "\"scalar\" je l2_scalar, bez AVX2");
+        expect(ann::find_distance("nepostoji") == nullptr, "nepoznato ime daje nullptr");
+        expect(!ann::distance_variants().empty() && std::string(ann::distance_variants().front().name) == "scalar",
+               "spisak varijanti pocinje skalarnom referencom");
+    }
+
     void test_topk_ties()
     {
         std::puts("top-k: jednake udaljenosti i manje od k kandidata");
@@ -319,6 +333,7 @@ int main()
     test_ivf_lists_check();
     test_ivf_search();
     test_ivf_io();
+    test_distance_registry();
     std::printf("\n%s (%d gresaka)\n", failures == 0 ? "SVI TESTOVI PROSLI" : "NEKI TESTOVI NISU PROSLI", failures);
     return failures == 0 ? 0 : 1;
 }
