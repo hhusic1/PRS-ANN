@@ -15,7 +15,12 @@ Rezultati:
   docs/vtune/rezultati/<udaljenost>/<analiza>-functions.csv    metrike po funkcijama
   docs/vtune/rezultati/<udaljenost>/<analiza>-log.txt          ispis VTune-a i programa
 
+Sirovi rezultati idu u kratku putanju (-ResultRoot, podrazumijevano %LOCALAPPDATA%\prs-vtune):
+VTune-ov hardverski kolektor ne podrzava putanje duze od 260 znakova, a unutar foldera
+rezultata pravi podfoldere i duga imena fajlova.
+
 Putanja do programa ne smije imati razmake (start /affinity bi prvi navodnik shvatio kao naslov prozora).
+-HotspotsMode sw: hotspots sa softverskim uzorkovanjem, radi i bez administratora (za probu skripte).
 #>
 param(
     [string[]]$Distances = @("scalar"),
@@ -28,6 +33,8 @@ param(
     [string[]]$Analyses = @("hotspots", "uarch-exploration", "memory-access"),
     [int]$Cpu = 2,
     [string]$VTune = "C:\Program Files (x86)\Intel\oneAPI\vtune\latest\bin64\vtune.exe",
+    [string]$ResultRoot = (Join-Path $env:LOCALAPPDATA "prs-vtune"),
+    [ValidateSet("hw", "sw")][string]$HotspotsMode = "hw",
     [switch]$DryRun
 )
 
@@ -40,7 +47,12 @@ Set-Location $impl
 
 $admin = ([Security.Principal.WindowsPrincipal][Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole(
     [Security.Principal.WindowsBuiltInRole]::Administrator)
-if (-not $admin -and -not $DryRun) { throw "Skriptu pokrenuti kao administrator (VTune hardversko uzorkovanje to trazi)." }
+# Hardversko uzorkovanje trazi administratora; softverski hotspots ne trazi.
+$needsHw = ($Analyses | Where-Object { $_ -ne "hotspots" }).Count -gt 0 -or $HotspotsMode -eq "hw"
+if ($needsHw -and -not $admin -and -not $DryRun) {
+    throw "Skriptu pokrenuti kao administrator (VTune hardversko uzorkovanje to trazi)."
+}
+New-Item -ItemType Directory -Force $ResultRoot | Out-Null
 if (-not (Test-Path $Exe)) { throw "Ne postoji $Exe (napraviti build sa simbolima, -g)." }
 if (-not (Test-Path $VTune)) { throw "Ne postoji $VTune." }
 
@@ -54,18 +66,19 @@ foreach ($dist in $Distances) {
     $outDir = Join-Path $repo "docs\vtune\rezultati\$dist"
     New-Item -ItemType Directory -Force $outDir | Out-Null
     foreach ($analysis in $Analyses) {
-        $result = Join-Path $impl "build\vtune-results\$dist-$analysis"
+        $result = Join-Path $ResultRoot "$dist-$analysis"
         $knobs = @()
-        if ($analysis -eq "hotspots") { $knobs = @("-knob", "sampling-mode=hw") }
+        if ($analysis -eq "hotspots") { $knobs = @("-knob", "sampling-mode=$HotspotsMode") }
         # Zadnji argument 0: bez poredjenja sa skalarnom referencom, jer bi
         # racunanje reference uslo u profil (provjera se radi bez VTune-a).
         $target = @("cmd.exe", "/c", "start", "/b", "/wait", "/affinity", $mask,
                     $exeFull, "ivf-bench", $Dataset, $Nlist, $Nprobe, $Queries, $Repeats, $dist, "0")
         $collect = @("-collect", $analysis) + $knobs + @("-result-dir", $result, "--") + $target
+        # Izvjestaji se prvo pisu pored rezultata (kratka putanja), pa kopiraju u docs.
         $summary = @("-report", "summary", "-result-dir", $result, "-format", "csv", "-csv-delimiter", "comma",
-                     "-report-output", (Join-Path $outDir "$analysis-summary.csv"))
+                     "-report-output", (Join-Path $ResultRoot "$dist-$analysis-summary.csv"))
         $functions = @("-report", "hotspots", "-result-dir", $result, "-group-by", "function", "-format", "csv",
-                       "-csv-delimiter", "comma", "-report-output", (Join-Path $outDir "$analysis-functions.csv"))
+                       "-csv-delimiter", "comma", "-report-output", (Join-Path $ResultRoot "$dist-$analysis-functions.csv"))
 
         Write-Host "=== $dist / $analysis (logicko jezgro $Cpu, maska 0x$mask) ==="
         if ($DryRun) {
@@ -80,6 +93,9 @@ foreach ($dist in $Distances) {
         & $VTune @summary 2>&1 | Out-Null
         & $VTune @functions 2>&1 | Out-Null
         if ($LASTEXITCODE -ne 0) { throw "VTune izvjestaj nije uspio ($dist / $analysis), kod $LASTEXITCODE" }
+        Copy-Item (Join-Path $ResultRoot "$dist-$analysis-summary.csv") (Join-Path $outDir "$analysis-summary.csv") -Force
+        Copy-Item (Join-Path $ResultRoot "$dist-$analysis-functions.csv") (Join-Path $outDir "$analysis-functions.csv") -Force
     }
 }
 Write-Host "Gotovo. CSV izvjestaji su u $repo\docs\vtune\rezultati\"
+Write-Host "Sirovi rezultati (za VTune GUI) su u $ResultRoot"
