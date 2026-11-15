@@ -24,7 +24,9 @@ namespace ann
     float l2_avx2_fma1(const float* a, const float* b, std::size_t d); // AVX2 + FMA, 1 akumulator (samo x86)
     float l2_avx2_fma4(const float* a, const float* b, std::size_t d); // AVX2 + FMA, 4 akumulatora (samo x86)
 
-    // SIMD faza: l2_auto, l2_omp (dodati ovdje).
+    // SIMD faza: ista petlja kao l2_scalar, ali sa dozvoljenom vektorizacijom.
+    float l2_auto(const float* a, const float* b, std::size_t d);      // kompajler sam (bez -ffast-math)
+    float l2_omp(const float* a, const float* b, std::size_t d);       // #pragma omp simd reduction
 
     // Varijanta udaljenosti sa imenom, za izbor iz komandne linije (ivf-bench).
     struct DistanceVariant

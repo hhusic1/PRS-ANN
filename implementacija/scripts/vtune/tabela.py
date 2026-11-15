@@ -20,9 +20,12 @@ REZULTATI = Path(__file__).resolve().parents[3] / "docs" / "vtune" / "rezultati"
 FUNKCIJA = {
     "scalar": "ann::l2_scalar",
     "scalar4": "ann::l2_scalar4",
+    "auto": "ann::l2_auto",
+    "omp": "ann::l2_omp",
     "avx2": "ann::l2_avx2_fma1",
     "avx2x4": "ann::l2_avx2_fma4",
 }
+PODRAZUMIJEVANE = ["scalar", "scalar4", "avx2", "avx2x4"]
 ELEMENATA = 4 * 1000 * (130769 + 256) * 128
 
 
@@ -80,11 +83,14 @@ def tabela_vremena(fajl, varijante):
     if not redovi:
         return
     print(f"### Vrijeme pretrage ({fajl})\n")
-    osnova = float(redovi[varijante[0]][6]) if varijante[0] in redovi else None
+    # sve varijante iz fajla, ustaljenim redom (i one bez VTune snimanja, npr. auto i omp)
+    poredak = ["scalar", "scalar4", "auto", "omp", "avx2", "avx2x4"]
+    sve = [v for v in poredak if v in redovi] + [v for v in redovi if v not in poredak]
+    osnova = float(redovi["scalar"][6]) if "scalar" in redovi else None
     tabela(["Varijanta", "medijan (s)", "QPS", "ns po udaljenosti", "GB/s", "Recall@10", "ubrzanje"],
            [[v, broj(p[6], 3), broj(p[8]), broj(p[10]), broj(p[11]), broj(p[12], 4),
              (broj(osnova / float(p[6]), 2) + "×") if osnova else "-"]
-            for v in varijante if v in redovi for p in [redovi[v]]])
+            for v in sve for p in [redovi[v]]])
 
 
 def main(varijante):
@@ -142,4 +148,4 @@ def main(varijante):
 
 if __name__ == "__main__":
     sys.stdout.reconfigure(encoding="utf-8")
-    main(sys.argv[1:] or list(FUNKCIJA))
+    main(sys.argv[1:] or PODRAZUMIJEVANE)

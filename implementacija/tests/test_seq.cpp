@@ -319,7 +319,7 @@ namespace
         if (!avx)
             std::puts("  (procesor nema AVX2/FMA: AVX2 varijante se preskacu)");
         // AVX2 varijante postoje samo na x86 (na Apple M / ARM nisu u registru).
-        std::vector<const char*> names = { "scalar4" };
+        std::vector<const char*> names = { "scalar4", "auto", "omp" };
 #if defined(__x86_64__) || defined(__i386__)
         names.push_back("avx2");
         names.push_back("avx2x4");

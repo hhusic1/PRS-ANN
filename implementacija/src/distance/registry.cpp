@@ -10,6 +10,8 @@ namespace ann
         static const std::vector<DistanceVariant> variants = {
             { "scalar", l2_scalar, false },
             { "scalar4", l2_scalar4, false },
+            { "auto", l2_auto, false },
+            { "omp", l2_omp, false },
 #if defined(__x86_64__) || defined(__i386__)
             { "avx2", l2_avx2_fma1, true },
             { "avx2x4", l2_avx2_fma4, true },

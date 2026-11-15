@@ -1,39 +1,39 @@
 Hierarchy Level,Metric Name,Metric Value
-0,Elapsed Time,25.587659
-1,CPU Time,18.828585
+0,Elapsed Time,24.055934
+1,CPU Time,19.374515
 1,Performance-core (P-core),
-2,Memory Bound,37.7
-3,L1 Bound,1.1
-3,L2 Bound,0.5
-3,L3 Bound,6.4
-3,DRAM Bound,37.6
+2,Memory Bound,40.5
+3,L1 Bound,0.9
+3,L2 Bound,0.6
+3,L3 Bound,6.0
+3,DRAM Bound,39.3
 3,Store Bound,0.2
 1,Efficient-core (E-core),
 2,Memory Bound,0.0
-3,L1 Bound,0.5
+3,L1 Bound,0.0
 3,L2 Bound,0.0
 3,L3 Bound,0.0
 1,Uncore,
 2,DRAM Bandwidth Bound,0.0
-1,Loads,25712671357
-1,Stores,2447873434
-1,LLC Miss Count,1668850623
-1,Total Thread Count,5
+1,Loads,25792873763
+1,Stores,2482774481
+1,LLC Miss Count,1786049826
+1,Total Thread Count,6
 1,Paused Time,0.0
 0,Bandwidth Utilization,
 0,Bandwidth Domain,Platform Maximum,Observed Maximum,Average,% of Elapsed Time with High BW Utilization(%)
-0,"DRAM, GB/sec",45.000000,27.700000,21.143005,0.0
+0,"DRAM, GB/sec",45.000000,29.800000,22.108474,0.0
 0,Collection and Platform Info,
 1,Application Command Line,cmd.exe "/c" "start" "/b" "/wait" "/affinity" "4" "<repo>\implementacija\build\vtune\prs_ann.exe" "ivf-bench" "data/sift" "256" "32" "1000" "3" "avx2x4" "0" 
 1,Operating System,Microsoft Windows 11
 1,Computer Name,DESKTOP-3C81MFD
-1,Result Size,863221162
-1,Collection start time,19:01:37 15/11/2026 UTC
-1,Collection stop time,19:02:03 15/11/2026 UTC
+1,Result Size,862180331
+1,Collection start time,23:01:18 15/11/2026 UTC
+1,Collection stop time,23:01:42 15/11/2026 UTC
 1,Collector Type,Event-based sampling driver
 1,CPU,
 2,Name,Intel(R) microarchitecture code named Alderlake-P
-2,Frequency,3110398819
+2,Frequency,3110398822
 2,Logical CPU Count,16
 2,Max DRAM Single-Package Bandwidth,45000000000.000000
 2,Cache Allocation Technology,

@@ -58,6 +58,8 @@ add_library(ann_core STATIC
   src/common/ivf_io.cpp
   src/distance/l2_scalar.cpp
   src/distance/l2_unrolled.cpp
+  src/distance/l2_auto.cpp
+  src/distance/l2_omp.cpp
   src/distance/l2_avx2.cpp
   src/distance/registry.cpp
   src/seq/bruteforce_seq.cpp
@@ -85,6 +87,9 @@ elseif(CMAKE_CXX_COMPILER_ID MATCHES "Clang")
   set_source_files_properties(src/distance/l2_scalar.cpp src/distance/l2_unrolled.cpp
     PROPERTIES COMPILE_OPTIONS "-fno-vectorize;-fno-slp-vectorize")
 endif()
+
+# omp simd verzija: samo simd direktive, bez OpenMP runtime-a (GCC i clang).
+set_source_files_properties(src/distance/l2_omp.cpp PROPERTIES COMPILE_OPTIONS "-fopenmp-simd")
 
 # AVX2 + FMA intrinsici samo na x86 (na ARM-u je sadržaj fajla isključen #if-om).
 if(ANN_IS_X86)

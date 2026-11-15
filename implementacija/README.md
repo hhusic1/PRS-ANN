@@ -3,7 +3,7 @@
 IVF-Flat indeks za približnu pretragu najbližih susjeda (Approximate Nearest Neighbor), u C++20:
 
 1. sekvencijalna verzija (referenca) – **gotova i provjerena**,
-2. SIMD verzija funkcije udaljenosti (AVX2 + FMA) – AVX2 verzije gotove (VTune analiza, [sekcija 12](#12-mjerenje-pretrage-i-vtune)); auto i `omp simd` slijede,
+2. SIMD verzija funkcije udaljenosti – **gotova**: auto-vektorizacija, `omp simd` i ručni AVX2 + FMA (VTune analiza, [sekcija 12](#12-mjerenje-pretrage-i-vtune)),
 3. OpenMP verzija (izgradnja indeksa i pretraga),
 4. mjerenja i poređenje sa FAISS `IndexIVFFlat` (CPU).
 
@@ -353,7 +353,7 @@ Fajlovi, redom kojim podaci prolaze kroz program:
 | `include/simd_support.hpp` | `AlignedFloats`: niz floatova poravnat na 32 B (za AVX2). Windows `_aligned_malloc`, ostali `posix_memalign`. |
 | `include/dataset.hpp`, `src/common/dataset.cpp` | `read_fvecs` / `read_ivecs` → `FloatMatrix` / `IntMatrix` (ravni nizovi, red i = `row(i)`). Provjerava dimenziju svakog zapisa i veličinu fajla. |
 | `include/distance.hpp`, `src/distance/l2_scalar.cpp` | Kvadrat L2 udaljenosti i tip `DistFn`. Sav ostali kod prima udaljenost kao parametar, pa SIMD verzije ne mijenjaju IVF kod. Skalarna verzija se kompajlira bez vektorizacije (referenca). |
-| `src/distance/l2_unrolled.cpp`, `src/distance/l2_avx2.cpp`, `src/distance/registry.cpp` | Optimizacije iz VTune analize: skalarna sa 4 akumulatora, AVX2 + FMA sa 1 i 4 akumulatora; registar bira varijantu po imenu (`ivf-bench`) i provjerava da procesor ima AVX2/FMA. |
+| `src/distance/l2_unrolled.cpp`, `l2_auto.cpp`, `l2_omp.cpp`, `l2_avx2.cpp`, `registry.cpp` (u `src/distance/`) | SIMD faza i optimizacije iz VTune analize: skalarna sa 4 akumulatora, auto-vektorizacija kompajlera, `#pragma omp simd reduction` (`-fopenmp-simd`), AVX2 + FMA sa 1 i 4 akumulatora; registar bira varijantu po imenu (`ivf-bench`) i provjerava da procesor ima AVX2/FMA. |
 | `include/topk.hpp` | `TopK`: max-heap veličine k (vrh = najlošiji od k najboljih). Pri jednakoj udaljenosti pobjeđuje manji ID. `SearchResult` = format rezultata. |
 | `include/bruteforce.hpp`, `src/seq/bruteforce_seq.cpp` | Tačan kNN – etalon za provjeru. |
 | `include/kmeans.hpp`, `src/seq/kmeans_seq.cpp` | K-means (Lloyd): SplitMix64 + Fisher-Yates inicijalizacija, 25 iteracija, sume u double, prazni klasteri → najdalja tačka. |
@@ -444,8 +444,9 @@ Ovdje je samo kako je ponoviti.
   Ako se promijeni kod izgradnje indeksa, fajl obrisati.
 - Mjeri se samo pretraga (`perf::measure`: zagrijavanje, ponavljanja, medijan); ispis: QPS, ns po udaljenosti,
   propusnost skeniranja (GB/s), Recall@10 i da li je rezultat identičan skalarnoj referenci.
-- `udaljenost`: `scalar` (referenca), `scalar4` (4 akumulatora), `avx2` (AVX2 + FMA, 1 akumulator),
-  `avx2x4` (AVX2 + FMA, 4 akumulatora). AVX2 varijante postoje samo na x86 i traže procesor sa AVX2 i FMA.
+- `udaljenost`: `scalar` (referenca), `scalar4` (4 akumulatora), `auto` (auto-vektorizacija kompajlera),
+  `omp` (`#pragma omp simd reduction`), `avx2` (AVX2 + FMA, 1 akumulator), `avx2x4` (AVX2 + FMA, 4 akumulatora).
+  AVX2 varijante postoje samo na x86 i traže procesor sa AVX2 i FMA.
 - `provjera`: 1 (podrazumijevano) poredi rezultat sa skalarnom referencom ID po ID (izlazni kod 1 ako se razlikuje);
   0 preskače poređenje (koristi ga VTune skripta, da računanje reference ne uđe u profil).
 
@@ -475,5 +476,5 @@ cmd /c start /b /wait /affinity 4 build\Release\prs_ann.exe ivf-bench data/sift 
    (kratka putanja, jer VTune-ov kolektor ne radi sa putanjama dužim od 260 znakova).
 4. Tabele iz CSV-ova (iz korijena repoa):
    ```bash
-   python implementacija/scripts/vtune/tabela.py scalar scalar4 avx2 avx2x4
+   python implementacija/scripts/vtune/tabela.py scalar avx2x4
    ```
