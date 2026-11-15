@@ -3,7 +3,7 @@
 IVF-Flat indeks za približnu pretragu najbližih susjeda (Approximate Nearest Neighbor), u C++20:
 
 1. sekvencijalna verzija (referenca) – **gotova i provjerena**,
-2. SIMD verzija funkcije udaljenosti (AVX2 + FMA) – sljedeće,
+2. SIMD verzija funkcije udaljenosti (AVX2 + FMA) – AVX2 verzije gotove (VTune analiza, [sekcija 12](#12-mjerenje-pretrage-i-vtune)); auto i `omp simd` slijede,
 3. OpenMP verzija (izgradnja indeksa i pretraga),
 4. mjerenja i poređenje sa FAISS `IndexIVFFlat` (CPU).
 
@@ -25,6 +25,7 @@ kako ga pokrenuti, šta se provjerava i kako čitati rezultate.
 9. [Python (faza mjerenja)](#9-python-faza-mjerenja)
 10. [IDE](#10-ide)
 11. [Česti problemi](#11-česti-problemi)
+12. [Mjerenje pretrage i VTune](#12-mjerenje-pretrage-i-vtune)
 
 ---
 
@@ -238,6 +239,7 @@ Svaka komanda vraća izlazni kod 0 ako je provjera prošla, 1 ako nije.
 | `kmeans-check <folder> <nlist> [iteracije] [seed]` | 2: k-means | SIFT10K nlist 64 ≈ 4 s; SIFT1M nlist 256 ≈ 60 s |
 | `ivf-check <folder> <nlist> [iteracije] [seed]` | 3: invertovane liste | SIFT1M nlist 256 ≈ 1,5 min |
 | `ivf-search <folder> <nlist> [broj_upita] [k]` | 4: pretraga | SIFT10K sekunde; SIFT1M, 1000 upita ≈ 4 min |
+| `ivf-bench <folder> <nlist> <nprobe> [broj_upita] [ponavljanja] [udaljenost] [provjera]` | mjerenje pretrage ([sekcija 12](#12-mjerenje-pretrage-i-vtune)) | SIFT1M, 1000 upita, `nprobe` 32: 5–12 s po ponavljanju |
 
 Podrazumijevano: svi upiti, k = 100 (gt-check) / 10 (ivf-search), 25 iteracija, seed 20261107.
 Na laptopu na bateriji sve traje ~2,5× duže (procesor smanji takt) – rezultati su isti, vremena nisu.
@@ -337,7 +339,7 @@ implementacija/
 │  ├─ omp/            OpenMP verzija (još prazno)
 │  └─ main.cpp        komande gt-check, kmeans-check, ivf-check, ivf-search
 ├─ tests/test_seq.cpp testovi graničnih slučajeva (program ann_tests)
-├─ scripts/           Python skripte: FAISS referenca, grafikoni (još prazno)
+├─ scripts/           vtune/collect.ps1 (VTune snimanje), vtune/tabela.py (tabele); FAISS i grafikoni slijede
 ├─ results/           CSV rezultati i grafikoni (još prazno)
 ├─ data/              SIFT podaci (nije na GitHubu)
 ├─ build/             kompajlirani programi (nije na GitHubu)
@@ -351,10 +353,12 @@ Fajlovi, redom kojim podaci prolaze kroz program:
 | `include/simd_support.hpp` | `AlignedFloats`: niz floatova poravnat na 32 B (za AVX2). Windows `_aligned_malloc`, ostali `posix_memalign`. |
 | `include/dataset.hpp`, `src/common/dataset.cpp` | `read_fvecs` / `read_ivecs` → `FloatMatrix` / `IntMatrix` (ravni nizovi, red i = `row(i)`). Provjerava dimenziju svakog zapisa i veličinu fajla. |
 | `include/distance.hpp`, `src/distance/l2_scalar.cpp` | Kvadrat L2 udaljenosti i tip `DistFn`. Sav ostali kod prima udaljenost kao parametar, pa SIMD verzije ne mijenjaju IVF kod. Skalarna verzija se kompajlira bez vektorizacije (referenca). |
+| `src/distance/l2_unrolled.cpp`, `src/distance/l2_avx2.cpp`, `src/distance/registry.cpp` | Optimizacije iz VTune analize: skalarna sa 4 akumulatora, AVX2 + FMA sa 1 i 4 akumulatora; registar bira varijantu po imenu (`ivf-bench`) i provjerava da procesor ima AVX2/FMA. |
 | `include/topk.hpp` | `TopK`: max-heap veličine k (vrh = najlošiji od k najboljih). Pri jednakoj udaljenosti pobjeđuje manji ID. `SearchResult` = format rezultata. |
 | `include/bruteforce.hpp`, `src/seq/bruteforce_seq.cpp` | Tačan kNN – etalon za provjeru. |
 | `include/kmeans.hpp`, `src/seq/kmeans_seq.cpp` | K-means (Lloyd): SplitMix64 + Fisher-Yates inicijalizacija, 25 iteracija, sume u double, prazni klasteri → najdalja tačka. |
-| `include/ivf_index.hpp`, `src/seq/ivf_seq.cpp` | **Srce projekta.** `IvfLists` (CSR: `centroids`, `offset`, `list_data`, `list_ids`) i `IvfFlatSeq` sa `train`, `set_centroids`, `add`, `search`; `select_probes` bira nprobe listi. |
+| `include/ivf_index.hpp`, `src/seq/ivf_seq.cpp` | **Srce projekta.** `IvfLists` (CSR: `centroids`, `offset`, `list_data`, `list_ids`) i `IvfFlatSeq` sa `train`, `set_centroids`, `set_lists`, `add`, `search`; `select_probes` bira nprobe listi. |
+| `include/ivf_io.hpp`, `src/common/ivf_io.cpp` | Čuvanje i učitavanje indeksa u binarni fajl (magični niz `PRSIVF01`, provjera veličine), da sva mjerenja rade na identičnom indeksu. |
 | `include/eval.hpp`, `src/common/eval.cpp` | `recall_at_k`, poređenje sa groundtruth-om po udaljenostima, provjera strukture listi. |
 | `include/bench.hpp`, `src/common/bench.cpp` | Mjerni okvir iz Lab 1 (`perf::measure`: zagrijavanje, ponavljanja, medijan) – za fazu mjerenja. |
 
@@ -421,3 +425,55 @@ python3 -m venv .venv
 | macOS: greška za `-mcpu=native` | Stariji Apple clang. Ažurirati Xcode Command Line Tools. |
 | Vremena mnogo duža nego kod drugih | Laptop na bateriji, ili je pokrenut Debug build. Mjeriti samo Release, na punjaču. |
 | Brojevi (recall) drugačiji nego u ovom dokumentu | Ne bi smjelo da se desi – kod je deterministički. Javiti timu (kompajler, sistem, ispis). |
+
+---
+
+## 12. Mjerenje pretrage i VTune
+
+Analiza uskih grla i optimizacije udaljenosti opisana je u [`docs/vtune/izvjestaj.md`](../docs/vtune/izvjestaj.md).
+Ovdje je samo kako je ponoviti.
+
+### `ivf-bench` – mjerenje samo pretrage
+
+```bash
+./build/Release/prs_ann ivf-bench data/sift 256 32 1000 5 avx2x4
+```
+
+- Prvo pokretanje napravi indeks **skalarnom** verzijom i sačuva ga u `data/sift/sift_ivf_nlist256_seed20261107.bin`
+  (SIFT1M ≈ 1,5–2 min, 516 MB). Sljedeća pokretanja ga samo učitaju, pa sve varijante mjere na identičnom indeksu.
+  Ako se promijeni kod izgradnje indeksa, fajl obrisati.
+- Mjeri se samo pretraga (`perf::measure`: zagrijavanje, ponavljanja, medijan); ispis: QPS, ns po udaljenosti,
+  propusnost skeniranja (GB/s), Recall@10 i da li je rezultat identičan skalarnoj referenci.
+- `udaljenost`: `scalar` (referenca), `scalar4` (4 akumulatora), `avx2` (AVX2 + FMA, 1 akumulator),
+  `avx2x4` (AVX2 + FMA, 4 akumulatora). AVX2 varijante postoje samo na x86 i traže procesor sa AVX2 i FMA.
+- `provjera`: 1 (podrazumijevano) poredi rezultat sa skalarnom referencom ID po ID (izlazni kod 1 ako se razlikuje);
+  0 preskače poređenje (koristi ga VTune skripta, da računanje reference ne uđe u profil).
+
+Na procesoru sa P i E jezgrima (Intel 12. generacija i novije) mjerenje vezati za jedno P-jezgro, inače vrijeme
+zavisi od toga gdje ga sistem stavi (PowerShell / cmd):
+```powershell
+cmd /c start /b /wait /affinity 4 build\Release\prs_ann.exe ivf-bench data/sift 256 32 1000 5 avx2x4
+```
+
+### VTune (Windows, Intel procesor)
+
+1. Instalirati Intel VTune Profiler i jednom, u PowerShellu **kao administrator**, sampling driver:
+   ```powershell
+   & "C:\Program Files (x86)\Intel\oneAPI\vtune\latest\bin64\amplxe-sepreg.exe" -i
+   ```
+2. Build sa simbolima (isti kod kao Release, plus `-g`):
+   ```bash
+   cmake -S . -B build/vtune -G Ninja -DCMAKE_BUILD_TYPE=RelWithDebInfo
+   cmake --build build/vtune
+   ```
+3. Snimanje, u PowerShellu **kao administrator** (hardversko uzorkovanje na Windowsu to traži):
+   ```powershell
+   powershell -ExecutionPolicy Bypass -File scripts\vtune\collect.ps1 -Distances scalar,avx2x4
+   ```
+   Za svaku varijantu snima `hotspots`, `uarch-exploration` i `memory-access`; CSV izvještaji idu u
+   `docs/vtune/rezultati/<varijanta>/`, a sirovi rezultati (za VTune GUI) u `%LOCALAPPDATA%\prs-vtune`
+   (kratka putanja, jer VTune-ov kolektor ne radi sa putanjama dužim od 260 znakova).
+4. Tabele iz CSV-ova (iz korijena repoa):
+   ```bash
+   python implementacija/scripts/vtune/tabela.py scalar scalar4 avx2 avx2x4
+   ```
