@@ -194,6 +194,40 @@ Procesor ima P i E jezgra; ista pretraga na E-jezgru traje 2,3× duže. Bez vezi
 **Zašto je indeks sačuvan, a ne pravljen svaki put?**
 Izgradnja na SIFT1M traje ~1,5 min, a brža udaljenost bi dala malo drugačije centroide. Ovako sve varijante mjere na bit-identičnom indeksu.
 
+## 11. Snimci ekrana (dokaz pokretanja)
+
+Snimci stvarnih pokretanja na ovom računaru (folder [`slike/`](slike/)). VTune snimci prikazuju početni pogled (Summary) rezultata iz finalnog snimanja. Taj pogled sažima cijelo snimanje, sa svim nitima, pa se brojke u njemu malo razlikuju od tabela po funkciji iz sekcije 6. Putanja do programa u redu "Application Command Line" skraćena je na `<repo>`, isto kao u CSV i log fajlovima.
+
+**Pretraga, samostalno pokretanje (vezano za P-jezgro):**
+
+![ivf-bench, skalarna verzija](slike/01-ivf-bench-scalar.png)
+*Skalarna verzija: 12,03 s za 1000 upita, 83,2 QPS.*
+
+![ivf-bench, AVX2 + FMA sa 4 akumulatora](slike/02-ivf-bench-avx2x4.png)
+*`avx2x4`: 4,93 s, 202,9 QPS, rezultat identičan skalarnoj referenci (1000/1000 upita).*
+
+**VTune, skalarna verzija:**
+
+![VTune hotspots, scalar](slike/03-vtune-scalar-hotspots.png)
+*Hotspots: `ann::l2_scalar` troši 84,3 % CPU vremena; vidi se komandna linija sa vezivanjem za jezgro (`start /affinity 4`).*
+
+![VTune microarchitecture exploration, scalar](slike/04-vtune-scalar-uarch-exploration.png)
+*Microarchitecture Exploration: na P-jezgru Retiring 61,5 %, Back-End Bound 9,9 %.*
+
+![VTune memory access, scalar](slike/05-vtune-scalar-memory-access.png)
+*Memory Access: Memory Bound 4,1 % na P-jezgru.*
+
+**VTune, `avx2x4`:**
+
+![VTune hotspots, avx2x4](slike/06-vtune-avx2x4-hotspots.png)
+*Hotspots za AVX2 verziju (bez `-inline-mode off` ovaj pogled prikazuje AVX2 intrinzike kao zasebne funkcije; vidi sekciju 8).*
+
+![VTune microarchitecture exploration, avx2x4](slike/07-vtune-avx2x4-uarch-exploration.png)
+*Microarchitecture Exploration: Back-End Bound 65,7 %, od toga Memory Bound 39,4 % (DRAM Bound 40,7 %, unutar njega Memory Bandwidth 90,6 %) i Core Bound 26,3 %; Vector Capacity Usage 48,4 %.*
+
+![VTune memory access, avx2x4](slike/08-vtune-avx2x4-memory-access.png)
+*Memory Access: Memory Bound 37,7 %, DRAM Bound 37,6 %.*
+
 ## Kako ponoviti
 
 ```bash
