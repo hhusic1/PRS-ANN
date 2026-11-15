@@ -29,7 +29,7 @@
 
 ---
 
-### Zadatak 1: Čuvanje i učitavanje indeksa
+### Task 1: Čuvanje i učitavanje indeksa
 
 **Fajlovi:**
 - Novo: `implementacija/include/ivf_io.hpp`, `implementacija/src/common/ivf_io.cpp`
@@ -49,7 +49,7 @@ Format fajla (little-endian): magični niz `PRSIVF01` (8 B), `uint64 nlist, d, n
 - [ ] **Korak 4:** `ann_tests` → `SVI TESTOVI PROSLI (0 gresaka)`.
 - [ ] **Korak 5:** commit.
 
-### Zadatak 2: Komanda `ivf-bench`
+### Task 2: Komanda `ivf-bench`
 
 **Fajlovi:**
 - Izmjena: `implementacija/src/main.cpp`
@@ -70,7 +70,7 @@ Ponašanje: fajl indeksa `<folder>/<ime>_ivf_nlist<nlist>_seed20261107.bin`; ako
 - [ ] **Korak 4:** `prs_ann ivf-bench data/siftsmall 64 8 0 5 nepostoji` → spisak imena, izlazni kod 2.
 - [ ] **Korak 5:** `ann_tests` prolazi; commit.
 
-### Zadatak 3: Optimizovane varijante udaljenosti (nakon zadatka 5)
+### Task 3: Optimizovane varijante udaljenosti (nakon zadatka 5)
 
 Radi se samo ako zadatak 5 potvrdi da je usko grlo zavisnost u `l2_scalar`. Inače se ovaj zadatak prepisuje prema nalazu.
 
@@ -91,7 +91,7 @@ Radi se samo ako zadatak 5 potvrdi da je usko grlo zavisnost u `l2_scalar`. Ina�
 - [ ] **Korak 4:** `ann_tests` prolazi; `ivf-bench data/siftsmall 64 8 0 5 avx2x4` → identično skalarnoj `100 / 100`, Recall@10 `0.9770`.
 - [ ] **Korak 5:** commit.
 
-### Zadatak 4: VTune skripta
+### Task 4: VTune skripta
 
 **Fajlovi:**
 - Novo: `implementacija/scripts/vtune/collect.ps1`
@@ -105,7 +105,7 @@ Radi se samo ako zadatak 5 potvrdi da je usko grlo zavisnost u `l2_scalar`. Ina�
 - [ ] **Korak 2:** probni rad na `data/siftsmall` (nakon instalacije drivera) → CSV fajlovi postoje i sadrže `l2_scalar` među funkcijama.
 - [ ] **Korak 3:** commit.
 
-### Zadatak 5: Početno mjerenje i analiza
+### Task 5: Početno mjerenje i analiza
 
 - [ ] **Korak 1:** napraviti indeks za SIFT1M: `ivf-bench data/sift 256 32 1000 3 scalar` (pravi i čuva indeks; liste ~516 MB, `nprobe` 32 skenira ~13 % baze ≈ 64 MB po upitu, više od L3 keša od 18 MB).
 - [ ] **Korak 2:** vremena za `scalar` (5 ponavljanja, vezano za P-jezgro).
@@ -113,13 +113,13 @@ Radi se samo ako zadatak 5 potvrdi da je usko grlo zavisnost u `l2_scalar`. Ina�
 - [ ] **Korak 4:** iz CSV-a izdvojiti: CPI, Retiring, Front-End Bound, Bad Speculation, Back-End Bound, Memory Bound (L1/L2/L3/DRAM), Core Bound, propusnost memorije; zapisati zaključak (potvrđena ili odbačena hipoteza).
 - [ ] **Korak 5:** commit CSV-ova i bilješki.
 
-### Zadatak 6: Mjerenje nakon optimizacije
+### Task 6: Mjerenje nakon optimizacije
 
 - [ ] **Korak 1:** vremena za `scalar`, `scalar4`, `avx2`, `avx2x4` na istom indeksu, sa istim parametrima; svaka varijanta `identicno ... 1000 / 1000`.
 - [ ] **Korak 2:** `collect.ps1 -Label avx2x4` (i `scalar4`, ako zadatak 5 pokaže da je bitan) sa sve tri analize.
 - [ ] **Korak 3:** tabela prije/poslije istih metrika; commit.
 
-### Zadatak 7: Izvještaj
+### Task 7: Izvještaj
 
 **Fajlovi:**
 - Novo: `docs/vtune/izvjestaj.md`
