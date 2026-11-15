@@ -1,0 +1,51 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="780" height="378" viewBox="0 0 780 378" font-family="Segoe UI, Helvetica, Arial, sans-serif">
+<rect width="780" height="378" rx="8" fill="#fcfcfb"/>
+<text x="24.0" y="34.0" font-size="17" fill="#0b0b0b" text-anchor="start" font-weight="600">Propusnost skeniranja vektora (GB/s, veće je bolje)</text>
+<text x="24.0" y="56.0" font-size="12.5" fill="#52514e" text-anchor="start" font-weight="normal">iz RAM-a sve brze varijante zapnu na ~12–13,6 GB/s; iz keša ista funkcija čita do 35 GB/s</text>
+<rect x="24" y="74" width="12" height="12" rx="3" fill="#2a78d6"/>
+<text x="42.0" y="84.0" font-size="12.5" fill="#52514e" text-anchor="start" font-weight="normal">SIFT1M, podaci iz RAM-a</text>
+<rect x="215.6" y="74" width="12" height="12" rx="3" fill="#eb6834"/>
+<text x="233.6" y="84.0" font-size="12.5" fill="#52514e" text-anchor="start" font-weight="normal">SIFT10K, podaci u kešu</text>
+<line x1="60" y1="344.0" x2="756" y2="344.0" stroke="#e4e3df" stroke-width="1"/>
+<text x="52.0" y="348.0" font-size="12" fill="#52514e" text-anchor="end" font-weight="normal">0</text>
+<line x1="60" y1="284.0" x2="756" y2="284.0" stroke="#e4e3df" stroke-width="1"/>
+<text x="52.0" y="288.0" font-size="12" fill="#52514e" text-anchor="end" font-weight="normal">10</text>
+<line x1="60" y1="224.0" x2="756" y2="224.0" stroke="#e4e3df" stroke-width="1"/>
+<text x="52.0" y="228.0" font-size="12" fill="#52514e" text-anchor="end" font-weight="normal">20</text>
+<line x1="60" y1="164.0" x2="756" y2="164.0" stroke="#e4e3df" stroke-width="1"/>
+<text x="52.0" y="168.0" font-size="12" fill="#52514e" text-anchor="end" font-weight="normal">30</text>
+<line x1="60" y1="104.0" x2="756" y2="104.0" stroke="#e4e3df" stroke-width="1"/>
+<text x="52.0" y="108.0" font-size="12" fill="#52514e" text-anchor="end" font-weight="normal">40</text>
+<line x1="60" y1="262.3" x2="756" y2="262.3" stroke="#0b0b0b" stroke-width="1.5" stroke-dasharray="5 4"/>
+<text x="66.0" y="238.3" font-size="12" fill="#0b0b0b" text-anchor="start" font-weight="600" stroke="#fcfcfb" stroke-width="4" paint-order="stroke">najviše iz RAM-a na jednom jezgru: 13,6 GB/s</text>
+<path d="M91.0,344.0 V313.8 A4,4 0 0 1 95.0,309.8 H113.0 A4,4 0 0 1 117.0,313.8 V344.0 Z" fill="#2a78d6"/>
+<text x="104.0" y="304.8" font-size="11.5" fill="#0b0b0b" text-anchor="middle" font-weight="normal" stroke="#fcfcfb" stroke-width="4" paint-order="stroke">5,7</text>
+<path d="M119.0,344.0 V313.2 A4,4 0 0 1 123.0,309.2 H141.0 A4,4 0 0 1 145.0,313.2 V344.0 Z" fill="#eb6834"/>
+<text x="132.0" y="304.2" font-size="11.5" fill="#0b0b0b" text-anchor="middle" font-weight="normal" stroke="#fcfcfb" stroke-width="4" paint-order="stroke">5,8</text>
+<text x="118.0" y="362.0" font-size="12.5" fill="#0b0b0b" text-anchor="middle" font-weight="normal">scalar</text>
+<path d="M207.0,344.0 V299.9 A4,4 0 0 1 211.0,295.9 H229.0 A4,4 0 0 1 233.0,299.9 V344.0 Z" fill="#2a78d6"/>
+<text x="220.0" y="290.9" font-size="11.5" fill="#0b0b0b" text-anchor="middle" font-weight="normal" stroke="#fcfcfb" stroke-width="4" paint-order="stroke">8,0</text>
+<path d="M235.0,344.0 V288.5 A4,4 0 0 1 239.0,284.5 H257.0 A4,4 0 0 1 261.0,288.5 V344.0 Z" fill="#eb6834"/>
+<text x="248.0" y="279.5" font-size="11.5" fill="#0b0b0b" text-anchor="middle" font-weight="normal" stroke="#fcfcfb" stroke-width="4" paint-order="stroke">9,9</text>
+<text x="234.0" y="362.0" font-size="12.5" fill="#0b0b0b" text-anchor="middle" font-weight="normal">scalar4</text>
+<path d="M323.0,344.0 V304.9 A4,4 0 0 1 327.0,300.9 H345.0 A4,4 0 0 1 349.0,304.9 V344.0 Z" fill="#2a78d6"/>
+<text x="336.0" y="295.9" font-size="11.5" fill="#0b0b0b" text-anchor="middle" font-weight="normal" stroke="#fcfcfb" stroke-width="4" paint-order="stroke">7,2</text>
+<path d="M351.0,344.0 V296.4 A4,4 0 0 1 355.0,292.4 H373.0 A4,4 0 0 1 377.0,296.4 V344.0 Z" fill="#eb6834"/>
+<text x="364.0" y="287.4" font-size="11.5" fill="#0b0b0b" text-anchor="middle" font-weight="normal" stroke="#fcfcfb" stroke-width="4" paint-order="stroke">8,6</text>
+<text x="350.0" y="362.0" font-size="12.5" fill="#0b0b0b" text-anchor="middle" font-weight="normal">auto</text>
+<path d="M439.0,344.0 V275.4 A4,4 0 0 1 443.0,271.4 H461.0 A4,4 0 0 1 465.0,275.4 V344.0 Z" fill="#2a78d6"/>
+<text x="452.0" y="266.4" font-size="11.5" fill="#0b0b0b" text-anchor="middle" font-weight="normal" stroke="#fcfcfb" stroke-width="4" paint-order="stroke">12,1</text>
+<path d="M467.0,344.0 V172.4 A4,4 0 0 1 471.0,168.4 H489.0 A4,4 0 0 1 493.0,172.4 V344.0 Z" fill="#eb6834"/>
+<text x="480.0" y="163.4" font-size="11.5" fill="#0b0b0b" text-anchor="middle" font-weight="normal" stroke="#fcfcfb" stroke-width="4" paint-order="stroke">29,3</text>
+<text x="466.0" y="362.0" font-size="12.5" fill="#0b0b0b" text-anchor="middle" font-weight="normal">omp</text>
+<path d="M555.0,344.0 V269.3 A4,4 0 0 1 559.0,265.3 H577.0 A4,4 0 0 1 581.0,269.3 V344.0 Z" fill="#2a78d6"/>
+<text x="568.0" y="260.3" font-size="11.5" fill="#0b0b0b" text-anchor="middle" font-weight="normal" stroke="#fcfcfb" stroke-width="4" paint-order="stroke">13,1</text>
+<path d="M583.0,344.0 V171.3 A4,4 0 0 1 587.0,167.3 H605.0 A4,4 0 0 1 609.0,171.3 V344.0 Z" fill="#eb6834"/>
+<text x="596.0" y="162.3" font-size="11.5" fill="#0b0b0b" text-anchor="middle" font-weight="normal" stroke="#fcfcfb" stroke-width="4" paint-order="stroke">29,4</text>
+<text x="582.0" y="362.0" font-size="12.5" fill="#0b0b0b" text-anchor="middle" font-weight="normal">avx2</text>
+<path d="M671.0,344.0 V266.3 A4,4 0 0 1 675.0,262.3 H693.0 A4,4 0 0 1 697.0,266.3 V344.0 Z" fill="#2a78d6"/>
+<text x="684.0" y="257.3" font-size="11.5" fill="#0b0b0b" text-anchor="middle" font-weight="normal" stroke="#fcfcfb" stroke-width="4" paint-order="stroke">13,6</text>
+<path d="M699.0,344.0 V136.8 A4,4 0 0 1 703.0,132.8 H721.0 A4,4 0 0 1 725.0,136.8 V344.0 Z" fill="#eb6834"/>
+<text x="712.0" y="127.8" font-size="11.5" fill="#0b0b0b" text-anchor="middle" font-weight="normal" stroke="#fcfcfb" stroke-width="4" paint-order="stroke">35,2</text>
+<text x="698.0" y="362.0" font-size="12.5" fill="#0b0b0b" text-anchor="middle" font-weight="normal">avx2x4</text>
+</svg>

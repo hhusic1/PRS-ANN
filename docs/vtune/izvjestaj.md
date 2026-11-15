@@ -2,6 +2,8 @@
 
 Projekat PRS-ANN, 15.–16. 11. 2026. Mjereno Intel VTune Profilerom 2026.6 na Intel Core i5-12500H.
 
+Vodič za izlaganje (redoslijed, šta pokazati, značenje brojki): [`prezentacija.md`](prezentacija.md).
+
 ## Sažetak
 
 - **Gdje je vrijeme:** 84–94 % CPU vremena pretrage troši jedna funkcija, kvadrat L2 udaljenosti (`l2_scalar`).
@@ -147,6 +149,8 @@ Kontrolni eksperiment, SIFT10K (indeks od 5 MB staje u L3 keš):
 
 Recall@10 je u svim varijantama isti: 0,9975 na SIFT1M, 1,0 na SIFT10K.
 
+![Ubrzanje po varijanti, SIFT1M i SIFT10K](slike/09-ubrzanje.svg)
+
 Šta se vidi:
 1. **Auto-vektorizacija pomaže malo** (1,26×), jer lanac sabiranja ostaje.
 2. **`omp simd` je praktično jednak ručnom AVX2 sa jednim akumulatorom** (17,3 naspram 17,2 ns u kešu). Direktiva je dovoljna da se dobije pravi SIMD.
@@ -173,6 +177,8 @@ Ponovljeno snimanje na neopterećenom računaru, `scalar` naspram `avx2x4` (funk
 | — Core Bound % | 3,7 | 27,2 |
 | udio CPU vremena funkcije udaljenosti % | 93,6 | 86,4 |
 
+![Top-down podjela taktova prije i poslije](slike/10-top-down.svg)
+
 Šta se vidi:
 1. **SIMD radi.** FP Vector raste sa 0 na 38 %, iskorištenost vektorskih jedinica sa 6 na 48 %, a broj instrukcija po elementu pada 8× (7,12 → 0,89).
 2. **Usko grlo se pomjerilo na memoriju.** Memory Bound raste sa 6 % na 42 %, DRAM Bound na 44 %, a u VTune pregledu "Memory Bandwidth" čini 91 % DRAM Bound-a (snimak 07). Procesor sada veliki dio vremena čeka da podaci stignu iz RAM-a.
@@ -187,6 +193,8 @@ Zašto `avx2x4` nije 6× brža i na SIFT1M:
 - **Računska procjena:** po elementu se rade oko 3 operacije na 4 bajta podataka (oduzimanje i FMA), tj. ~0,75 FLOP/B. Pri 13,6 GB/s to je ~10 GFLOP/s, a jedno jezgro sa dvije AVX2 FMA jedinice može ~100 GFLOP/s. Procesor bi, dakle, mogao računati ~10× brže nego što memorija dostavlja podatke.
 
 Platforma ima ~45 GB/s, ali jedno jezgro može imati samo ograničen broj istovremenih zahtjeva prema memoriji. Propusnost je otprilike broj zahtjeva × 64 B / kašnjenje (Littleov zakon). Uz kašnjenje od ~100 ns, 13,6 GB/s odgovara ~20 istovremenih zahtjeva (procjena). Više jezgara znači više istovremenih zahtjeva, pa je **OpenMP faza** prirodan sljedeći korak za veće skupove.
+
+![Propusnost skeniranja: RAM naspram keša](slike/11-propusnost.svg)
 
 ## 8. Ograničenja mjerenja
 
@@ -277,6 +285,7 @@ Snimci stvarnih pokretanja na ovom računaru (folder [`slike/`](slike/)). VTune 
 ./build/Release/prs_ann ivf-bench data/sift 256 32 1000 5 avx2x4      # vrijeme + provjera
 powershell -ExecutionPolicy Bypass -File scripts/vtune/collect.ps1 -Distances scalar,avx2x4   # kao administrator
 python scripts/vtune/tabela.py scalar avx2x4                          # tabele iz CSV-ova
+python scripts/vtune/grafikoni.py                                     # grafikoni 09–11 (SVG)
 ```
 
 Detaljno uputstvo je u `implementacija/README.md`, sekcija 12.
