@@ -38,7 +38,7 @@ Izmjeriti Intel VTune Profilerom gdje sekvencijalna IVF-Flat implementacija gubi
 1. **Čuvanje indeksa:** indeks (centroidi, `offset`, `list_data`, `list_ids`) se jednom napravi skalarnom verzijom i sačuva u binarni fajl; `ivf-bench` ga učitava (ili pravi i čuva ako ne postoji).
 2. **`ivf-bench <folder> <nlist> <nprobe> [broj_upita] [ponavljanja] [udaljenost]`:** mjeri samo pretragu (zagrijavanje, ponavljanja, medijan), ispisuje QPS, ns po udaljenosti i propusnost skeniranja (GB/s), i provjerava da je rezultat identičan skalarnoj referenci.
 3. **VTune prije optimizacije:** `hotspots`, `uarch-exploration`, `memory-access` na SIFT1M; proces vezan za P-jezgro.
-4. **Optimizacija prema nalazu.** Ako se potvrdi hipoteza (lanac zavisnih sabiranja u `l2_scalar`), eksperiment u četiri varijante: skalarna sa 1 akumulatorom (sada), skalarna sa 4 akumulatora, AVX2 sa 1 akumulatorom, AVX2 + FMA sa 4 akumulatora. Svaka u svom fajlu, sa svojim zastavicama (kao u Lab 1).
+4. **Optimizacija prema nalazu.** Ako se potvrdi hipoteza (lanac zavisnih sabiranja u `l2_scalar`), eksperiment u četiri varijante: skalarna sa 1 akumulatorom (sada), skalarna sa 4 akumulatora, AVX2 + FMA sa 1 akumulatorom, AVX2 + FMA sa 4 akumulatora. Obje AVX2 varijante koriste FMA, pa se razlikuju samo po broju akumulatora. Svaka u svom fajlu, sa svojim zastavicama (kao u Lab 1).
 5. **VTune poslije optimizacije**, isti skup analiza.
 6. **Izvještaj:** `docs/vtune/izvjestaj.md` sa tabelama, objašnjenjem metrika i zaključcima; sirovi CSV izvještaji VTune-a u `docs/vtune/rezultati/`.
 
