@@ -70,6 +70,12 @@ namespace ann
         // verzija i FAISS dobiju potpuno iste centroide kao sekvencijalna.
         void set_centroids(const FloatMatrix& centroids);
 
+        // Postavlja gotov indeks (centroide i liste), npr. učitan iz fajla
+        // (ivf_io.hpp), da sva mjerenja pretrage rade na identičnom indeksu.
+        // Baca std::invalid_argument ako liste nisu konzistentne
+        // (offset, n, d).
+        void set_lists(IvfLists lists);
+
         // Dodaje bazu u invertovane liste. Poziva se jednom, nakon train.
         void add(const FloatMatrix& base);
 

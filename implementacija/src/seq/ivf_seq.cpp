@@ -36,6 +36,17 @@ namespace ann
                     centroids.n * centroids.d * sizeof(float));
     }
 
+    void IvfFlatSeq::set_lists(IvfLists lists)
+    {
+        const std::size_t nlist = lists.nlist();
+        const bool ok = nlist > 0 && lists.offset.size() == nlist + 1 && lists.offset.front() == 0 &&
+                        lists.offset.back() == lists.n && lists.list_ids.size() == lists.n &&
+                        lists.list_data.size() == lists.n * lists.d();
+        if (!ok)
+            throw std::invalid_argument("IvfFlatSeq::set_lists: liste nisu konzistentne (offset, n, d)");
+        _lists = std::move(lists);
+    }
+
     // Punjenje listi je "counting sort" po broju liste, u tri prolaza:
     //
     //  1. dodjela:  label[i] = najbliži centroid vektora i   (O(N · nlist · d), skoro svo vrijeme)

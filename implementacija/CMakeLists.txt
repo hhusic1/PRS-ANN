@@ -52,6 +52,7 @@ add_library(ann_core STATIC
   src/common/bench.cpp
   src/common/dataset.cpp
   src/common/eval.cpp
+  src/common/ivf_io.cpp
   src/distance/l2_scalar.cpp
   src/seq/bruteforce_seq.cpp
   src/seq/kmeans_seq.cpp

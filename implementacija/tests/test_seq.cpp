@@ -6,6 +6,7 @@
 #include "bruteforce.hpp"
 #include "eval.hpp"
 #include "ivf_index.hpp"
+#include "ivf_io.hpp"
 #include "kmeans.hpp"
 #include "topk.hpp"
 
@@ -13,6 +14,9 @@
 #include <cmath>
 #include <cstdio>
 #include <cstring>
+#include <filesystem>
+#include <fstream>
+#include <stdexcept>
 
 namespace
 {
@@ -207,6 +211,84 @@ namespace
         expect(pad_ok, "manje kandidata od k: ostatak je -1");
     }
 
+    // Čuvanje indeksa na disk (za mjerenja na identičnom indeksu): učitan
+    // indeks mora biti bit-identičan originalu i davati iste rezultate, a
+    // pokvaren, skraćen ili tuđi fajl mora se odbiti.
+    void test_ivf_io()
+    {
+        std::puts("IVF: cuvanje i ucitavanje indeksa");
+        const ann::FloatMatrix base = random_matrix(600, 4, 11);
+        const ann::FloatMatrix queries = random_matrix(50, 4, 12);
+        ann::KMeansParams km;
+        km.iterations = 5;
+        ann::IvfFlatSeq index(ann::l2_scalar, km);
+        index.train(base, 10);
+        index.add(base);
+
+        const std::filesystem::path path = std::filesystem::temp_directory_path() / "prs_ann_test_ivf.bin";
+        ann::save_ivf_lists(index.lists(), path);
+        ann::IvfFlatSeq loaded(ann::l2_scalar);
+        loaded.set_lists(ann::load_ivf_lists(path));
+
+        const ann::IvfLists& a = index.lists();
+        const ann::IvfLists& b = loaded.lists();
+        auto same = [](const simd::AlignedFloats& x, const simd::AlignedFloats& y)
+        {
+            return x.size() == y.size() && std::memcmp(x.data(), y.data(), x.size() * sizeof(float)) == 0;
+        };
+        expect(b.centroids.n == a.centroids.n && b.centroids.d == a.centroids.d &&
+                   same(a.centroids.values, b.centroids.values),
+               "centroidi identicni");
+        expect(b.offset == a.offset && b.n == a.n, "offset i n identicni");
+        expect(same(a.list_data, b.list_data) && b.list_ids == a.list_ids, "liste identicne");
+        const ann::SearchResult r1 = index.search(queries, 20, 3);
+        const ann::SearchResult r2 = loaded.search(queries, 20, 3);
+        expect(r1.ids == r2.ids && r1.distances == r2.distances, "pretraga sa ucitanim indeksom identicna");
+
+        expect(ann::ivf_lists_match(b, 10, 4, 600), "indeks odgovara svom nlist, d i n");
+        expect(!ann::ivf_lists_match(b, 11, 4, 600) && !ann::ivf_lists_match(b, 10, 8, 600) &&
+                   !ann::ivf_lists_match(b, 10, 4, 601),
+               "indeks za drugi nlist, d ili n se prepoznaje");
+
+        auto load_throws = [&]()
+        {
+            try
+            {
+                ann::load_ivf_lists(path);
+                return false;
+            }
+            catch (const std::runtime_error&)
+            {
+                return true;
+            }
+        };
+        {
+            std::fstream f(path, std::ios::in | std::ios::out | std::ios::binary);
+            f.seekp(0);
+            f.put('X');
+        }
+        expect(load_throws(), "pogresan magicni niz se odbija");
+
+        ann::save_ivf_lists(index.lists(), path);
+        ann::IvfLists broken = ann::load_ivf_lists(path);
+        std::filesystem::resize_file(path, std::filesystem::file_size(path) - 4);
+        expect(load_throws(), "skracen fajl se odbija");
+        std::filesystem::remove(path);
+
+        bool rejected = false;
+        try
+        {
+            broken.offset.back() -= 1;
+            ann::IvfFlatSeq other(ann::l2_scalar);
+            other.set_lists(std::move(broken));
+        }
+        catch (const std::invalid_argument&)
+        {
+            rejected = true;
+        }
+        expect(rejected, "set_lists odbija nekonzistentne liste");
+    }
+
     void test_topk_ties()
     {
         std::puts("top-k: jednake udaljenosti i manje od k kandidata");
@@ -236,6 +318,7 @@ int main()
     test_topk_ties();
     test_ivf_lists_check();
     test_ivf_search();
+    test_ivf_io();
     std::printf("\n%s (%d gresaka)\n", failures == 0 ? "SVI TESTOVI PROSLI" : "NEKI TESTOVI NISU PROSLI", failures);
     return failures == 0 ? 0 : 1;
 }
