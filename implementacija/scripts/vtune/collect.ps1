@@ -73,7 +73,8 @@ foreach ($dist in $Distances) {
         # racunanje reference uslo u profil (provjera se radi bez VTune-a).
         $target = @("cmd.exe", "/c", "start", "/b", "/wait", "/affinity", $mask,
                     $exeFull, "ivf-bench", $Dataset, $Nlist, $Nprobe, $Queries, $Repeats, $dist, "0")
-        $collect = @("-collect", $analysis) + $knobs + @("-result-dir", $result, "--") + $target
+        # -data-limit 0: bez granice od 1000 MB (inace VTune prekine dugo snimanje).
+        $collect = @("-collect", $analysis) + $knobs + @("-data-limit", "0", "-result-dir", $result, "--") + $target
         # Izvjestaji se prvo pisu pored rezultata (kratka putanja), pa kopiraju u docs.
         $summary = @("-report", "summary", "-result-dir", $result, "-format", "csv", "-csv-delimiter", "comma",
                      "-report-output", (Join-Path $ResultRoot "$dist-$analysis-summary.csv"))
@@ -88,8 +89,11 @@ foreach ($dist in $Distances) {
             continue
         }
         if (Test-Path $result) { Remove-Item -Recurse -Force $result }
-        & $VTune @collect 2>&1 | ForEach-Object { "$_" } | Tee-Object (Join-Path $outDir "$analysis-log.txt")
-        if ($LASTEXITCODE -ne 0) { throw "VTune snimanje nije uspjelo ($dist / $analysis), kod $LASTEXITCODE" }
+        # Tee-Object u PowerShellu 5.1 pise UTF-16, pa se log upisuje posebno, u UTF-8.
+        & $VTune @collect 2>&1 | ForEach-Object { "$_" } | Tee-Object -Variable lines
+        $code = $LASTEXITCODE
+        $lines | Out-File -Encoding utf8 (Join-Path $outDir "$analysis-log.txt")
+        if ($code -ne 0) { throw "VTune snimanje nije uspjelo ($dist / $analysis), kod $code" }
         & $VTune @summary 2>&1 | Out-Null
         & $VTune @functions 2>&1 | Out-Null
         if ($LASTEXITCODE -ne 0) { throw "VTune izvjestaj nije uspio ($dist / $analysis), kod $LASTEXITCODE" }

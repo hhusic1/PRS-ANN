@@ -1,0 +1,381 @@
+vtune: Collection started. To stop the collection, either press CTRL-C or enter from another console window: vtune -r C:\Users\User\AppData\Local\prs-vtune\scalar-hotspots -command stop.
+Skup:      sift, base = 1000000, upita = 1000, d = 128 (Release)
+Indeks:    ucitan iz data/sift\sift_ivf_nlist256_seed20261107.bin
+Pretraga:  nlist = 256, nprobe = 32, k = 10, udaljenost = scalar, 3 ponavljanja
+
+  medijan / minimum:        12.8783 s / 12.8122 s
+  QPS:                      77.7
+  skenirano po upitu:       130769 vektora (13.08 % baze)
+  ns po udaljenosti:        98.29 (ukljucujuci udaljenosti do centroida)
+  propusnost skeniranja:    5.20 GB/s
+  Recall@10:                0.9975
+  identicno skalarnoj:      (ovo je skalarna referenca)
+
+CSV: scalar,sift,256,32,1000,3,12.878256,12.812169,77.7,130769,98.289,5.199,0.9975,1000
+vtune: Collection stopped.
+vtune: Using result path `C:\Users\User\AppData\Local\prs-vtune\scalar-hotspots'
+System.Management.Automation.RemoteException
+vtune: Executing actions  0 %                                                  
+vtune: Executing actions  0 % Finalizing results                               
+vtune: Executing actions  0 % Finalizing the result                            
+vtune: Executing actions  0 % Clearing the database                            
+vtune: Executing actions  7 % Clearing the database                            
+vtune: Executing actions  7 % Loading raw data to the database                 
+vtune: Executing actions  7 % Loading 'systemcollector-46836-DESKTOP-3C81MFD.sc
+vtune: Executing actions 12 % Loading 'systemcollector-46836-DESKTOP-3C81MFD.sc
+vtune: Executing actions 12 % Loading 'sepb1c0.20261115T174827.332428.tb7' file
+vtune: Executing actions 12 % Loading 'sepb1c0.20261115T174827.332428.tb7' file
+vtune: Executing actions 12 % Loading 'sepb1c0.20261115T174827.332428.tb7' file
+vtune: Executing actions 12 % Loading 'sepb1c0.20261115T174827.332428.tb7' file
+vtune: Executing actions 12 % Loading 'sepb1c0.20261115T174827.332428.tb7' file
+vtune: Executing actions 12 % Loading 'sepb1c0.20261115T174827.332428.tb7' file
+vtune: Executing actions 12 % Loading 'sepb1c0.20261115T174827.332428.tb7' file
+vtune: Executing actions 12 % Loading 'sepb1c0.20261115T174827.332428.tb7' file
+vtune: Executing actions 12 % Loading 'sepb1c0.20261115T174827.332428.tb7' file
+vtune: Executing actions 12 % Loading 'sepb1c0.20261115T174827.332428.tb7' file
+vtune: Executing actions 12 % Loading 'sepb1c0.20261115T174827.332428.tb7' file
+vtune: Executing actions 12 % Loading 'sepb1c0.20261115T174827.332428.tb7' file
+vtune: Executing actions 12 % Loading 'sepb1c0.20261115T174827.332428.tb7' file
+vtune: Executing actions 12 % Loading 'sepb1c0.20261115T174827.332428.tb7' file
+vtune: Executing actions 12 % Loading 'sepb1c0.20261115T174827.332428.tb7' file
+vtune: Executing actions 12 % Loading 'sepb1c0.20261115T174827.332428.tb7' file
+vtune: Executing actions 12 % Loading 'sepb1c0.20261115T174827.332428.tb7' file
+vtune: Executing actions 12 % Loading 'sepb1c0.20261115T174827.332428.tb7' file
+vtune: Executing actions 12 % Loading 'sepb1c0.20261115T174827.332428.tb7' file
+vtune: Executing actions 12 % Loading 'sepb1c0.20261115T174827.332428.tb7' file
+vtune: Executing actions 12 % Loading 'sepb1c0.20261115T174827.332428.tb7' file
+vtune: Executing actions 12 % Loading 'sepb1c0.20261115T174827.332428.tb7' file
+vtune: Executing actions 12 % Loading 'sepb1c0.20261115T174827.332428.tb7' file
+vtune: Executing actions 12 % Loading 'sepb1c0.20261115T174827.332428.tb7' file
+vtune: Executing actions 12 % Loading 'sepb1c0.20261115T174827.332428.tb7' file
+vtune: Executing actions 12 % Loading 'sepb1c0.20261115T174827.332428.tb7' file
+vtune: Executing actions 12 % Loading 'sepb1c0.20261115T174827.332428.tb7' file
+vtune: Executing actions 12 % Loading 'sepb1c0.20261115T174827.332428.tb7' file
+vtune: Executing actions 12 % Loading 'sepb1c0.20261115T174827.332428.tb7' file
+vtune: Executing actions 12 % Loading 'sepb1c0.20261115T174827.332428.tb7' file
+vtune: Executing actions 12 % Loading 'sepb1c0.20261115T174827.332428.tb7' file
+vtune: Executing actions 12 % Loading 'sepb1c0.20261115T174827.332428.tb7' file
+vtune: Executing actions 12 % Loading 'sepb1c0.20261115T174827.332428.tb7' file
+vtune: Executing actions 12 % Loading 'sepb1c0.20261115T174827.332428.tb7' file
+vtune: Executing actions 12 % Loading 'sepb1c0.20261115T174827.332428.tb7' file
+vtune: Executing actions 12 % Loading 'sepb1c0.20261115T174827.332428.tb7' file
+vtune: Executing actions 12 % Loading 'sepb1c0.20261115T174827.332428.tb7' file
+vtune: Executing actions 12 % Loading 'sepb1c0.20261115T174827.332428.tb7' file
+vtune: Executing actions 12 % Loading 'sepb1c0.20261115T174827.332428.tb7' file
+vtune: Executing actions 12 % Loading 'sepb1c0.20261115T174827.332428.tb7' file
+vtune: Executing actions 12 % Loading 'sepb1c0.20261115T174827.332428.tb7' file
+vtune: Executing actions 12 % Loading 'sepb1c0.20261115T174827.332428.tb7' file
+vtune: Executing actions 12 % Loading 'sepb1c0.20261115T174827.332428.tb7' file
+vtune: Executing actions 12 % Loading 'sepb1c0.20261115T174827.332428.tb7' file
+vtune: Executing actions 12 % Loading 'sepb1c0.20261115T174827.332428.tb7' file
+vtune: Executing actions 12 % Loading 'sepb1c0.20261115T174827.332428.tb7' file
+vtune: Executing actions 12 % Loading 'sepb1c0.20261115T174827.332428.tb7' file
+vtune: Executing actions 12 % Loading 'sepb1c0.20261115T174827.332428.tb7' file
+vtune: Executing actions 12 % Loading 'sepb1c0.20261115T174827.332428.tb7' file
+vtune: Executing actions 12 % Loading 'sepb1c0.20261115T174827.332428.tb7' file
+vtune: Executing actions 12 % Loading 'sepb1c0.20261115T174827.332428.tb7' file
+vtune: Executing actions 12 % Loading 'sepb1c0.20261115T174827.332428.tb7' file
+vtune: Executing actions 12 % Loading 'sepb1c0.20261115T174827.332428.tb7' file
+vtune: Executing actions 12 % Loading 'sepb1c0.20261115T174827.332428.tb7' file
+vtune: Executing actions 12 % Loading 'sepb1c0.20261115T174827.332428.tb7' file
+vtune: Executing actions 12 % Loading 'sepb1c0.20261115T174827.332428.tb7' file
+vtune: Executing actions 12 % Loading 'sepb1c0.20261115T174827.332428.tb7' file
+vtune: Executing actions 12 % Loading 'sepb1c0.20261115T174827.332428.tb7' file
+vtune: Executing actions 12 % Loading 'sepb1c0.20261115T174827.332428.tb7' file
+vtune: Executing actions 12 % Loading 'sepb1c0.20261115T174827.332428.tb7' file
+vtune: Executing actions 12 % Loading 'sepb1c0.20261115T174827.332428.tb7' file
+vtune: Executing actions 12 % Loading 'sepb1c0.20261115T174827.332428.tb7' file
+vtune: Executing actions 12 % Loading 'sepb1c0.20261115T174827.332428.tb7' file
+vtune: Executing actions 12 % Loading 'sepb1c0.20261115T174827.332428.tb7' file
+vtune: Executing actions 12 % Loading 'sepb1c0.20261115T174827.332428.tb7' file
+vtune: Executing actions 12 % Loading 'sepb1c0.20261115T174827.332428.tb7' file
+vtune: Executing actions 12 % Loading 'sepb1c0.20261115T174827.332428.tb7' file
+vtune: Executing actions 12 % Loading 'sepb1c0.20261115T174827.332428.tb7' file
+vtune: Executing actions 12 % Loading 'sepb1c0.20261115T174827.332428.tb7' file
+vtune: Executing actions 12 % Loading 'sepb1c0.20261115T174827.332428.tb7' file
+vtune: Executing actions 12 % Loading 'sepb1c0.20261115T174827.332428.tb7' file
+vtune: Executing actions 12 % Loading 'sepb1c0.20261115T174827.332428.tb7' file
+vtune: Executing actions 12 % Loading 'sepb1c0.20261115T174827.332428.tb7' file
+vtune: Executing actions 12 % Loading 'sepb1c0.20261115T174827.332428.tb7' file
+vtune: Executing actions 12 % Loading 'sepb1c0.20261115T174827.332428.tb7' file
+vtune: Executing actions 12 % Loading 'sepb1c0.20261115T174827.332428.tb7' file
+vtune: Executing actions 12 % Loading 'sepb1c0.20261115T174827.332428.tb7' file
+vtune: Executing actions 12 % Loading 'sepb1c0.20261115T174827.332428.tb7' file
+vtune: Executing actions 12 % Loading 'sepb1c0.20261115T174827.332428.tb7' file
+vtune: Executing actions 12 % Loading 'sepb1c0.20261115T174827.332428.tb7' file
+vtune: Executing actions 12 % Loading 'sepb1c0.20261115T174827.332428.tb7' file
+vtune: Executing actions 12 % Loading 'sepb1c0.20261115T174827.332428.tb7' file
+vtune: Executing actions 12 % Loading 'sepb1c0.20261115T174827.332428.tb7' file
+vtune: Executing actions 12 % Loading 'sepb1c0.20261115T174827.332428.tb7' file
+vtune: Executing actions 12 % Loading 'sepb1c0.20261115T174827.332428.tb7' file
+vtune: Executing actions 12 % Loading 'sepb1c0.20261115T174827.332428.tb7' file
+vtune: Executing actions 12 % Loading 'sepb1c0.20261115T174827.332428.tb7' file
+vtune: Executing actions 12 % Loading 'sepb1c0.20261115T174827.332428.tb7' file
+vtune: Executing actions 12 % Loading 'sepb1c0.20261115T174827.332428.tb7' file
+vtune: Executing actions 12 % Loading 'sepb1c0.20261115T174827.332428.tb7' file
+vtune: Executing actions 12 % Loading 'sepb1c0.20261115T174827.332428.tb7' file
+vtune: Executing actions 12 % Loading 'sepb1c0.20261115T174827.332428.tb7' file
+vtune: Executing actions 12 % Loading 'sepb1c0.20261115T174827.332428.tb7' file
+vtune: Executing actions 12 % Loading 'sepb1c0.20261115T174827.332428.tb7' file
+vtune: Executing actions 12 % Loading 'sepb1c0.20261115T174827.332428.tb7' file
+vtune: Executing actions 12 % Loading 'sepb1c0.20261115T174827.332428.tb7' file
+vtune: Executing actions 12 % Loading 'sepb1c0.20261115T174827.332428.tb7' file
+vtune: Executing actions 12 % Loading 'sepb1c0.20261115T174827.332428.tb7' file
+vtune: Executing actions 12 % Updating precomputed scalar metrics              
+vtune: Executing actions 14 % Updating precomputed scalar metrics              
+vtune: Executing actions 14 % Processing profile metrics and debug information 
+vtune: Executing actions 19 % Processing profile metrics and debug information 
+vtune: Executing actions 19 % Setting data model parameters                    
+vtune: Executing actions 19 % Resolving module symbols                         
+vtune: Executing actions 19 % Resolving information for `bfs.sys'              
+vtune: Executing actions 19 % Resolving information for `stornvme.sys'         
+vtune: Executing actions 19 % Resolving information for `nvpcf.sys'            
+vtune: Executing actions 19 % Resolving information for `intelppm.sys'         
+vtune: Executing actions 19 % Resolving information for `ntfs.sys'             
+vtune: Executing actions 19 % Resolving information for `ntoskrnl.exe'         
+vtune: Executing actions 19 % Resolving information for `igdkmdn64.sys'        
+vtune: Warning: Cannot locate debugging information for file `c:\windows\system32\drivers\bfs.sys'.
+vtune: Warning: Cannot locate debugging information for file `c:\windows\system32\drivers\stornvme.sys'.
+System.Management.Automation.RemoteException
+vtune: Executing actions 19 % Resolving information for `prs_ann.exe'          
+vtune: Executing actions 19 % Resolving information for `wdfilter.sys'         
+vtune: Executing actions 19 % Resolving information for `vgk.sys'              
+vtune: Warning: Cannot locate debugging information for file `c:\windows\system32\drivers\nvpcf.sys'.
+System.Management.Automation.RemoteException
+vtune: Executing actions 19 % Resolving information for `rdyboost.sys'         
+vtune: Warning: Cannot locate debugging information for file `c:\windows\system32\drivers\intelppm.sys'.
+System.Management.Automation.RemoteException
+vtune: Executing actions 19 % Resolving information for `acpi.sys'             
+vtune: Warning: Cannot locate debugging information for file `c:\windows\system32\drivers\ntfs.sys'.
+System.Management.Automation.RemoteException
+vtune: Executing actions 19 % Resolving information for `rt68cx21x64.sys'      
+vtune: Warning: Cannot locate debugging information for file `c:\windows\system32\ntoskrnl.exe'.
+vtune: Warning: Cannot locate debugging information for file `c:\windows\system32\drivers\wd\wdfilter.sys'.
+System.Management.Automation.RemoteException
+vtune: Executing actions 19 % Resolving information for `fltmgr.sys'           
+vtune: Warning: Cannot locate debugging information for file `c:\windows\system32\driverstore\filerepository\41_hp_adl-p_iigd_dch.inf_amd64_ac129e059a032af3\igdkmdn64.sys'.
+vtune: Warning: Cannot locate debugging information for file `c:\windows\system32\drivers\rdyboost.sys'.
+System.Management.Automation.RemoteException
+vtune: Executing actions 19 % Resolving information for `cng.sys'              
+vtune: Warning: Cannot locate debugging information for file `c:\windows\system32\drivers\acpi.sys'.
+System.Management.Automation.RemoteException
+vtune: Executing actions 19 % Resolving information for `rtkvhd64.sys'         
+vtune: Executing actions 20 % Resolving information for `rtkvhd64.sys'         
+vtune: Warning: Cannot locate debugging information for file `c:\windows\system32\driverstore\filerepository\rt68cx21x64.inf_amd64_d337a2c0d97264a1\rt68cx21x64.sys'.
+System.Management.Automation.RemoteException
+vtune: Executing actions 20 % Resolving information for `msvcrt.dll'           
+vtune: Warning: Cannot locate debugging information for file `c:\program files\riot vanguard\vgk.sys'.
+vtune: Warning: Cannot locate debugging information for file `c:\windows\system32\drivers\fltmgr.sys'.
+vtune: Warning: Cannot locate debugging information for file `c:\windows\system32\drivers\cng.sys'.
+System.Management.Automation.RemoteException
+vtune: Executing actions 20 % Resolving information for `watchdog.sys'         
+vtune: Warning: Cannot locate debugging information for file `c:\windows\system32\drivers\rtkvhd64.sys'.
+System.Management.Automation.RemoteException
+vtune: Executing actions 20 % Resolving information for `dxgmms2.sys'          
+vtune: Executing actions 20 % Resolving information for `nvlddmkm.sys'         
+vtune: Warning: Cannot locate debugging information for file `c:\windows\system32\msvcrt.dll'.
+System.Management.Automation.RemoteException
+vtune: Executing actions 20 % Resolving information for `ehstorclass.sys'      
+vtune: Executing actions 20 % Resolving information for `classpnp.sys'         
+vtune: Executing actions 20 % Resolving information for `ucrtbase.dll'         
+vtune: Warning: Cannot locate debugging information for file `c:\windows\system32\drivers\watchdog.sys'.
+System.Management.Automation.RemoteException
+vtune: Executing actions 20 % Resolving information for `iorate.sys'           
+vtune: Warning: Cannot locate debugging information for file `c:\windows\system32\drivers\dxgmms2.sys'.
+System.Management.Automation.RemoteException
+vtune: Executing actions 20 % Resolving information for `fileinfo.sys'         
+vtune: Warning: Cannot locate debugging information for file `c:\windows\system32\drivers\ehstorclass.sys'.
+System.Management.Automation.RemoteException
+vtune: Executing actions 20 % Resolving information for `bindflt.sys'          
+vtune: Warning: Cannot locate debugging information for file `c:\windows\system32\drivers\classpnp.sys'.
+System.Management.Automation.RemoteException
+vtune: Executing actions 20 % Resolving information for dangling locations     
+vtune: Executing actions 20 % Resolving information for `volsnap.sys'          
+vtune: Warning: Cannot locate debugging information for file `c:\windows\system32\ucrtbase.dll'.
+System.Management.Automation.RemoteException
+vtune: Executing actions 20 % Resolving information for `executioncontext.sys' 
+vtune: Warning: Cannot locate debugging information for file `c:\windows\system32\drivers\iorate.sys'.
+System.Management.Automation.RemoteException
+vtune: Executing actions 20 % Resolving information for `gameflt.sys'          
+vtune: Warning: Cannot locate debugging information for file `c:\windows\system32\drivers\fileinfo.sys'.
+System.Management.Automation.RemoteException
+vtune: Executing actions 20 % Resolving information for `dxgkrnl.sys'          
+vtune: Warning: Cannot locate debugging information for file `c:\windows\system32\driverstore\filerepository\nvhm.inf_amd64_fc65fff9472a8323\nvlddmkm.sys'.
+vtune: Warning: Cannot locate debugging information for file `c:\windows\system32\drivers\bindflt.sys'.
+System.Management.Automation.RemoteException
+vtune: Executing actions 20 % Resolving information for `volmgr.sys'           
+vtune: Warning: Cannot locate debugging information for file `c:\windows\system32\drivers\volsnap.sys'.
+System.Management.Automation.RemoteException
+vtune: Executing actions 21 % Resolving information for `volmgr.sys'           
+vtune: Executing actions 21 % Resolving information for `fvevol.sys'           
+vtune: Warning: Cannot locate debugging information for file `c:\windows\system32\drivers\executioncontext.sys'.
+System.Management.Automation.RemoteException
+vtune: Executing actions 21 % Resolving information for `vboxsup.sys'          
+vtune: Warning: Cannot locate debugging information for file `c:\windows\system32\driverstore\filerepository\gameflt.inf_amd64_c03f7ce96acee3d6\gameflt.sys'.
+System.Management.Automation.RemoteException
+vtune: Executing actions 21 % Resolving information for `ntdll.dll'            
+vtune: Warning: Cannot locate debugging information for file `c:\windows\system32\drivers\dxgkrnl.sys'.
+System.Management.Automation.RemoteException
+vtune: Executing actions 21 % Resolving information for `wof.sys'              
+vtune: Warning: Cannot locate debugging information for file `c:\windows\system32\drivers\volmgr.sys'.
+vtune: Warning: Cannot locate debugging information for file `c:\windows\system32\drivers\fvevol.sys'.
+System.Management.Automation.RemoteException
+vtune: Executing actions 21 % Resolving information for `luafv.sys'            
+vtune: Executing actions 21 % Resolving information for `combase.dll'          
+vtune: Warning: Cannot locate debugging information for file `c:\windows\system32\drivers\vboxsup.sys'.
+vtune: Warning: Cannot locate debugging information for file `c:\windows\system32\ntdll.dll'.
+System.Management.Automation.RemoteException
+vtune: Executing actions 21 % Resolving information for `storport.sys'         
+vtune: Warning: Cannot locate debugging information for file `c:\windows\system32\drivers\wof.sys'.
+System.Management.Automation.RemoteException
+vtune: Executing actions 21 % Resolving information for `partmgr.sys'          
+vtune: Warning: Cannot locate debugging information for file `c:\windows\system32\drivers\luafv.sys'.
+System.Management.Automation.RemoteException
+vtune: Executing actions 21 % Resolving information for `wimmount.sys'         
+vtune: Executing actions 21 % Resolving information for `wdf01000.sys'         
+vtune: Warning: Cannot locate debugging information for file `c:\windows\system32\combase.dll'.
+System.Management.Automation.RemoteException
+vtune: Executing actions 21 % Resolving information for `intelpep.sys'         
+vtune: Warning: Cannot locate debugging information for file `c:\windows\system32\drivers\storport.sys'.
+vtune: Warning: Cannot locate debugging information for file `c:\windows\system32\drivers\partmgr.sys'.
+System.Management.Automation.RemoteException
+vtune: Executing actions 21 % Resolving information for `ucpd.sys'             
+vtune: Warning: Cannot locate debugging information for file `c:\windows\system32\drivers\wimmount.sys'.
+vtune: Warning: Cannot locate debugging information for file `c:\windows\system32\drivers\wdf01000.sys'.
+System.Management.Automation.RemoteException
+vtune: Executing actions 21 % Resolving information for `intcaudiobus.sys'     
+vtune: Executing actions 21 % Resolving information for `volume.sys'           
+vtune: Executing actions 21 % Resolving information for `wldp.dll'             
+vtune: Warning: Cannot locate debugging information for file `c:\windows\system32\drivers\intelpep.sys'.
+vtune: Warning: Cannot locate debugging information for file `c:\windows\system32\drivers\ucpd.sys'.
+System.Management.Automation.RemoteException
+vtune: Executing actions 22 % Resolving information for `wldp.dll'             
+vtune: Executing actions 22 % Resolving information for `disk.sys'             
+vtune: Executing actions 22 % Resolving information for `cmd.exe'              
+vtune: Executing actions 22 % Resolving information for `kernelbase.dll'       
+vtune: Warning: Cannot locate debugging information for file `c:\windows\system32\driverstore\filerepository\intcaudiobus.inf_amd64_510e92f7ef2b660a\intcaudiobus.sys'.
+vtune: Warning: Cannot locate debugging information for file `c:\windows\system32\drivers\volume.sys'.
+System.Management.Automation.RemoteException
+vtune: Executing actions 22 % Resolving information for `intcoed.sys'          
+vtune: Executing actions 22 % Resolving information for `ci.dll'               
+vtune: Warning: Cannot locate debugging information for file `c:\windows\system32\wldp.dll'.
+System.Management.Automation.RemoteException
+vtune: Executing actions 22 % Resolving information for `netadaptercx.sys'     
+vtune: Warning: Cannot locate debugging information for file `c:\windows\system32\drivers\disk.sys'.
+System.Management.Automation.RemoteException
+vtune: Executing actions 22 % Resolving information for `win32kbase.sys'       
+vtune: Warning: Cannot locate debugging information for file `c:\windows\system32\cmd.exe'.
+vtune: Warning: Cannot locate debugging information for file `c:\windows\system32\kernelbase.dll'.
+System.Management.Automation.RemoteException
+vtune: Executing actions 22 % Resolving information for `wpprecorder.sys'      
+vtune: Warning: Cannot locate debugging information for file `c:\windows\system32\driverstore\filerepository\intcoed.inf_amd64_f1ee27a36959d31b\intcoed.sys'.
+System.Management.Automation.RemoteException
+vtune: Executing actions 22 % Resolving information for `wesp.sys'             
+vtune: Warning: Cannot locate debugging information for file `c:\windows\system32\ci.dll'.
+System.Management.Automation.RemoteException
+vtune: Executing actions 22 % Resolving information for `cldflt.sys'           
+vtune: Warning: Cannot locate debugging information for file `c:\windows\system32\drivers\netadaptercx.sys'.
+vtune: Warning: Cannot locate debugging information for file `c:\windows\system32\win32kbase.sys'.
+vtune: Warning: Cannot locate debugging information for file `c:\windows\system32\drivers\wpprecorder.sys'.
+vtune: Warning: Cannot locate debugging information for file `c:\windows\system32\drivers\cldflt.sys'.
+vtune: Warning: Cannot locate debugging information for file `c:\windows\system32\drivers\wesp.sys'.
+System.Management.Automation.RemoteException
+vtune: Executing actions 22 % Resolving information for `faceit_ac.sys'        
+vtune: Warning: Cannot locate debugging information for file `c:\program files\faceit ac\faceit_ac.sys'.
+System.Management.Automation.RemoteException
+vtune: Executing actions 23 % Resolving information for `faceit_ac.sys'        
+vtune: Executing actions 23 % Resolving bottom user stack information          
+vtune: Executing actions 23 % Resolving thread name information                
+vtune: Executing actions 24 % Resolving thread name information                
+vtune: Executing actions 24 % Resolving call target names for dynamic code     
+vtune: Executing actions 25 % Resolving call target names for dynamic code     
+vtune: Executing actions 25 % Resolving interrupt name information             
+vtune: Executing actions 26 % Resolving interrupt name information             
+vtune: Executing actions 26 % Processing profile metrics and debug information 
+vtune: Executing actions 27 % Processing profile metrics and debug information 
+vtune: Executing actions 28 % Processing profile metrics and debug information 
+vtune: Executing actions 29 % Processing profile metrics and debug information 
+vtune: Executing actions 30 % Processing profile metrics and debug information 
+vtune: Executing actions 30 % Setting data model parameters                    
+vtune: Executing actions 30 % Precomputing frequently used data                
+vtune: Executing actions 30 % Precomputing frequently used data                
+vtune: Executing actions 31 % Precomputing frequently used data                
+vtune: Executing actions 32 % Precomputing frequently used data                
+vtune: Executing actions 33 % Precomputing frequently used data                
+vtune: Executing actions 34 % Precomputing frequently used data                
+vtune: Executing actions 35 % Precomputing frequently used data                
+vtune: Executing actions 36 % Precomputing frequently used data                
+vtune: Executing actions 36 % Updating precomputed scalar metrics              
+vtune: Executing actions 37 % Updating precomputed scalar metrics              
+vtune: Executing actions 37 % Discarding redundant overtime data               
+vtune: Executing actions 39 % Discarding redundant overtime data               
+vtune: Executing actions 39 % Saving the result                                
+vtune: Executing actions 41 % Saving the result                                
+vtune: Executing actions 42 % Saving the result                                
+vtune: Executing actions 50 % Saving the result                                
+vtune: Executing actions 50 % Generating a report                              
+vtune: Executing actions 50 % Setting data model parameters                    
+vtune: Executing actions 75 % Setting data model parameters                    
+Elapsed Time: 67.855s
+    CPU Time: 54.619s
+        Effective Time: 54.614s
+        Spin Time: 0.005s
+        Overhead Time: 0s
+    Instructions Retired: 544,187,800,000
+    Microarchitecture Usage: 62.6% of Pipeline Slots
+        CPI Rate: 0.308
+    Total Thread Count: 5
+    Paused Time: 0s
+
+Top Hotspots
+Function          Module       CPU Time  % of CPU Time(%)
+----------------  -----------  --------  ----------------
+ann::l2_scalar    prs_ann.exe   42.291s             77.4%
+func@0x180012a00  ci.dll         1.728s              3.2%
+func@0x180003920  ci.dll         1.723s              3.2%
+func@0x180011f50  ci.dll         0.686s              1.3%
+func@0x180002900  ci.dll         0.550s              1.0%
+[Others]          N/A            7.642s             14.0%
+Effective Physical Core Utilization: 6.4% (0.772 out of 12)
+ | The metric value is low, which may signal a poor physical CPU cores
+ | utilization caused by:
+ |     - load imbalance
+ |     - threading runtime overhead
+ |     - contended synchronization
+ |     - thread/process underutilization
+ |     - incorrect affinity that utilizes logical cores instead of physical
+ |       cores
+ | Explore sub-metrics to estimate the efficiency of MPI and OpenMP parallelism
+ | or run the Locks and Waits analysis to identify parallel bottlenecks for
+ | other parallel runtimes.
+ |
+    Effective Logical Core Utilization: 5.0% (0.805 out of 16)
+     | The metric value is low, which may signal a poor logical CPU cores
+     | utilization. Consider improving physical core utilization as the first
+     | step and then look at opportunities to utilize logical cores, which in
+     | some cases can improve processor throughput and overall performance of
+     | multi-threaded applications.
+     |
+Collection and Platform Info
+    Application Command Line: cmd.exe "/c" "start" "/b" "/wait" "/affinity" "4" "<repo>\implementacija\build\vtune\prs_ann.exe" "ivf-bench" "data/sift" "256" "32" "1000" "3" "scalar" "0" 
+    Operating System: Microsoft Windows 11
+    Computer Name: DESKTOP-3C81MFD
+    Result Size: 339.7 MB 
+    Collection start time: 16:48:28 15/11/2026 UTC
+    Collection stop time: 16:49:36 15/11/2026 UTC
+    Collector Type: Event-based sampling driver
+    CPU
+        Name: Intel(R) microarchitecture code named Alderlake-P
+        Frequency: 3.110 GHz
+        Logical CPU Count: 16
+        Cache Allocation Technology
+            Level 2 capability: not detected
+            Level 3 capability: not detected
+
+If you want to skip descriptions of detected performance issues in the report,
+enter: vtune -report summary -report-knob show-issues=false -r <my_result_dir>.
+Alternatively, you may view the report in the csv format: vtune -report
+<report_name> -format=csv.
+vtune: Executing actions 75 % Generating a report                              
+vtune: Executing actions 100 % Generating a report                             
+vtune: Executing actions 100 % done                                            
