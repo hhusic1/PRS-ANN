@@ -196,7 +196,7 @@ Izgradnja na SIFT1M traje ~1,5 min, a brža udaljenost bi dala malo drugačije c
 
 ## 11. Snimci ekrana (dokaz pokretanja)
 
-Snimci stvarnih pokretanja na ovom računaru (folder [`slike/`](slike/)). VTune snimci prikazuju početni pogled (Summary) rezultata iz finalnog snimanja. Taj pogled sažima cijelo snimanje, sa svim nitima, pa se brojke u njemu malo razlikuju od tabela po funkciji iz sekcije 6. Putanja do programa u redu "Application Command Line" skraćena je na `<repo>`, isto kao u CSV i log fajlovima.
+Snimci stvarnih pokretanja na ovom računaru (folder [`slike/`](slike/)). VTune snimci prikazuju početni pogled (Summary) rezultata iz finalnog snimanja. Taj pogled sažima cijelo snimanje, sa svim nitima, pa se brojke u njemu malo razlikuju od tabela po funkciji iz sekcije 6.
 
 **Pretraga, samostalno pokretanje (vezano za P-jezgro):**
 
