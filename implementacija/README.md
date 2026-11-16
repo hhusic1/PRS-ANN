@@ -478,7 +478,7 @@ cmd /c start /b /wait /affinity 4 build\Release\prs_ann.exe ivf-bench data/sift 
    ```bash
    python implementacija/scripts/vtune/tabela.py scalar avx2x4
    ```
-5. Grafikoni za izvještaj (SVG u `docs/vtune/slike/`, bez dodatnih paketa):
+5. Grafikoni 09–12 za izvještaj (SVG u `docs/vtune/slike/`, bez dodatnih paketa):
    ```bash
    python implementacija/scripts/vtune/grafikoni.py
    ```

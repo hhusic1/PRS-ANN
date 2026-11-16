@@ -25,8 +25,9 @@ Ako asistent upamti samo jedno, neka bude ovo: *mjerenje je pokazalo šta da opt
 | 7 | VTune poslije | snimak 07 (06 i 08 po potrebi), grafikon 10 (donja traka) | SIMD radi (FP Vector 38 %); sada čekamo memoriju (Memory Bound 42 %, DRAM 44 %) | 1,5 min |
 | 8 | Novo usko grlo | grafikon 11 | iz RAM-a jedno jezgro ne povuče više od ~13,6 GB/s, iz keša ista funkcija čita 35 GB/s | 1 min |
 | 9 | Zaključak | izvještaj §9 | sljedeći korak: više jezgara (OpenMP), manje bajtova (`uint8`), grupisanje upita | 1 min |
+| (po potrebi) | Režim napajanja | grafikon 12 | uz Energy Saver je sve ~1,3× sporije, ali ubrzanje i poredak ostaju isti | 0,5 min |
 
-Snimci su u [`slike/`](slike/) i već su ugrađeni u izvještaj (§11), a grafikoni u §5–§7. Najlakše je prezentovati direktno iz izvještaja na GitHubu: otvoriti PR, pa *Files changed*, pa `docs/vtune/izvjestaj.md`, pa *View file*.
+Snimci su u [`slike/`](slike/) i već su ugrađeni u izvještaj (§11), a grafikoni u §5–§8. Grafikon 12 pokazati ako asistent pita za uslove mjerenja, ili odmah poslije koraka 6. Najlakše je prezentovati direktno iz izvještaja na GitHubu: otvoriti PR, pa *Files changed*, pa `docs/vtune/izvjestaj.md`, pa *View file*.
 
 ### Šta reći na svakom koraku
 
@@ -131,7 +132,7 @@ VTune GUI: otvoriti rezultat iz `%LOCALAPPDATA%\prs-vtune\` (npr. `avx2x4-uarch-
 | Da li VTune usporava program? | Malo: tokom snimanja 11,9–13,6 s naspram 11,7 s bez VTune-a. Zato su vremena u tabelama mjerena bez VTune-a. |
 | Kako znate da su rezultati isti? | `ivf-bench` poredi svih 1000 upita sa skalarnom verzijom; testovi provjeravaju sve varijante za d od 1 do 130. SIFT vrijednosti su cijeli brojevi, pa su udaljenosti tačne u floatu. |
 | Zašto je skalarna verzija bez vektorizacije? | Ona je referenca. Tako je i izmjereno koliko košta skalarni kod. |
-| Da li je Energy Saver uticao? | Na apsolutna vremena jeste: u režimu Best performance sve je 1,3–1,4× brže (skalarna 9,06 s, `avx2x4` 3,59 s). Zaključci ostaju: isti poredak, ubrzanje 2,52×, granica memorije 18,7 GB/s i dalje ograničava (izvještaj §8). |
+| Da li je Energy Saver uticao? | Na apsolutna vremena jeste: u režimu Best performance sve je 1,3–1,4× brže (skalarna 9,06 s, `avx2x4` 3,59 s). Zaključci ostaju: isti poredak, ubrzanje 2,52×, granica memorije 18,7 GB/s i dalje ograničava (izvještaj §8, grafikon 12). |
 | Šta dalje? | OpenMP (više jezgara), vektori kao `uint8` (4× manje bajtova), grupisanje upita po listi. |
 
 Za detaljnije odgovore pogledati [izvještaj, §10](izvjestaj.md#10-moguća-pitanja).

@@ -229,6 +229,8 @@ SIFT10K (podaci u kešu): `scalar` 87,1 → 57,9 ns po udaljenosti, `avx2x4` 14,
 
 Recall@10 i identičnost rezultata isti su kao ranije (0,9975; 1000/1000 upita).
 
+![Energy Saver naspram Best performance: vrijeme i ubrzanje](slike/12-rezim-napajanja.svg)
+
 Šta se vidi:
 1. **Energy Saver je usporio sve varijante, 1,3–1,4×.** Skalarna verzija troši 1,98 takta po elementu bez obzira na frekvenciju. Iz njenog vremena slijedi da je jezgro radilo na približno 2,8 GHz uz Energy Saver (što se slaže sa VTune-om), a na 3,7 GHz u Best performance.
 2. **Zaključci ostaju isti.** Poredak varijanti je isti, a ubrzanje AVX2 verzije iz RAM-a je čak malo veće (2,52× umjesto 2,39×).
@@ -319,7 +321,7 @@ Snimci stvarnih pokretanja na ovom računaru (folder [`slike/`](slike/)). VTune 
 ./build/Release/prs_ann ivf-bench data/sift 256 32 1000 5 avx2x4      # vrijeme + provjera
 powershell -ExecutionPolicy Bypass -File scripts/vtune/collect.ps1 -Distances scalar,avx2x4   # kao administrator
 python scripts/vtune/tabela.py scalar avx2x4                          # tabele iz CSV-ova
-python scripts/vtune/grafikoni.py                                     # grafikoni 09–11 (SVG)
+python scripts/vtune/grafikoni.py                                     # grafikoni 09–12 (SVG)
 ```
 
 Detaljno uputstvo je u `implementacija/README.md`, sekcija 12.

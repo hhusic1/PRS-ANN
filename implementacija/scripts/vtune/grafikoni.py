@@ -3,7 +3,8 @@
 Upotreba (iz korijena repoa):
     python implementacija/scripts/vtune/grafikoni.py
 
-Pravi docs/vtune/slike/09-ubrzanje.svg, 10-top-down.svg i 11-propusnost.svg.
+Pravi docs/vtune/slike/09-ubrzanje.svg, 10-top-down.svg, 11-propusnost.svg i
+12-rezim-napajanja.svg (Energy Saver naspram Best performance).
 Bez dodatnih paketa: SVG se pise direktno, a GitHub ga prikazuje u Markdownu.
 """
 
@@ -170,7 +171,7 @@ def grafikon_propusnost(ram, kes):
     yg = sy(granica)
     t.append(f'<line x1="{lijevo}" y1="{yg:.1f}" x2="{S - desno}" y2="{yg:.1f}" stroke="{TEKST}" '
              f'stroke-width="1.5" stroke-dasharray="5 4"/>')
-    t.append(tekst(lijevo + 6, yg - 24, f"najviše iz RAM-a na jednom jezgru: {zarez(granica)} GB/s",
+    t.append(tekst(lijevo + 6, yg - 24, f"najviše iz RAM-a na jednom jezgru (Energy Saver): {zarez(granica)} GB/s",
                    12, TEKST, tezina="600", oreol=True))
     for i, var in enumerate(PORADAK):
         cx = lijevo + sirina_grupe * (i + 0.5)
@@ -183,6 +184,38 @@ def grafikon_propusnost(ram, kes):
     return svg(S, dno + 34, t)
 
 
+def grafikon_rezimi(es, bp):
+    """Energy Saver naspram Best performance (SIFT1M): vrijeme i ubrzanje, dva panela."""
+    S, lijevo, vrh = 780, 168, 128
+    h, razmak, grupa = 12, 2, 38
+    paneli = [  # (pocetak x, sirina, max vrijednost, podjela mreze, vrijednost, natpis)
+        (lijevo, 236, 12.0, [0, 4, 8, 12], lambda p, v: p[v][0], lambda x: zarez(x, 2) + " s", "s"),
+        (476, 236, 3.0, [0, 1, 2, 3], lambda p, v: p["scalar"][0] / p[v][0], lambda x: zarez(x, 2) + "×", "×"),
+    ]
+    t = naslov("Režim napajanja: Energy Saver naspram Best performance (SIFT1M)",
+               "u Best performance sve je 1,3–1,4× brže, a ubrzanje i poredak varijanti ostaju isti")
+    t += legenda(24, 84, [(BOJE[2], "Energy Saver (sva ostala mjerenja)"), (BOJE[3], "Best performance (kontrola)")])
+    dno = vrh + grupa * len(PORADAK) - 8
+    t.append(tekst(paneli[0][0], vrh - 16, "Vrijeme 1000 upita (manje je bolje)", 12.5, TEKST, tezina="600"))
+    t.append(tekst(paneli[1][0], vrh - 16, "Ubrzanje u odnosu na scalar (veće je bolje)", 12.5, TEKST, tezina="600"))
+    for x0, sir, vmax, mreza, _, _, jed in paneli:
+        for m in mreza:
+            x = x0 + sir * m / vmax
+            t.append(f'<line x1="{x:.1f}" y1="{vrh - 6}" x2="{x:.1f}" y2="{dno}" stroke="{MREZA}" stroke-width="1"/>')
+            t.append(tekst(x, dno + 18, f"{m}{' ' + jed if jed == 's' else jed}", 12, TEKST2, "middle"))
+    for i, var in enumerate(PORADAK):
+        y = vrh + i * grupa
+        t.append(tekst(lijevo - 12, y + h + 5, OPIS[var], 13, TEKST, "end"))
+        for x0, sir, vmax, _, vrijednost, natpis, _ in paneli:
+            for j, (podaci, boja) in enumerate(((es, BOJE[2]), (bp, BOJE[3]))):
+                vr = vrijednost(podaci, var)
+                yy = y + j * (h + razmak)
+                x1 = x0 + sir * vr / vmax
+                t.append(traka_h(x0, x1, yy, h, boja))
+                t.append(tekst(x1 + 5, yy + h - 2, natpis(vr), 11.5, TEKST))
+    return svg(S, dno + 34, t)
+
+
 def main():
     ram, kes = vremena("vremena-sift1m.txt"), vremena("vremena-sift10k-u-kesu.txt")
     uarch = {v: citaj_funkcije(v, "uarch-exploration")[FUNKCIJA[v]] for v in ("scalar", "avx2x4")}
@@ -190,6 +223,7 @@ def main():
         "09-ubrzanje.svg": grafikon_ubrzanje(ram, kes),
         "10-top-down.svg": grafikon_top_down(uarch),
         "11-propusnost.svg": grafikon_propusnost(ram, kes),
+        "12-rezim-napajanja.svg": grafikon_rezimi(ram, vremena("vremena-sift1m-best-performance.txt")),
     }
     for ime, sadrzaj in fajlovi.items():
         (SLIKE / ime).write_text(sadrzaj, encoding="utf-8")
