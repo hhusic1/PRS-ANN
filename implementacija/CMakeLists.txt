@@ -19,8 +19,11 @@ if(NOT CMAKE_BUILD_TYPE AND NOT CMAKE_CONFIGURATION_TYPES)
 endif()
 
 # Debug: bez optimizacije, sa simbolima. Release: sva mjerenja.
+# RelWithDebInfo: isti kod kao Release, plus simboli (-g) za VTune
+# (docs/vtune/); -g ne mijenja generisani kod, samo dodaje debug informacije.
 set(CMAKE_CXX_FLAGS_DEBUG "-O0 -g")
 set(CMAKE_CXX_FLAGS_RELEASE "-O3 -DNDEBUG")
+set(CMAKE_CXX_FLAGS_RELWITHDEBINFO "-O3 -DNDEBUG -g")
 
 # -march=native je x86 zastavica; na ARM-u (npr. Apple M-čipovi) ekvivalent je
 # -mcpu=native. Zato se bira prema arhitekturi, da projekat radi i na Macu.
@@ -52,7 +55,13 @@ add_library(ann_core STATIC
   src/common/bench.cpp
   src/common/dataset.cpp
   src/common/eval.cpp
+  src/common/ivf_io.cpp
   src/distance/l2_scalar.cpp
+  src/distance/l2_unrolled.cpp
+  src/distance/l2_auto.cpp
+  src/distance/l2_omp.cpp
+  src/distance/l2_avx2.cpp
+  src/distance/registry.cpp
   src/seq/bruteforce_seq.cpp
   src/seq/kmeans_seq.cpp
   src/seq/ivf_seq.cpp
@@ -66,16 +75,26 @@ target_compile_options(ann_core PUBLIC
   # davati iste rezultate svuda. (AVX2 intrinsici _mm256_fmadd_ps nisu
   # pogođeni: to je eksplicitna FMA instrukcija, ne spajanje kompajlera.)
   -ffp-contract=off
-  $<$<CONFIG:Release>:${ANN_NATIVE_FLAG}>
+  $<$<CONFIG:Release,RelWithDebInfo>:${ANN_NATIVE_FLAG}>
 )
 
 # Skalarna referenca mora ostati skalarna, i u Release buildu (kao u Lab 1).
+# Isto i skalarna verzija sa 4 akumulatora (VTune eksperiment, docs/vtune/).
 if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
-  set_source_files_properties(src/distance/l2_scalar.cpp
+  set_source_files_properties(src/distance/l2_scalar.cpp src/distance/l2_unrolled.cpp
     PROPERTIES COMPILE_OPTIONS "-fno-tree-vectorize")
 elseif(CMAKE_CXX_COMPILER_ID MATCHES "Clang")
-  set_source_files_properties(src/distance/l2_scalar.cpp
+  set_source_files_properties(src/distance/l2_scalar.cpp src/distance/l2_unrolled.cpp
     PROPERTIES COMPILE_OPTIONS "-fno-vectorize;-fno-slp-vectorize")
+endif()
+
+# omp simd verzija: samo simd direktive, bez OpenMP runtime-a (GCC i clang).
+set_source_files_properties(src/distance/l2_omp.cpp PROPERTIES COMPILE_OPTIONS "-fopenmp-simd")
+
+# AVX2 + FMA intrinsici samo na x86 (na ARM-u je sadržaj fajla isključen #if-om).
+if(ANN_IS_X86)
+  set_source_files_properties(src/distance/l2_avx2.cpp
+    PROPERTIES COMPILE_OPTIONS "-mavx2;-mfma")
 endif()
 
 # ---------------------------------------------------------------------------

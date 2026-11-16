@@ -1,0 +1,36 @@
+Hierarchy Level,Metric Name,Metric Value
+0,Elapsed Time,55.124523
+1,CPU Time,44.427303
+2,Effective Time,44.422304
+2,Spin Time,0.004999
+2,Overhead Time,0.0
+1,Instructions Retired,494903630000
+1,Microarchitecture Usage,67.1
+2,CPI Rate,0.285836
+1,Total Thread Count,7
+1,Paused Time,0.0
+0,Top Hotspots,
+0,Function,Module,CPU Time,% of CPU Time(%)
+0,ann::l2_scalar,prs_ann.exe,41.505678,93.4
+0,ann::IvfFlatSeq::search,prs_ann.exe,0.411947,0.9
+0,ann::better,prs_ann.exe,0.368953,0.8
+0,"std::vector<ann::Neighbor, std::allocator<ann::Neighbor>>::size",prs_ann.exe,0.216972,0.5
+0,memcmp,ucrtbase.dll,0.188976,0.4
+0,[Others],N/A,1.734778,3.9
+0,Effective Physical Core Utilization,6.5% (0.785 out of 12)
+1,Effective Logical Core Utilization,5.0% (0.806 out of 16)
+0,Collection and Platform Info,
+1,Application Command Line,cmd.exe "/c" "start" "/b" "/wait" "/affinity" "4" "<repo>\implementacija\build\vtune\prs_ann.exe" "ivf-bench" "data/sift" "256" "32" "1000" "3" "scalar" "0" 
+1,Operating System,Microsoft Windows 11
+1,Computer Name,DESKTOP-3C81MFD
+1,Result Size,299948472
+1,Collection start time,22:49:11 15/11/2026 UTC
+1,Collection stop time,22:50:06 15/11/2026 UTC
+1,Collector Type,Event-based sampling driver
+1,CPU,
+2,Name,Intel(R) microarchitecture code named Alderlake-P
+2,Frequency,3110398807
+2,Logical CPU Count,16
+2,Cache Allocation Technology,
+3,Level 2 capability,not detected
+3,Level 3 capability,not detected

@@ -6,6 +6,7 @@
 #include "bruteforce.hpp"
 #include "eval.hpp"
 #include "ivf_index.hpp"
+#include "ivf_io.hpp"
 #include "kmeans.hpp"
 #include "topk.hpp"
 
@@ -13,6 +14,10 @@
 #include <cmath>
 #include <cstdio>
 #include <cstring>
+#include <filesystem>
+#include <fstream>
+#include <stdexcept>
+#include <string>
 
 namespace
 {
@@ -207,6 +212,145 @@ namespace
         expect(pad_ok, "manje kandidata od k: ostatak je -1");
     }
 
+    // Čuvanje indeksa na disk (za mjerenja na identičnom indeksu): učitan
+    // indeks mora biti bit-identičan originalu i davati iste rezultate, a
+    // pokvaren, skraćen ili tuđi fajl mora se odbiti.
+    void test_ivf_io()
+    {
+        std::puts("IVF: cuvanje i ucitavanje indeksa");
+        const ann::FloatMatrix base = random_matrix(600, 4, 11);
+        const ann::FloatMatrix queries = random_matrix(50, 4, 12);
+        ann::KMeansParams km;
+        km.iterations = 5;
+        ann::IvfFlatSeq index(ann::l2_scalar, km);
+        index.train(base, 10);
+        index.add(base);
+
+        const std::filesystem::path path = std::filesystem::temp_directory_path() / "prs_ann_test_ivf.bin";
+        ann::save_ivf_lists(index.lists(), path);
+        ann::IvfFlatSeq loaded(ann::l2_scalar);
+        loaded.set_lists(ann::load_ivf_lists(path));
+
+        const ann::IvfLists& a = index.lists();
+        const ann::IvfLists& b = loaded.lists();
+        auto same = [](const simd::AlignedFloats& x, const simd::AlignedFloats& y)
+        {
+            return x.size() == y.size() && std::memcmp(x.data(), y.data(), x.size() * sizeof(float)) == 0;
+        };
+        expect(b.centroids.n == a.centroids.n && b.centroids.d == a.centroids.d &&
+                   same(a.centroids.values, b.centroids.values),
+               "centroidi identicni");
+        expect(b.offset == a.offset && b.n == a.n, "offset i n identicni");
+        expect(same(a.list_data, b.list_data) && b.list_ids == a.list_ids, "liste identicne");
+        const ann::SearchResult r1 = index.search(queries, 20, 3);
+        const ann::SearchResult r2 = loaded.search(queries, 20, 3);
+        expect(r1.ids == r2.ids && r1.distances == r2.distances, "pretraga sa ucitanim indeksom identicna");
+
+        expect(ann::ivf_lists_match(b, 10, 4, 600), "indeks odgovara svom nlist, d i n");
+        expect(!ann::ivf_lists_match(b, 11, 4, 600) && !ann::ivf_lists_match(b, 10, 8, 600) &&
+                   !ann::ivf_lists_match(b, 10, 4, 601),
+               "indeks za drugi nlist, d ili n se prepoznaje");
+        const ann::FloatMatrix other = random_matrix(600, 4, 99); // isti n i d, drugi vektori
+        expect(ann::ivf_lists_match_base(b, base), "indeks odgovara svojoj bazi (ID-evi i vektori)");
+        expect(!ann::ivf_lists_match_base(b, other), "indeks za drugi skup istih dimenzija se prepoznaje");
+
+        auto load_throws = [&]()
+        {
+            try
+            {
+                ann::load_ivf_lists(path);
+                return false;
+            }
+            catch (const std::runtime_error&)
+            {
+                return true;
+            }
+        };
+        {
+            std::fstream f(path, std::ios::in | std::ios::out | std::ios::binary);
+            f.seekp(0);
+            f.put('X');
+        }
+        expect(load_throws(), "pogresan magicni niz se odbija");
+
+        ann::save_ivf_lists(index.lists(), path);
+        ann::IvfLists broken = ann::load_ivf_lists(path);
+        std::filesystem::resize_file(path, std::filesystem::file_size(path) - 4);
+        expect(load_throws(), "skracen fajl se odbija");
+        std::filesystem::remove(path);
+
+        bool rejected = false;
+        try
+        {
+            broken.offset.back() -= 1;
+            ann::IvfFlatSeq other(ann::l2_scalar);
+            other.set_lists(std::move(broken));
+        }
+        catch (const std::invalid_argument&)
+        {
+            rejected = true;
+        }
+        expect(rejected, "set_lists odbija nekonzistentne liste");
+    }
+
+    // Registar udaljenosti: ivf-bench bira funkciju po imenu, pa poznato ime
+    // mora dati pravu funkciju, a nepoznato nullptr (ne neku podrazumijevanu).
+    void test_distance_registry()
+    {
+        std::puts("udaljenosti: registar po imenu");
+        const ann::DistanceVariant* scalar = ann::find_distance("scalar");
+        expect(scalar != nullptr && scalar->fn == ann::l2_scalar && !scalar->needs_avx2_fma,
+               "\"scalar\" je l2_scalar, bez AVX2");
+        expect(ann::find_distance("nepostoji") == nullptr, "nepoznato ime daje nullptr");
+        expect(!ann::distance_variants().empty() && std::string(ann::distance_variants().front().name) == "scalar",
+               "spisak varijanti pocinje skalarnom referencom");
+    }
+
+    // Optimizovane udaljenosti (docs/vtune/) moraju dati isti rezultat kao
+    // skalarna referenca. Za cijele brojeve 0..255 (kao SIFT) su sve međusume
+    // tačne u floatu (zbir < 2^24), pa rezultat mora biti BIT-IDENTIČAN bez
+    // obzira na redoslijed sabiranja i FMA. Za necijele vrijednosti dozvoljena
+    // je relativna greška zaokruživanja. Dimenzije koje nisu višekratnik 8 ili
+    // 32 provjeravaju ostatak petlje.
+    void test_distance_variants()
+    {
+        std::puts("udaljenosti: optimizovane varijante == skalarna referenca");
+        const bool avx = ann::cpu_has_avx2_fma();
+        if (!avx)
+            std::puts("  (procesor nema AVX2/FMA: AVX2 varijante se preskacu)");
+        // AVX2 varijante postoje samo na x86 (na Apple M / ARM nisu u registru).
+        std::vector<const char*> names = { "scalar4", "auto", "omp" };
+#if defined(__x86_64__) || defined(__i386__)
+        names.push_back("avx2");
+        names.push_back("avx2x4");
+#endif
+        for (const char* name : names)
+        {
+            const ann::DistanceVariant* v = ann::find_distance(name);
+            expect(v != nullptr, (std::string(name) + " postoji u registru").c_str());
+            if (v == nullptr || (v->needs_avx2_fma && !avx))
+                continue;
+            bool exact = true, close = true;
+            for (const std::size_t d : { 1, 7, 8, 31, 32, 33, 128, 130 })
+            {
+                const ann::FloatMatrix ints = random_matrix(2, d, 100 + d);
+                exact = exact && v->fn(ints.row(0), ints.row(1), d) == ann::l2_scalar(ints.row(0), ints.row(1), d);
+
+                std::vector<float> a(d), b(d);
+                for (std::size_t j = 0; j < d; ++j)
+                {
+                    a[j] = ints.row(0)[j] / 7.0f + 0.1f;
+                    b[j] = ints.row(1)[j] / 7.0f;
+                }
+                const float ref = ann::l2_scalar(a.data(), b.data(), d);
+                const float got = v->fn(a.data(), b.data(), d);
+                close = close && std::fabs(got - ref) <= 1e-5f * std::max(1.0f, std::fabs(ref));
+            }
+            expect(exact, (std::string(name) + ": cijeli brojevi identicno skalarnoj (d = 1..130)").c_str());
+            expect(close, (std::string(name) + ": necijeli brojevi, relativna greska < 1e-5").c_str());
+        }
+    }
+
     void test_topk_ties()
     {
         std::puts("top-k: jednake udaljenosti i manje od k kandidata");
@@ -236,6 +380,9 @@ int main()
     test_topk_ties();
     test_ivf_lists_check();
     test_ivf_search();
+    test_ivf_io();
+    test_distance_registry();
+    test_distance_variants();
     std::printf("\n%s (%d gresaka)\n", failures == 0 ? "SVI TESTOVI PROSLI" : "NEKI TESTOVI NISU PROSLI", failures);
     return failures == 0 ? 0 : 1;
 }

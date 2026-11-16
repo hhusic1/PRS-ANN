@@ -1,0 +1,81 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="780" height="382" viewBox="0 0 780 382" font-family="Segoe UI, Helvetica, Arial, sans-serif">
+<rect width="780" height="382" rx="8" fill="#fcfcfb"/>
+<text x="24.0" y="34.0" font-size="17" fill="#0b0b0b" text-anchor="start" font-weight="600">Režim napajanja: Energy Saver naspram Best performance (SIFT1M)</text>
+<text x="24.0" y="56.0" font-size="12.5" fill="#52514e" text-anchor="start" font-weight="normal">u Best performance sve je 1,3–1,4× brže, a ubrzanje i poredak varijanti ostaju isti</text>
+<rect x="24" y="74" width="12" height="12" rx="3" fill="#1baf7a"/>
+<text x="42.0" y="84.0" font-size="12.5" fill="#52514e" text-anchor="start" font-weight="normal">Energy Saver (sva ostala mjerenja)</text>
+<rect x="294.8" y="74" width="12" height="12" rx="3" fill="#eda100"/>
+<text x="312.8" y="84.0" font-size="12.5" fill="#52514e" text-anchor="start" font-weight="normal">Best performance (kontrola)</text>
+<text x="168.0" y="112.0" font-size="12.5" fill="#0b0b0b" text-anchor="start" font-weight="600">Vrijeme 1000 upita (manje je bolje)</text>
+<text x="476.0" y="112.0" font-size="12.5" fill="#0b0b0b" text-anchor="start" font-weight="600">Ubrzanje u odnosu na scalar (veće je bolje)</text>
+<line x1="168.0" y1="122" x2="168.0" y2="348" stroke="#e4e3df" stroke-width="1"/>
+<text x="168.0" y="366.0" font-size="12" fill="#52514e" text-anchor="middle" font-weight="normal">0 s</text>
+<line x1="246.7" y1="122" x2="246.7" y2="348" stroke="#e4e3df" stroke-width="1"/>
+<text x="246.7" y="366.0" font-size="12" fill="#52514e" text-anchor="middle" font-weight="normal">4 s</text>
+<line x1="325.3" y1="122" x2="325.3" y2="348" stroke="#e4e3df" stroke-width="1"/>
+<text x="325.3" y="366.0" font-size="12" fill="#52514e" text-anchor="middle" font-weight="normal">8 s</text>
+<line x1="404.0" y1="122" x2="404.0" y2="348" stroke="#e4e3df" stroke-width="1"/>
+<text x="404.0" y="366.0" font-size="12" fill="#52514e" text-anchor="middle" font-weight="normal">12 s</text>
+<line x1="476.0" y1="122" x2="476.0" y2="348" stroke="#e4e3df" stroke-width="1"/>
+<text x="476.0" y="366.0" font-size="12" fill="#52514e" text-anchor="middle" font-weight="normal">0×</text>
+<line x1="554.7" y1="122" x2="554.7" y2="348" stroke="#e4e3df" stroke-width="1"/>
+<text x="554.7" y="366.0" font-size="12" fill="#52514e" text-anchor="middle" font-weight="normal">1×</text>
+<line x1="633.3" y1="122" x2="633.3" y2="348" stroke="#e4e3df" stroke-width="1"/>
+<text x="633.3" y="366.0" font-size="12" fill="#52514e" text-anchor="middle" font-weight="normal">2×</text>
+<line x1="712.0" y1="122" x2="712.0" y2="348" stroke="#e4e3df" stroke-width="1"/>
+<text x="712.0" y="366.0" font-size="12" fill="#52514e" text-anchor="middle" font-weight="normal">3×</text>
+<text x="156.0" y="145.0" font-size="13" fill="#0b0b0b" text-anchor="end" font-weight="normal">scalar (početno)</text>
+<path d="M168.0,128.0 H394.8 A4,4 0 0 1 398.8,132.0 V136.0 A4,4 0 0 1 394.8,140.0 H168.0 Z" fill="#1baf7a"/>
+<text x="403.8" y="138.0" font-size="11.5" fill="#0b0b0b" text-anchor="start" font-weight="normal">11,74 s</text>
+<path d="M168.0,142.0 H342.2 A4,4 0 0 1 346.2,146.0 V150.0 A4,4 0 0 1 342.2,154.0 H168.0 Z" fill="#eda100"/>
+<text x="351.2" y="152.0" font-size="11.5" fill="#0b0b0b" text-anchor="start" font-weight="normal">9,06 s</text>
+<path d="M476.0,128.0 H550.7 A4,4 0 0 1 554.7,132.0 V136.0 A4,4 0 0 1 550.7,140.0 H476.0 Z" fill="#1baf7a"/>
+<text x="559.7" y="138.0" font-size="11.5" fill="#0b0b0b" text-anchor="start" font-weight="normal">1,00×</text>
+<path d="M476.0,142.0 H550.7 A4,4 0 0 1 554.7,146.0 V150.0 A4,4 0 0 1 550.7,154.0 H476.0 Z" fill="#eda100"/>
+<text x="559.7" y="152.0" font-size="11.5" fill="#0b0b0b" text-anchor="start" font-weight="normal">1,00×</text>
+<text x="156.0" y="183.0" font-size="13" fill="#0b0b0b" text-anchor="end" font-weight="normal">scalar4 (4 akumulatora)</text>
+<path d="M168.0,166.0 H328.2 A4,4 0 0 1 332.2,170.0 V174.0 A4,4 0 0 1 328.2,178.0 H168.0 Z" fill="#1baf7a"/>
+<text x="337.2" y="176.0" font-size="11.5" fill="#0b0b0b" text-anchor="start" font-weight="normal">8,35 s</text>
+<path d="M168.0,180.0 H290.2 A4,4 0 0 1 294.2,184.0 V188.0 A4,4 0 0 1 290.2,192.0 H168.0 Z" fill="#eda100"/>
+<text x="299.2" y="190.0" font-size="11.5" fill="#0b0b0b" text-anchor="start" font-weight="normal">6,42 s</text>
+<path d="M476.0,166.0 H582.6 A4,4 0 0 1 586.6,170.0 V174.0 A4,4 0 0 1 582.6,178.0 H476.0 Z" fill="#1baf7a"/>
+<text x="591.6" y="176.0" font-size="11.5" fill="#0b0b0b" text-anchor="start" font-weight="normal">1,41×</text>
+<path d="M476.0,180.0 H583.1 A4,4 0 0 1 587.1,184.0 V188.0 A4,4 0 0 1 583.1,192.0 H476.0 Z" fill="#eda100"/>
+<text x="592.1" y="190.0" font-size="11.5" fill="#0b0b0b" text-anchor="start" font-weight="normal">1,41×</text>
+<text x="156.0" y="221.0" font-size="13" fill="#0b0b0b" text-anchor="end" font-weight="normal">auto (kompajler)</text>
+<path d="M168.0,204.0 H347.4 A4,4 0 0 1 351.4,208.0 V212.0 A4,4 0 0 1 347.4,216.0 H168.0 Z" fill="#1baf7a"/>
+<text x="356.4" y="214.0" font-size="11.5" fill="#0b0b0b" text-anchor="start" font-weight="normal">9,32 s</text>
+<path d="M168.0,218.0 H303.6 A4,4 0 0 1 307.6,222.0 V226.0 A4,4 0 0 1 303.6,230.0 H168.0 Z" fill="#eda100"/>
+<text x="312.6" y="228.0" font-size="11.5" fill="#0b0b0b" text-anchor="start" font-weight="normal">7,10 s</text>
+<path d="M476.0,204.0 H571.0 A4,4 0 0 1 575.0,208.0 V212.0 A4,4 0 0 1 571.0,216.0 H476.0 Z" fill="#1baf7a"/>
+<text x="580.0" y="214.0" font-size="11.5" fill="#0b0b0b" text-anchor="start" font-weight="normal">1,26×</text>
+<path d="M476.0,218.0 H572.4 A4,4 0 0 1 576.4,222.0 V226.0 A4,4 0 0 1 572.4,230.0 H476.0 Z" fill="#eda100"/>
+<text x="581.4" y="228.0" font-size="11.5" fill="#0b0b0b" text-anchor="start" font-weight="normal">1,28×</text>
+<text x="156.0" y="259.0" font-size="13" fill="#0b0b0b" text-anchor="end" font-weight="normal">omp simd</text>
+<path d="M168.0,242.0 H272.9 A4,4 0 0 1 276.9,246.0 V250.0 A4,4 0 0 1 272.9,254.0 H168.0 Z" fill="#1baf7a"/>
+<text x="281.9" y="252.0" font-size="11.5" fill="#0b0b0b" text-anchor="start" font-weight="normal">5,54 s</text>
+<path d="M168.0,256.0 H242.2 A4,4 0 0 1 246.2,260.0 V264.0 A4,4 0 0 1 242.2,268.0 H168.0 Z" fill="#eda100"/>
+<text x="251.2" y="266.0" font-size="11.5" fill="#0b0b0b" text-anchor="start" font-weight="normal">3,98 s</text>
+<path d="M476.0,242.0 H638.7 A4,4 0 0 1 642.7,246.0 V250.0 A4,4 0 0 1 638.7,254.0 H476.0 Z" fill="#1baf7a"/>
+<text x="647.7" y="252.0" font-size="11.5" fill="#0b0b0b" text-anchor="start" font-weight="normal">2,12×</text>
+<path d="M476.0,256.0 H651.2 A4,4 0 0 1 655.2,260.0 V264.0 A4,4 0 0 1 651.2,268.0 H476.0 Z" fill="#eda100"/>
+<text x="660.2" y="266.0" font-size="11.5" fill="#0b0b0b" text-anchor="start" font-weight="normal">2,28×</text>
+<text x="156.0" y="297.0" font-size="13" fill="#0b0b0b" text-anchor="end" font-weight="normal">avx2 (1 akumulator)</text>
+<path d="M168.0,280.0 H264.4 A4,4 0 0 1 268.4,284.0 V288.0 A4,4 0 0 1 264.4,292.0 H168.0 Z" fill="#1baf7a"/>
+<text x="273.4" y="290.0" font-size="11.5" fill="#0b0b0b" text-anchor="start" font-weight="normal">5,11 s</text>
+<path d="M168.0,294.0 H236.1 A4,4 0 0 1 240.1,298.0 V302.0 A4,4 0 0 1 236.1,306.0 H168.0 Z" fill="#eda100"/>
+<text x="245.1" y="304.0" font-size="11.5" fill="#0b0b0b" text-anchor="start" font-weight="normal">3,67 s</text>
+<path d="M476.0,280.0 H652.8 A4,4 0 0 1 656.8,284.0 V288.0 A4,4 0 0 1 652.8,292.0 H476.0 Z" fill="#1baf7a"/>
+<text x="661.8" y="290.0" font-size="11.5" fill="#0b0b0b" text-anchor="start" font-weight="normal">2,30×</text>
+<path d="M476.0,294.0 H666.4 A4,4 0 0 1 670.4,298.0 V302.0 A4,4 0 0 1 666.4,306.0 H476.0 Z" fill="#eda100"/>
+<text x="675.4" y="304.0" font-size="11.5" fill="#0b0b0b" text-anchor="start" font-weight="normal">2,47×</text>
+<text x="156.0" y="335.0" font-size="13" fill="#0b0b0b" text-anchor="end" font-weight="normal">avx2x4 (4 akumulatora)</text>
+<path d="M168.0,318.0 H260.7 A4,4 0 0 1 264.7,322.0 V326.0 A4,4 0 0 1 260.7,330.0 H168.0 Z" fill="#1baf7a"/>
+<text x="269.7" y="328.0" font-size="11.5" fill="#0b0b0b" text-anchor="start" font-weight="normal">4,92 s</text>
+<path d="M168.0,332.0 H234.6 A4,4 0 0 1 238.6,336.0 V340.0 A4,4 0 0 1 234.6,344.0 H168.0 Z" fill="#eda100"/>
+<text x="243.6" y="342.0" font-size="11.5" fill="#0b0b0b" text-anchor="start" font-weight="normal">3,59 s</text>
+<path d="M476.0,318.0 H659.8 A4,4 0 0 1 663.8,322.0 V326.0 A4,4 0 0 1 659.8,330.0 H476.0 Z" fill="#1baf7a"/>
+<text x="668.8" y="328.0" font-size="11.5" fill="#0b0b0b" text-anchor="start" font-weight="normal">2,39×</text>
+<path d="M476.0,332.0 H670.6 A4,4 0 0 1 674.6,336.0 V340.0 A4,4 0 0 1 670.6,344.0 H476.0 Z" fill="#eda100"/>
+<text x="679.6" y="342.0" font-size="11.5" fill="#0b0b0b" text-anchor="start" font-weight="normal">2,52×</text>
+</svg>
