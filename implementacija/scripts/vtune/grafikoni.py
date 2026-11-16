@@ -94,7 +94,7 @@ def grafikon_ubrzanje(ram, kes):
     sx = lambda v: lijevo + (S - lijevo - desno) * v / xmax
     visina = vrh + grupa * len(PORADAK) + 40
     t = naslov("Ubrzanje pretrage u odnosu na skalarnu verziju (veće je bolje)",
-               "1000 upita, nprobe 32, jedno P-jezgro; sve varijante daju identične rezultate")
+               "1000 upita, nprobe 32, jedno P-jezgro, režim Energy Saver; sve varijante daju identične rezultate")
     t += legenda(24, 84, [(BOJE[0], "SIFT1M, podaci iz RAM-a"), (BOJE[1], "SIFT10K, podaci u kešu")])
     dno = vrh + grupa * len(PORADAK) - 8
     for v in range(0, int(xmax) + 1):
@@ -124,7 +124,7 @@ def grafikon_top_down(uarch):
         ("Core Bound", "Back-End Bound:Core Bound(%)"),
     ]
     t = naslov("Gdje odlaze taktovi procesora: top-down podjela (VTune)",
-               "funkcija udaljenosti, P-jezgro, ponovljeno snimanje na neopterećenom računaru")
+               "funkcija udaljenosti, P-jezgro, ponovljeno snimanje na neopterećenom računaru, režim Energy Saver")
     t += legenda(24, 84, [(BOJE[k], ime) for k, (ime, _) in enumerate(dijelovi[:3])])
     t += legenda(24, 104, [(BOJE[k + 3], ime) for k, (ime, _) in enumerate(dijelovi[3:])])
     redovi = [("scalar", "scalar (prije)"), ("avx2x4", "avx2x4 (poslije)")]
@@ -159,7 +159,7 @@ def grafikon_propusnost(ram, kes):
     sy = lambda v: dno - visina_osi * v / ymax
     sirina_grupe = (S - lijevo - desno) / len(PORADAK)
     t = naslov("Propusnost skeniranja vektora (GB/s, veće je bolje)",
-               "iz RAM-a sve brze varijante zapnu na ~12–13,6 GB/s; iz keša ista funkcija čita do 35 GB/s")
+               "Energy Saver: iz RAM-a brze varijante zapnu na ~12–13,6 GB/s, iz keša ista funkcija čita do 35 GB/s")
     t += legenda(24, 84, [(BOJE[0], "SIFT1M, podaci iz RAM-a"), (BOJE[1], "SIFT10K, podaci u kešu")])
     for v in range(0, int(ymax) + 1, 10):
         y = sy(v)

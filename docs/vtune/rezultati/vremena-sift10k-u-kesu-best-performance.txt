@@ -1,0 +1,12 @@
+﻿  identicno skalarnoj:      (ovo je skalarna referenca)
+CSV: scalar,siftsmall,64,32,100,50,0.029865,0.028469,3348.4,5091,57.938,8.727,1.0000,100
+  identicno skalarnoj:      100 / 100 upita
+CSV: scalar4,siftsmall,64,32,100,50,0.019155,0.018485,5220.6,5091,37.161,13.607,1.0000,100
+  identicno skalarnoj:      100 / 100 upita
+CSV: auto,siftsmall,64,32,100,50,0.021029,0.019581,4755.4,5091,40.797,12.394,1.0000,100
+  identicno skalarnoj:      100 / 100 upita
+CSV: omp,siftsmall,64,32,100,50,0.007222,0.005696,13845.7,5091,14.012,36.087,1.0000,100
+  identicno skalarnoj:      100 / 100 upita
+CSV: avx2,siftsmall,64,32,100,50,0.006405,0.005557,15612.1,5091,12.426,40.691,1.0000,100
+  identicno skalarnoj:      100 / 100 upita
+CSV: avx2x4,siftsmall,64,32,100,50,0.005698,0.004645,17550.3,5091,11.054,45.743,1.0000,100

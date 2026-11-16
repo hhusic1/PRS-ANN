@@ -1,7 +1,7 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="780" height="420" viewBox="0 0 780 420" font-family="Segoe UI, Helvetica, Arial, sans-serif">
 <rect width="780" height="420" rx="8" fill="#fcfcfb"/>
 <text x="24.0" y="34.0" font-size="17" fill="#0b0b0b" text-anchor="start" font-weight="600">Ubrzanje pretrage u odnosu na skalarnu verziju (veće je bolje)</text>
-<text x="24.0" y="56.0" font-size="12.5" fill="#52514e" text-anchor="start" font-weight="normal">1000 upita, nprobe 32, jedno P-jezgro; sve varijante daju identične rezultate</text>
+<text x="24.0" y="56.0" font-size="12.5" fill="#52514e" text-anchor="start" font-weight="normal">1000 upita, nprobe 32, jedno P-jezgro, režim Energy Saver; sve varijante daju identične rezultate</text>
 <rect x="24" y="74" width="12" height="12" rx="3" fill="#2a78d6"/>
 <text x="42.0" y="84.0" font-size="12.5" fill="#52514e" text-anchor="start" font-weight="normal">SIFT1M, podaci iz RAM-a</text>
 <rect x="215.6" y="74" width="12" height="12" rx="3" fill="#eb6834"/>

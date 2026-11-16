@@ -1,7 +1,7 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="780" height="378" viewBox="0 0 780 378" font-family="Segoe UI, Helvetica, Arial, sans-serif">
 <rect width="780" height="378" rx="8" fill="#fcfcfb"/>
 <text x="24.0" y="34.0" font-size="17" fill="#0b0b0b" text-anchor="start" font-weight="600">Propusnost skeniranja vektora (GB/s, veće je bolje)</text>
-<text x="24.0" y="56.0" font-size="12.5" fill="#52514e" text-anchor="start" font-weight="normal">iz RAM-a sve brze varijante zapnu na ~12–13,6 GB/s; iz keša ista funkcija čita do 35 GB/s</text>
+<text x="24.0" y="56.0" font-size="12.5" fill="#52514e" text-anchor="start" font-weight="normal">Energy Saver: iz RAM-a brze varijante zapnu na ~12–13,6 GB/s, iz keša ista funkcija čita do 35 GB/s</text>
 <rect x="24" y="74" width="12" height="12" rx="3" fill="#2a78d6"/>
 <text x="42.0" y="84.0" font-size="12.5" fill="#52514e" text-anchor="start" font-weight="normal">SIFT1M, podaci iz RAM-a</text>
 <rect x="215.6" y="74" width="12" height="12" rx="3" fill="#eb6834"/>

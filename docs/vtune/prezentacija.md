@@ -30,7 +30,7 @@ Snimci su u [`slike/`](slike/) i već su ugrađeni u izvještaj (§11), a grafik
 
 ### Šta reći na svakom koraku
 
-**1. Postavka.** "Mjerimo samo pretragu: 1000 upita na milion SIFT vektora, `nprobe` 32. Po upitu se pregleda 13 % baze, oko 64 MB, a to je više nego što staje u keš. Proces je vezan za jedno P-jezgro, jer je E-jezgro 2,3× sporije. Indeks je napravljen jednom i sačuvan, pa sve varijante rade na istom indeksu."
+**1. Postavka.** "Mjerimo samo pretragu: 1000 upita na milion SIFT vektora, `nprobe` 32. Po upitu se pregleda 13 % baze, oko 64 MB, a to je više nego što staje u keš. Proces je vezan za jedno P-jezgro, jer je E-jezgro 2,3× sporije. Indeks je napravljen jednom i sačuvan, pa sve varijante rade na istom indeksu. Mjereno je uz Windows Energy Saver; kontrolno mjerenje u režimu Best performance je u izvještaju i potvrđuje iste zaključke."
 
 **2. Hotspots (snimak 03).** "Prvo pitanje je gdje je vrijeme. Odgovor je jasan: 93 % je u funkciji udaljenosti. Ostatak programa nije bitan za ubrzanje."
 
@@ -127,10 +127,11 @@ VTune GUI: otvoriti rezultat iz `%LOCALAPPDATA%\prs-vtune\` (npr. `avx2x4-uarch-
 |---|---|
 | Zašto ne `-ffast-math`? | Važi za cijeli fajl i mijenja pravila za float (redoslijed, NaN). `omp simd reduction` daje dozvolu samo za tu petlju. |
 | Zašto AVX2 nije 8× brži? | Iz keša je blizu, 6×. Iz RAM-a ograničava propusnost memorije jednog jezgra (grafikon 11). |
-| Je li 13,6 GB/s maksimum RAM-a? | Ne. Platforma ima ~45 GB/s, ali jedno jezgro može imati ograničen broj istovremenih zahtjeva. To je naša izmjerena granica, ne potvrđena posebnim testom. |
+| Je li 13,6 GB/s maksimum RAM-a? | Ne. Platforma ima ~45 GB/s, ali jedno jezgro može imati ograničen broj istovremenih zahtjeva. To je naša izmjerena granica uz Energy Saver (u Best performance 18,7 GB/s), ne potvrđena posebnim testom. |
 | Da li VTune usporava program? | Malo: tokom snimanja 11,9–13,6 s naspram 11,7 s bez VTune-a. Zato su vremena u tabelama mjerena bez VTune-a. |
 | Kako znate da su rezultati isti? | `ivf-bench` poredi svih 1000 upita sa skalarnom verzijom; testovi provjeravaju sve varijante za d od 1 do 130. SIFT vrijednosti su cijeli brojevi, pa su udaljenosti tačne u floatu. |
 | Zašto je skalarna verzija bez vektorizacije? | Ona je referenca. Tako je i izmjereno koliko košta skalarni kod. |
+| Da li je Energy Saver uticao? | Na apsolutna vremena jeste: u režimu Best performance sve je 1,3–1,4× brže (skalarna 9,06 s, `avx2x4` 3,59 s). Zaključci ostaju: isti poredak, ubrzanje 2,52×, granica memorije 18,7 GB/s i dalje ograničava (izvještaj §8). |
 | Šta dalje? | OpenMP (više jezgara), vektori kao `uint8` (4× manje bajtova), grupisanje upita po listi. |
 
 Za detaljnije odgovore pogledati [izvještaj, §10](izvjestaj.md#10-moguća-pitanja).

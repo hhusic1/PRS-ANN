@@ -20,6 +20,9 @@ Vodič za izlaganje (redoslijed, šta pokazati, značenje brojki): [`prezentacij
   - DRAM Bound sa 4,3 % na 43,6 %.
 
   Jedno jezgro dobija ~13,6 GB/s iz RAM-a, a ista funkcija iz keša čita 35 GB/s. Sljedeći korak je više jezgara (OpenMP).
+- **Režim napajanja.** Sve je mjereno uz Windows Energy Saver. U kontrolnom mjerenju u režimu Best performance sve varijante su 1,3–1,4× brže, ali poredak i zaključci ostaju isti:
+  - AVX2 sa 4 akumulatora 2,52× na SIFT1M;
+  - granica memorije jednog jezgra 18,7 GB/s, i dalje usko grlo (sekcija 8).
 
 ## 1. Postavka
 
@@ -31,6 +34,7 @@ Vodič za izlaganje (redoslijed, šta pokazati, značenje brojki): [`prezentacij
 | Indeks | IVF-Flat, `nlist` = 256, napravljen jednom skalarnom verzijom i sačuvan; sva mjerenja učitavaju **isti** indeks |
 | Pretraga | 1000 upita, `nprobe` = 32 (13,08 % baze, 130.769 vektora, ~64 MB po upitu), k = 10 |
 | Vezivanje | proces vezan za logičko jezgro 2 (P-jezgro) preko `start /affinity`; na E-jezgru ista pretraga traje 2,3× duže |
+| Režim napajanja | sva mjerenja i VTune snimanja: Windows **Energy Saver** (prosječna frekvencija prema VTune-u 2,8–3,2 GHz, a P-jezgro može do 4,5 GHz); kontrolno mjerenje vremena u režimu Best performance je u sekciji 8 |
 
 Zašto ovi parametri: po upitu se skenira ~64 MB, više nego što staje u L3 keš (18 MB), pa analiza vidi stvarno ponašanje memorije. Indeks je sačuvan zato što bi brža funkcija udaljenosti pri izgradnji dala centroide različite u zadnjim bitima, pa "prije" i "poslije" ne bi bili isti indeks.
 
@@ -188,7 +192,7 @@ Ponovljeno snimanje na neopterećenom računaru, `scalar` naspram `avx2x4` (funk
 ## 7. Novo usko grlo: propusnost memorije jednog jezgra
 
 Zašto `avx2x4` nije 6× brža i na SIFT1M:
-- **Na SIFT1M** obje AVX2 varijante i `omp` zapnu na 12–13,6 GB/s. Četiri akumulatora tamo donose samo 4 %, jer računanje više nije granica.
+- **Na SIFT1M** obje AVX2 varijante i `omp` zapnu na 12–13,6 GB/s (u režimu Best performance na 16,8–18,7 GB/s, sekcija 8). Četiri akumulatora tamo donose samo 4 %, jer računanje više nije granica.
 - **Na SIFT10K** (podaci u kešu) ista funkcija čita 35 GB/s, a četiri akumulatora donose ~19 %.
 - **Računska procjena:** po elementu se rade oko 3 operacije na 4 bajta podataka (oduzimanje i FMA), tj. ~0,75 FLOP/B. Pri 13,6 GB/s to je ~10 GFLOP/s, a jedno jezgro sa dvije AVX2 FMA jedinice može ~100 GFLOP/s. Procesor bi, dakle, mogao računati ~10× brže nego što memorija dostavlja podatke.
 
@@ -202,8 +206,35 @@ Platforma ima ~45 GB/s, ali jedno jezgro može imati samo ograničen broj istovr
 - **Sistemska propusnost DRAM-a** u Memory Access analizi mjeri cijeli računar, uključujući i sam VTune: ~10 GB/s više nego što program čita. Zato se koriste metrike po funkciji i propusnost koju program sam izračuna (GB/s skeniranih vektora).
 - **Inline funkcije:** sa `-g` VTune prikazuje AVX2 intrinzike (`_mm256_fmadd_ps`...) kao zasebne funkcije. Izvještaji po funkcijama zato se prave sa `-inline-mode off`, da se vrijeme pripiše funkciji udaljenosti.
 - **Prvo Memory Access snimanje** je stalo na VTune-ovoj granici od 1000 MB. Kasnija snimanja su bez granice (`-data-limit 0`).
-- **Granica od ~13,6 GB/s** je propusnost koju naš kod postiže na jednom jezgru; nije posebno potvrđena testom propusnosti memorije.
+- **Granica od ~13,6 GB/s** (18,7 GB/s u režimu Best performance) je propusnost koju naš kod postiže na jednom jezgru; nije posebno potvrđena testom propusnosti memorije.
 - **Jedno jezgro i jedna konfiguracija** (`nprobe` 32). Sa manjim `nprobe` više podataka staje u keš, pa bi ubrzanje bilo veće. Ponašanje sa više niti je tema OpenMP faze.
+- **Režim napajanja.** Sva mjerenja i VTune snimanja rađena su uz Windows Energy Saver. Zato je urađeno kontrolno mjerenje vremena u režimu Best performance (ispod).
+
+### Kontrolno mjerenje: Energy Saver naspram Best performance
+
+Isti program, parametri i vezivanje za P-jezgro; računar na punjaču, bez drugih zahtjevnih programa. Fajlovi: `rezultati/vremena-sift1m-best-performance.txt` i `rezultati/vremena-sift10k-u-kesu-best-performance.txt`. VTune snimanja nisu ponovljena.
+
+SIFT1M (podaci iz RAM-a):
+
+| Varijanta | Energy Saver: vrijeme | ubrzanje | Best performance: vrijeme | ubrzanje | GB/s (ES → BP) |
+|---|---|---|---|---|---|
+| `scalar` | 11,74 s | 1,00× | 9,06 s | 1,00× | 5,7 → 7,4 |
+| `scalar4` | 8,35 s | 1,41× | 6,42 s | 1,41× | 8,0 → 10,4 |
+| `auto` | 9,32 s | 1,26× | 7,10 s | 1,28× | 7,2 → 9,4 |
+| `omp` | 5,54 s | 2,12× | 3,98 s | 2,28× | 12,1 → 16,8 |
+| `avx2` | 5,11 s | 2,30× | 3,67 s | 2,47× | 13,1 → 18,3 |
+| `avx2x4` | 4,92 s | 2,39× | 3,59 s | **2,52×** | 13,6 → **18,7** |
+
+SIFT10K (podaci u kešu): `scalar` 87,1 → 57,9 ns po udaljenosti, `avx2x4` 14,4 → 11,1 ns; ubrzanje 6,06× → 5,24×; `avx2x4` čita 35,2 → 45,7 GB/s.
+
+Recall@10 i identičnost rezultata isti su kao ranije (0,9975; 1000/1000 upita).
+
+Šta se vidi:
+1. **Energy Saver je usporio sve varijante, 1,3–1,4×.** Skalarna verzija troši 1,98 takta po elementu bez obzira na frekvenciju. Iz njenog vremena slijedi da je jezgro radilo na približno 2,8 GHz uz Energy Saver (što se slaže sa VTune-om), a na 3,7 GHz u Best performance.
+2. **Zaključci ostaju isti.** Poredak varijanti je isti, a ubrzanje AVX2 verzije iz RAM-a je čak malo veće (2,52× umjesto 2,39×).
+3. **Granica memorije se pomjerila, ali i dalje ograničava.** Sa 13,6 GB/s porasla je na 18,7 GB/s. Najvjerovatnije Energy Saver usporava i put do memorije, a ne samo jezgra; to nije posebno mjereno. Brze varijante su i dalje blizu jedna drugoj (16,8–18,7 GB/s), četiri akumulatora donose samo 2 %, a iz keša ista funkcija čita 45,7 GB/s.
+4. **U kešu je ubrzanje manje (5,24× umjesto 6,06×),** jer je skalarna verzija dobila više od veće frekvencije (1,50×) nego `avx2x4` (1,30×).
+5. **VTune metrike u taktovima** (2 takta i 7 instrukcija po elementu u skalarnoj verziji) ne zavise od frekvencije. Postoci Memory Bound-a nakon optimizacije mogli bi se u Best performance malo razlikovati, jer su se promijenile i brzina jezgra i brzina memorije.
 
 ## 9. Zaključak
 
@@ -214,7 +245,7 @@ SIMD faza je pokazala koliko koji pristup donosi:
 - **`omp simd`:** 2,12×;
 - **ručni AVX2 + FMA sa četiri akumulatora:** 2,39× na SIFT1M i 6× kad su podaci u kešu, uz 8× manje instrukcija po elementu i identične rezultate.
 
-Nakon toga je usko grlo memorija: VTune na neopterećenom računaru pokazuje Memory Bound 42 % i DRAM Bound 44 %, a jedno jezgro ne povuče više od ~13,6 GB/s, dok ista funkcija iz keša čita 35 GB/s. Dalje ubrzanje zato ne dolazi od bržeg računanja, nego od manje bajtova po upitu ili od više jezgara.
+Nakon toga je usko grlo memorija: VTune na neopterećenom računaru pokazuje Memory Bound 42 % i DRAM Bound 44 %, a jedno jezgro ne povuče više od ~13,6 GB/s (18,7 GB/s u režimu Best performance), dok ista funkcija iz keša čita 35 GB/s (45,7 GB/s). Dalje ubrzanje zato ne dolazi od bržeg računanja, nego od manje bajtova po upitu ili od više jezgara.
 
 **Mogući sljedeći koraci:**
 - **OpenMP:** više jezgara znači više istovremenih zahtjeva prema memoriji.
@@ -234,6 +265,9 @@ Iz keša jeste blizu: 6,06×. Iz RAM-a ograničava propusnost memorije jednog je
 
 **Zašto 4 akumulatora uz AVX2 donose samo 4 % na SIFT1M?**
 Zato što računanje tamo više nije granica, nego memorija. U kešu ista promjena donosi ~19 %.
+
+**Da li je Energy Saver uticao na rezultate?**
+Na apsolutna vremena jeste: sve je 1,3–1,4× sporije. Na zaključke nije. Kontrolno mjerenje u režimu Best performance daje isti poredak varijanti i ubrzanje AVX2 verzije 2,52× (umjesto 2,39×), a memorija i dalje ograničava (sekcija 8).
 
 **Kako znate da je rezultat isti?**
 `ivf-bench` poredi svih 1000 upita sa skalarnom referencom, ID po ID i udaljenost po udaljenost. Testovi provjeravaju sve varijante za d od 1 do 130. Za SIFT su udaljenosti tačne u floatu, pa poređenje može biti na tačnu jednakost.

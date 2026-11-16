@@ -96,6 +96,9 @@ def tabela_vremena(fajl, varijante):
 def main(varijante):
     tabela_vremena("vremena-sift1m.txt", varijante)
     tabela_vremena("vremena-sift10k-u-kesu.txt", varijante)
+    # kontrolno mjerenje u rezimu Best performance (ostalo je mjereno uz Energy Saver)
+    tabela_vremena("vremena-sift1m-best-performance.txt", varijante)
+    tabela_vremena("vremena-sift10k-u-kesu-best-performance.txt", varijante)
 
     print("### Udio CPU vremena (hotspots)\n")
     redovi = []
